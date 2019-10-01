@@ -32,7 +32,7 @@
       <v-card class="redondeado mb-4">
         <v-flex pt-4 pb-2 class="text-xs-center font-weight-medium">
           <h1>Bienvenido</h1>
-          <h2>Registro Cuentificación de Emisiones - F138</h2>
+          <h2>Sinader</h2>
         </v-flex>
         <v-card-text class="welcome_disclaimer">
           F138

@@ -77,7 +77,7 @@
         <v-icon large>menu</v-icon>
       </v-btn>
       <v-toolbar-title class="ml-0 pl-3 white--text">
-        <span class="hidden-md-and-down">Cuantificación de Emisiones</span>
+        <span class="hidden-md-and-down">SINADER</span>
         </v-toolbar-title>        
         <v-spacer></v-spacer>
       </v-toolbar-title>
@@ -114,55 +114,17 @@
       naturalStates:[],
       items: [
         { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
-        { icon: 'wrap_text', text: 'Declaraciones', link: '/send_list'}, 
-        { icon: 'wrap_text', text: 'Administrar Declaraciones', link: '/send_admin'}, 
         { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
         { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
         { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
       ]
     }),
     created () {
-      this.sourceRefresh();
+      
     },
     methods: {
 
-        async initialize() { 
-          var app = this 
-          await axios.get('/api/set_user')
-          .then(async function (resp) {
-            alert(JSON.stringify(resp.data));
-            alert(JSON.stringify(resp.data[0]['user']))
-            // app.$store.commit('changeUser',resp.data[0]['user']);
-            // app.$store.commit('changeEstablishment',resp.data[0]['establishment']);        
-           
-          })
-          .catch(function (resp) {
-              console.log(resp);
-              alert("Could not load data :" + resp);
-          });
 
-
-
-        },
-
-        sourceRefresh (){
-            axios.get('/api/sources/refresh')
-                .then(function (resp) {
-                   alert("Fuentes Actualizadas")    
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Error sources/refresh :" + resp);
-                });
-            
-            axios.get('/api/diagram/refresh')
-                .then(function (resp) {    
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Error sources/refresh :" + resp);
-                });
-        },
 
     }
 }

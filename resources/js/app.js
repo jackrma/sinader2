@@ -14,17 +14,8 @@ import router           from './routes'
 import VueApexCharts    from 'vue-apexcharts'
 
 
-import Discharge            from './components/Discharge' 
+
 import AppComponent         from './components/AppComponent'
-import Register             from './components/RegisterComponent'
-
-import Covs                 from './components/CovsComponent'
-import Isocinetic           from './components/IsocineticComponent'
-import Upload               from './components/UploadComponent'
-import NewIso               from './components/NewIsocinetic'
-
-import ReadingsNew          from './components/ReadingsNew'
-import Production           from './components/ProductionComponent'
 
 
 Vue.use(Vuex);
@@ -69,35 +60,7 @@ Vue.use(Vuetify, {
 });
 
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
-
-Vue.component('discharge', Discharge);
-Vue.component('register', Register);
-
-Vue.component('covs', Covs);
-Vue.component('isocinetic', Isocinetic);
-Vue.component('upload', Upload);
-Vue.component('new_iso', NewIso);
-
-Vue.component('readingsnew', ReadingsNew);
-Vue.component('production', Production);
-
-
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
 
 const app = new Vue({

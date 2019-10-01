@@ -2,11 +2,11 @@ version: '3'
 services:
   app:
     build: .
-    image: cuantificacion
+    image: sinader
     ports:
-      - "8082:80"
+      - "8083:80"
     networks:
-      - reporte_gei
+      - sinader
     volumes:
       - .:/var/www/app
     depends_on:
@@ -14,16 +14,16 @@ services:
   pgdb:
     image: postgres
     networks:
-      - reporte_gei
+      - sinader
     environment:
-      POSTGRES_USER: reporte_gei
+      POSTGRES_USER: sinader
       POSTGRES_PASSWORD: osvaldo1249
-      POSTGRES_DB: cuantificacion_development
+      POSTGRES_DB: sinader_development
     volumes:
       - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:
-  cuantificacion:
+  sinader:
     driver: "local"
 networks:
-  reporte_gei:
+  sinader:

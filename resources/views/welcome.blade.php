@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="token" content="{{ Session::get('token') }}">
 
-        <title>Cuantificación de Emisiones</title>
+        <title>Sinader</title>
         <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
     <body>
