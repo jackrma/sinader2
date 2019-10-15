@@ -10,8 +10,8 @@ services:
     volumes:
       - .:/var/www/app
     depends_on:
-      - pgdb
-  pgdb:
+      - pgdb_sinader
+  pgdb_sinader:
     image: postgres
     networks:
       - sinader
