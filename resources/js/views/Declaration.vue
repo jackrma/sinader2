@@ -90,6 +90,9 @@
   import Vue from 'vue';  
   // import { EventBus } from './../eventbus.js';
 
+ 
+  import DeclarationComponent  from './../components/DeclarationComponent';
+
 
   export default {
     props: {
@@ -120,5 +123,19 @@
         ]
 
         }),
+    
+
+    
+    methods: {
+        toNewDeclaration (){
+            var ComponentReserv = Vue.extend(DeclarationComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            source: '',
+             
+          }});
+            instance.$mount();
+            this.$refs.container.appendChild(instance.$el);
+        },
+    }
     }
 </script>    
