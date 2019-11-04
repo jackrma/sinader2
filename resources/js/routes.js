@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 
 import Welcome    from './views/Welcome'
 import RequisitionList    from './views/RequisitionListView'
-
+import Declaration    from './views/Declaration'
 
 Vue.use(VueRouter);
 
@@ -26,11 +26,15 @@ const router = new VueRouter({
             component: Welcome,
         },
         {
+            path: '/declarations',
+            name: 'declarations',
+            component: Declaration,
+        },
+        {
             path: '/requisition_list',
             name: 'requisition_list',
             component: RequisitionList,
         },
-
         
     ],
 });

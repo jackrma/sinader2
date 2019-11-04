@@ -68,26 +68,26 @@
       style="padding-left: 0px"
     >
       <v-btn
-        color="#6BEC87"
+        color="side_bar_gray"
         dark
-        depressed
+        class="bold--text"
         style="position:relative; height: 100%"
         @click.stop="drawer = !drawer"
       >
-        <v-icon large>menu</v-icon>
+        SINADER
       </v-btn>
       <v-toolbar-title class="ml-0 pl-3 white--text">
-        <span class="hidden-md-and-down">SINADER</span>
+        <!-- <span class="hidden-md-and-down">SINADER</span> -->
         </v-toolbar-title>        
         <v-spacer></v-spacer>
       </v-toolbar-title>
 
-        <!-- <p>Empresa: {{$store.getters.company.name}}</p> -->
+        <!-- <p>Empresa: {{$store.getters.company.name}}</p>  -->
         
 
       <v-spacer></v-spacer>
       <v-btn icon>
-        <v-icon color="white">notifications</v-icon>
+        <v-icon color="white">account_circle</v-icon>
       </v-btn>
     </v-toolbar>
 
@@ -114,6 +114,7 @@
       naturalStates:[],
       items: [
         { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
+        { icon: 'declaration', text: 'Declaraciones', link: '/declarations' },
         { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
         { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
         { icon: 'wrap_text', text: 'Tutoriales', link: '/'},

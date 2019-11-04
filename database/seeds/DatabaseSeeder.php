@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
     	App\User::truncate();
-    	App\User::create(['name'=> 'Osvaldo Miranda', 'email'=>'osvaldo.omiranda@gmail.com', 'password'=>'prueba']);
+    	App\User::create(['name'=> 'Rene Maldonado', 'email'=>'rene.maldonado@gmail.com', 'password'=>'prueba']);
 
 		App\Company::truncate();
         App\Company::create(["name" => "Empresa de pruebas","rut"=>11367176,"digit"=>"9","commune_id"=>13504,"retc_code"=> 1,"user_id"=> 1,"region_id"=>  13]);

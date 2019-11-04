@@ -100,13 +100,11 @@ class ApiUserController extends Controller
     }
 
 
-    public function vu_simulate(Request $request){
+    public function vu_connect(Request $request){
         $ue = UserEstablishment::where('retc_id', '=', 119010)->first();  
 
         if($ue){
             $token = $ue->user->createToken('VU')->accessToken;
-            Info('token_vu_simulate');
-            Info($token); 
 
             Session::flash('token', $token);
 
