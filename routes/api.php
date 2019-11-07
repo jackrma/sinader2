@@ -18,19 +18,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/solicitud_industrial', 'ApiUserController@solicitudIndustrial');
-Route::post('/requisition/approve', 'RequisitionController@approve');
-Route::post('/requisition/reject', 'RequisitionController@reject');
-
-
 Route::middleware('client')->group(function () {
 	Route::post('/user_invitation', 'ApiUserController@setSecretInvitation');
-	Route::post('/actualizarEmpresa','CompanyController@update'); 
-	Route::post('/actualizarEstablecimiento','EstablishmentController@update');
-	Route::post('/actualizarUsuario','UserController@update');
+	Route::post('/solicitud_industrial', 'ApiUserController@solicitudIndustrial');
+
+	Route::post('/actualizar_empresa','CompanyController@update'); 
+	Route::post('/actualizar_establecimiento','EstablishmentController@update');
+	Route::post('/actualizar_usuario','UserController@update');
 });
 
 Route::middleware('auth:api')->group(function () {
 	Route::get('/set_user', 'ApiUserController@setUserVue');
 	Route::get('/requisitions', 'RequisitionController@index');
+	Route::post('/requisition/approve', 'RequisitionController@approve');
+    Route::post('/requisition/reject', 'RequisitionController@reject');
 });

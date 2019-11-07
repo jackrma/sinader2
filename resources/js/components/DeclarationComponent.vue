@@ -120,7 +120,7 @@
   // import { EventBus } from './../eventbus.js';
 
  
-  import NewResidueComponent  from './../components/NewResidueComponent';
+  import NewResidueComponent  from './../components/NewResidueIndComponent';
 
 
 
