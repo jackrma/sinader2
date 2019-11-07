@@ -393,47 +393,44 @@ class DatabaseSeeder extends Seeder
 		App\Commune::create(['id' => 8420, 'name' => 'Treguaco', 'subdere' => 16207, 'region_id' => 16, 'status' => 1]);
 		App\Commune::create(['id' => 8406, 'name' => 'Chillan Viejo', 'subdere' => 16103, 'region_id' => 16, 'status' => 1]);
 
-		App\ler_cap::truncate();
-		App\ler_cap::create(['id' => 1, 'name' => 'Residuos de la prospección, extracción de minas y canteras y tratamientos físicos y químicos de minerales']);
-		App\ler_cap::create(['id' => 2, 'name' => 'Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca; residuos de la preparación y elaboración de alimentos']);
-		App\ler_cap::create(['id' => 3, 'name' => 'Residuos de la transformación de la madera y de la producción de tableros y muebles, pasta de papel, papel y cartón']);
-		App\ler_cap::create(['id' => 4, 'name' => 'Residuos de las industrias del cuero, de la piel y textil']);
-		App\ler_cap::create(['id' => 5, 'name' => 'Residuos del refino de petróleo, purificación del gas natural y tratamiento pirolítico del carbón']);
-		App\ler_cap::create(['id' => 6, 'name' => 'Residuos de procesos químicos inorgánicos']);
-		App\ler_cap::create(['id' => 7, 'name' => 'Residuos de procesos químicos orgánicos']);
-		App\ler_cap::create(['id' => 8, 'name' => 'Residuos de la fabricación, formulación, distribución y utilización (FFDU) de revestimientos (pinturas, barnices y esmaltes vítreos), adhesivos, sellantes y tintas de impresión']);
-		App\ler_cap::create(['id' => 9, 'name' => 'Residuos de la industria fotográfica']);
-		App\ler_cap::create(['id' => 10, 'name' => 'Residuos de procesos térmicos']);
-		App\ler_cap::create(['id' => 11, 'name' => 'Residuos del tratamiento químico de superficie y del recubrimiento de metales y otros materiales; residuos de la hidrometalurgia no férrea']);
-		App\ler_cap::create(['id' => 12, 'name' => 'Residuos del moldeado y del tratamiento físico y mecánico de superficie de metales y plásticos']);
-		App\ler_cap::create(['id' => 15, 'name' => 'Residuos de envases; absorbentes, trapos de limpieza, materiales de filtración y ropas de protección no especificados en otra categoría']);
-		App\ler_cap::create(['id' => 16, 'name' => 'Residuos no especificados en otro capítulo de la lista']);
-		App\ler_cap::create(['id' => 17, 'name' => 'Residuos de la construcción y demolición ']);
-		App\ler_cap::create(['id' => 18, 'name' => 'Residuos de servicios médicos o veterinarios o de investigación asociada (salvo los residuos de cocina y de restaurante no procedentes directamente de la prestación de cuidados sanitarios)']);
-		App\ler_cap::create(['id' => 19, 'name' => 'Residuos de las instalaciones para el tratamiento de residuos, de las plantas externas de tratamiento de aguas residuales y de la preparación de agua para consumo humano y de agua para uso industrial']);
-		App\ler_cap::create(['id' => 20, 'name' => 'Residuos municipales (residuos domésticos y residuos asimilables procedentes de los comercios, industrias e instituciones), incluidas las fracciones recogidas selectivamente']);
+		App\LerCapitulo::truncate();
+		App\LerCapitulo::create(['id' => 1, 'name' => 'Residuos de la prospección, extracción de minas y canteras y tratamientos físicos y químicos de minerales']);
+		App\LerCapitulo::create(['id' => 2, 'name' => 'Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca; residuos de la preparación y elaboración de alimentos']);
+		App\LerCapitulo::create(['id' => 3, 'name' => 'Residuos de la transformación de la madera y de la producción de tableros y muebles, pasta de papel, papel y cartón']);
+		App\LerCapitulo::create(['id' => 4, 'name' => 'Residuos de las industrias del cuero, de la piel y textil']);
+		App\LerCapitulo::create(['id' => 5, 'name' => 'Residuos del refino de petróleo, purificación del gas natural y tratamiento pirolítico del carbón']);
+		App\LerCapitulo::create(['id' => 6, 'name' => 'Residuos de procesos químicos inorgánicos']);
+		App\LerCapitulo::create(['id' => 7, 'name' => 'Residuos de procesos químicos orgánicos']);
+		App\LerCapitulo::create(['id' => 8, 'name' => 'Residuos de la fabricación, formulación, distribución y utilización (FFDU) de revestimientos (pinturas, barnices y esmaltes vítreos), adhesivos, sellantes y tintas de impresión']);
+		App\LerCapitulo::create(['id' => 9, 'name' => 'Residuos de la industria fotográfica']);
+		App\LerCapitulo::create(['id' => 10, 'name' => 'Residuos de procesos térmicos']);
+		App\LerCapitulo::create(['id' => 11, 'name' => 'Residuos del tratamiento químico de superficie y del recubrimiento de metales y otros materiales; residuos de la hidrometalurgia no férrea']);
+		App\LerCapitulo::create(['id' => 12, 'name' => 'Residuos del moldeado y del tratamiento físico y mecánico de superficie de metales y plásticos']);
+		App\LerCapitulo::create(['id' => 15, 'name' => 'Residuos de envases; absorbentes, trapos de limpieza, materiales de filtración y ropas de protección no especificados en otra categoría']);
+		App\LerCapitulo::create(['id' => 16, 'name' => 'Residuos no especificados en otro capítulo de la lista']);
+		App\LerCapitulo::create(['id' => 17, 'name' => 'Residuos de la construcción y demolición ']);
+		App\LerCapitulo::create(['id' => 18, 'name' => 'Residuos de servicios médicos o veterinarios o de investigación asociada (salvo los residuos de cocina y de restaurante no procedentes directamente de la prestación de cuidados sanitarios)']);
+		App\LerCapitulo::create(['id' => 19, 'name' => 'Residuos de las instalaciones para el tratamiento de residuos, de las plantas externas de tratamiento de aguas residuales y de la preparación de agua para consumo humano y de agua para uso industrial']);
+		App\LerCapitulo::create(['id' => 20, 'name' => 'Residuos municipales (residuos domésticos y residuos asimilables procedentes de los comercios, industrias e instituciones), incluidas las fracciones recogidas selectivamente']);
 
 
-		App\ler_sub::truncate();
-		App\ler_sub::create(['id' => 1 ,'cap_id' => 1 , 'name' => ' Residuos de la extracción de minerales']);
-		App\ler_sub::create(['id' => 1 ,'cap_id' => 3 , 'name' => ' Residuos de la transformación física y química de minerales metálicos']);
-		App\ler_sub::create(['id' => 1 ,'cap_id' => 4 , 'name' => ' Residuos de la transformación física y química de minerales no metálicos']);
-		App\ler_sub::create(['id' => 1 ,'cap_id' => 5 , 'name' => ' Lodos y otros residuos de perforaciones']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 1 , 'name' => ' Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 2 , 'name' => ' Residuos de la preparación y elaboración de carne, pescado y otros alimentos de origen animal']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 3 , 'name' => ' Residuos de la preparación y elaboración de frutas, hortalizas, cereales, aceites comestibles, cacao, café, té y tabaco; producción de conservas; producción de levadura y extracto de levadura, preparación y fermentación de melazas']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 4 , 'name' => ' Residuos de la elaboración de azúcar']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 5 , 'name' => ' Residuos de la industria de productos lácteos']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 6 , 'name' => ' Residuos de la industria de panadería y pastelería']);
-		App\ler_sub::create(['id' => 2 ,'cap_id' => 7 , 'name' => ' Residuos de la producción de bebidas alcohólicas y no alcohólicas (excepto café, té y cacao)']);
-		App\ler_sub::create(['id' => 3 ,'cap_id' => 1 , 'name' => ' Residuos de la transformación de la madera y de la producción de tableros y muebles']);
-		App\ler_sub::create(['id' => 3 ,'cap_id' => 2 , 'name' => ' Residuos de los tratamientos de conservación de la madera']);
-		App\ler_sub::create(['id' => 3 ,'cap_id' => 3 , 'name' => ' Residuos de la producción y transformación de pasta de papel, papel y cartón']);
-		App\ler_sub::create(['id' => 4 ,'cap_id' => 1 , 'name' => ' Residuos de las industrias del cuero y de la piel']);
-		App\ler_sub::create(['id' => 4 ,'cap_id' => 2 , 'name' => ' Residuos de la industria textil']);
-		App\ler_sub::create(['id' => 5 ,'cap_id' => 1 , 'name' => ' Residuos del refino de petróleo
-
-
-
+		App\LerSubcapitulo::truncate();
+		App\LerSubcapitulo::create(['id' => 1 ,'capitulo_id' => 1 , 'name' => ' Residuos de la extracción de minerales']);
+		App\LerSubcapitulo::create(['id' => 1 ,'capitulo_id' => 3 , 'name' => ' Residuos de la transformación física y química de minerales metálicos']);
+		App\LerSubcapitulo::create(['id' => 1 ,'capitulo_id' => 4 , 'name' => ' Residuos de la transformación física y química de minerales no metálicos']);
+		App\LerSubcapitulo::create(['id' => 1 ,'capitulo_id' => 5 , 'name' => ' Lodos y otros residuos de perforaciones']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 1 , 'name' => ' Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 2 , 'name' => ' Residuos de la preparación y elaboración de carne, pescado y otros alimentos de origen animal']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 3 , 'name' => ' Residuos de la preparación y elaboración de frutas, hortalizas, cereales, aceites comestibles, cacao, café, té y tabaco; producción de conservas; producción de levadura y extracto de levadura, preparación y fermentación de melazas']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 4 , 'name' => ' Residuos de la elaboración de azúcar']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 5 , 'name' => ' Residuos de la industria de productos lácteos']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 6 , 'name' => ' Residuos de la industria de panadería y pastelería']);
+		App\LerSubcapitulo::create(['id' => 2 ,'capitulo_id' => 7 , 'name' => ' Residuos de la producción de bebidas alcohólicas y no alcohólicas (excepto café, té y cacao)']);
+		App\LerSubcapitulo::create(['id' => 3 ,'capitulo_id' => 1 , 'name' => ' Residuos de la transformación de la madera y de la producción de tableros y muebles']);
+		App\LerSubcapitulo::create(['id' => 3 ,'capitulo_id' => 2 , 'name' => ' Residuos de los tratamientos de conservación de la madera']);
+		App\LerSubcapitulo::create(['id' => 3 ,'capitulo_id' => 3 , 'name' => ' Residuos de la producción y transformación de pasta de papel, papel y cartón']);
+		App\LerSubcapitulo::create(['id' => 4 ,'capitulo_id' => 1 , 'name' => 'Residuos de las industrias del cuero y de la piel']);
+		App\LerSubcapitulo::create(['id' => 4 ,'capitulo_id' => 2 , 'name' => 'Residuos de la industria textil']);
+		App\LerSubcapitulo::create(['id' => 5 ,'capitulo_id' => 1 , 'name' => 'Residuos del refino de petróleo']);
 		  }
 		}

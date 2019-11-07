@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class concept extends Model
+class LerWaste extends Model
 {
-    //
+    protected $table = 'ler_waste';
 }

@@ -13,12 +13,11 @@ class CreateWasteDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('waste_detail', function (Blueprint $table) {
+        Schema::create('waste_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('detail_id')->references('id')->on('declaration');
             $table->integer('waste_id')->references('id')->on('ler_waste');
             $table->integer('quantity');
-            $table->integer('unitm_id')->references('id')->on('concept_detail');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
             $table->integer('process_id')->references('id')->on('concept_detail');
@@ -34,6 +33,6 @@ class CreateWasteDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('waste_detail');
+        Schema::dropIfExists('waste_details');
     }
 }

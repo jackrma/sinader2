@@ -13,7 +13,7 @@ class CreateLerCapTable extends Migration
      */
     public function up()
     {
-        Schema::create('ler_cap', function (Blueprint $table) {
+        Schema::create('ler_capitulos', function (Blueprint $table) {
             $table->integer('id');
             $table->string("name");
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateLerCapTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ler_cap');
+        Schema::dropIfExists('ler_capitulos');
     }
 }

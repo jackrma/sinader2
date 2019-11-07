@@ -15,7 +15,7 @@ class CreateLerWasteTable extends Migration
     {
         Schema::create('ler_waste', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('sub_id')->references('id')->on('ler_sub');
+            $table->integer('subcapitulo_id')->references('id')->on('ler_subcapitulo');
             $table->timestamps();
         });
     }

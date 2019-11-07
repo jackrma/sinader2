@@ -13,7 +13,7 @@ class AddColumnToEstablishment extends Migration
      */
     public function up()
     {
-        Schema::table('establishment', function (Blueprint $table) {
+        Schema::table('establishments', function (Blueprint $table) {
             $table->string("type")->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddColumnToEstablishment extends Migration
      */
     public function down()
     {
-        Schema::table('establishment', function (Blueprint $table) {
+        Schema::table('establishments', function (Blueprint $table) {
             $table->dropColumn('type');
         });
     }

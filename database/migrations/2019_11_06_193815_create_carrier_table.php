@@ -13,7 +13,7 @@ class CreateCarrierTable extends Migration
      */
     public function up()
     {
-        Schema::create('carrier', function (Blueprint $table) {
+        Schema::create('carriers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("name");
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateCarrierTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carrier');
+        Schema::dropIfExists('carriers');
     }
 }
