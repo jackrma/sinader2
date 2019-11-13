@@ -114,11 +114,6 @@
       establishment: null,
       naturalStates:[],
       items: [
-        { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
-        { icon: 'declaration', text: 'Declaraciones', link: '/declarations' },
-        { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
-        { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
-        { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
       ]
     }),
     created () {
@@ -133,11 +128,46 @@
                    // alert(JSON.stringify(resp.data['type']));  
                    app.$store.commit('changeEstablishment', resp.data);
                    app.$store.commit('changeType', resp.data['type']);
+
+                    if(app.$store.getters.type=='GeneradorIndustrial' || app.$store.getters.type=='GeneradorMunicipal'){
+                        app.items= [
+                            { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
+                            { icon: 'declaration', text: 'Reporte Generación de Residuos', link: '/declarations' },
+                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                            { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
+                            { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
+                        ]
+                    }   
+
+                    if(app.$store.getters.type=='CentroAcopio'){
+                        app.items= [
+                            { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
+                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '' },
+                            { icon: 'declaration', text: 'Reporte Salida de Residuos', link: '/declarations' },
+                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                            { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
+                            { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
+                        ]
+                    } 
+                    if(app.$store.getters.type=='DestinatarioFinal'){
+                        app.items= [
+                            { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
+                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '' },
+                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                            { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
+                            { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
+                        ]
+                    } 
+
+
+
                 })
                 .catch(function (resp) {
                     console.log(resp);
                     alert("Error establishment/data :" + resp);
                 }); 
+
+
       }
 
 

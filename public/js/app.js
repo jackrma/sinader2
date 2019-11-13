@@ -1857,27 +1857,7 @@ __webpack_require__.r(__webpack_exports__);
       step: "",
       establishment: null,
       naturalStates: [],
-      items: [{
-        icon: 'contacts',
-        text: 'Bienvenida',
-        link: '/welcome'
-      }, {
-        icon: 'declaration',
-        text: 'Declaraciones',
-        link: '/declarations'
-      }, {
-        icon: 'wrap_text',
-        text: 'Administrar Solicitudes',
-        link: '/requisition_list'
-      }, {
-        icon: 'wrap_text',
-        text: 'Preguntas Frecuentes',
-        link: '/'
-      }, {
-        icon: 'wrap_text',
-        text: 'Tutoriales',
-        link: '/'
-      }]
+      items: []
     };
   },
   created: function created() {
@@ -1890,6 +1870,82 @@ __webpack_require__.r(__webpack_exports__);
         // alert(JSON.stringify(resp.data['type']));  
         app.$store.commit('changeEstablishment', resp.data);
         app.$store.commit('changeType', resp.data['type']);
+
+        if (app.$store.getters.type == 'GeneradorIndustrial' || app.$store.getters.type == 'GeneradorMunicipal') {
+          app.items = [{
+            icon: 'contacts',
+            text: 'Bienvenida',
+            link: '/welcome'
+          }, {
+            icon: 'declaration',
+            text: 'Reporte Generación de Residuos',
+            link: '/declarations'
+          }, {
+            icon: 'wrap_text',
+            text: 'Administrar Solicitudes',
+            link: '/requisition_list'
+          }, {
+            icon: 'wrap_text',
+            text: 'Preguntas Frecuentes',
+            link: '/'
+          }, {
+            icon: 'wrap_text',
+            text: 'Tutoriales',
+            link: '/'
+          }];
+        }
+
+        if (app.$store.getters.type == 'CentroAcopio') {
+          app.items = [{
+            icon: 'contacts',
+            text: 'Bienvenida',
+            link: '/welcome'
+          }, {
+            icon: 'declaration',
+            text: 'Reporte Recepción de Residuos',
+            link: ''
+          }, {
+            icon: 'declaration',
+            text: 'Reporte Salida de Residuos',
+            link: '/declarations'
+          }, {
+            icon: 'wrap_text',
+            text: 'Administrar Solicitudes',
+            link: '/requisition_list'
+          }, {
+            icon: 'wrap_text',
+            text: 'Preguntas Frecuentes',
+            link: '/'
+          }, {
+            icon: 'wrap_text',
+            text: 'Tutoriales',
+            link: '/'
+          }];
+        }
+
+        if (app.$store.getters.type == 'DestinatarioFinal') {
+          app.items = [{
+            icon: 'contacts',
+            text: 'Bienvenida',
+            link: '/welcome'
+          }, {
+            icon: 'declaration',
+            text: 'Reporte Recepción de Residuos',
+            link: ''
+          }, {
+            icon: 'wrap_text',
+            text: 'Administrar Solicitudes',
+            link: '/requisition_list'
+          }, {
+            icon: 'wrap_text',
+            text: 'Preguntas Frecuentes',
+            link: '/'
+          }, {
+            icon: 'wrap_text',
+            text: 'Tutoriales',
+            link: '/'
+          }];
+        }
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error establishment/data :" + resp);
@@ -2527,6 +2583,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../components/DeclarationComponent */ "./resources/js/components/DeclarationComponent.vue");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5611,9 +5672,19 @@ var render = function() {
             "v-toolbar",
             { attrs: { color: "main_green", dark: "" } },
             [
-              _c("v-toolbar-title", [
-                _vm._v("Reportes de Generación de Residuos no Peligrosos")
-              ])
+              this.$store.getters.type == "GeneradorIndustrial" ||
+              this.$store.getters.type == "GeneradorMunicipal"
+                ? _c("v-toolbar-title", [
+                    _vm._v("Reportes de Generación de Residuos no Peligrosos")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              this.$store.getters.type == "CentroAcopio" ||
+              this.$store.getters.type == "DestinatarioFinal"
+                ? _c("v-toolbar-title", [
+                    _vm._v("Reportes de Salida de Residuos no Peligrosos")
+                  ])
+                : _vm._e()
             ],
             1
           ),

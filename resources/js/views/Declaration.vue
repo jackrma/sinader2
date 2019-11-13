@@ -5,7 +5,12 @@
 
 
     <v-toolbar  color="main_green" dark>
-      <v-toolbar-title >Reportes de Generación de Residuos no Peligrosos</v-toolbar-title>
+
+      <v-toolbar-title v-if="this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='GeneradorMunicipal'" >Reportes de Generación de Residuos no Peligrosos</v-toolbar-title>
+
+      <v-toolbar-title v-if="this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal'" >Reportes de Salida de Residuos no Peligrosos</v-toolbar-title>
+
+
     </v-toolbar>
 
     <v-layout row>
