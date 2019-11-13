@@ -101,7 +101,9 @@ class ApiUserController extends Controller
 
 
     public function vu_connect(Request $request){
-        $ue = UserEstablishment::where('retc_id', '=', 119010)->first();  
+        $user_id = $request->input('user_id');
+
+        $ue = UserEstablishment::where('user_id', $user_id)->first();  
 
         if($ue){
             $token = $ue->user->createToken('VU')->accessToken;

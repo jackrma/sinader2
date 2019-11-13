@@ -115,14 +115,15 @@
 <script>
 
 
-  import { mapState } from 'vuex';  
   import Vue from 'vue';  
+  import Vuex from 'vuex'; 
+  import { mapState } from 'vuex';  
+  
   // import { EventBus } from './../eventbus.js';
 
  
-  import NewResidueComponent  from './../components/NewResidueIndComponent';
-
-
+  import NewResidueIndComponent  from './../components/NewResidueIndComponent';
+  import NewResidueMunComponent  from './../components/NewResidueMunComponent';
 
 
   export default {
@@ -170,16 +171,41 @@
       }
     },
     
+    computed () {
+        this.initialize();
+    },
+
     methods: {
+        initialize(){
+            
+        },  
+
+
         toNewResidue (){
-            var ComponentReserv = Vue.extend(NewResidueComponent)
-            var instance = new ComponentReserv({store: this.$store, propsData: {
-            source: '',
-             
-          }});
-            instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+
+            alert(this.$store.getters.type);
+            if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' ) {
+                var ComponentReserv = Vue.extend(NewResidueIndComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+            }else {
+                var ComponentReserv = Vue.extend(NewResidueMunComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+            }
+
+
+
         },
+
+
+
     }
 
   }

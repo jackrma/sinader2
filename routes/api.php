@@ -32,4 +32,6 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/requisitions', 'RequisitionController@index');
 	Route::post('/requisition/approve', 'RequisitionController@approve');
     Route::post('/requisition/reject', 'RequisitionController@reject');
+
+    Route::get('/establishment', 'EstablishmentController@data');
 });

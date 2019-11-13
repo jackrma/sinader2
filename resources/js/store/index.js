@@ -10,12 +10,16 @@ export default new Vuex.Store(
 {
 	state: {
 	    token:'',
+	    type:'',
 	    establishment: '',
 	    user: '',
 	    declaration_id: 0,
 
 	},
 	mutations: {
+		changeType(state, type) {
+		    state.type = type;
+		},
 		changeToken(state, token) {
 		    state.token = token;
 		},
@@ -31,6 +35,7 @@ export default new Vuex.Store(
 		},
 	},
 	getters: {
+		type: state => state.type,
 		token: state => state.token,
 		establishment: state => state.establishment, 
 		user: state => state.user,

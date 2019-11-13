@@ -35,7 +35,7 @@
           <h2>Sinader</h2>
         </v-flex>
         <v-card-text class="welcome_disclaimer">
-          F138
+          
         </v-card-text>
         <v-layout align-start justify-center row px-4>
           <v-flex xs6 pa-2>

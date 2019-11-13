@@ -82,7 +82,7 @@
         <v-spacer></v-spacer>
       </v-toolbar-title>
 
-        <!-- <p>Empresa: {{$store.getters.company.name}}</p>  -->
+        <p class='white text'>Establecimiento: {{ this.$store.getters.establishment.name}}</p> 
         
 
       <v-spacer></v-spacer>
@@ -103,7 +103,8 @@
 </template>
 
 <script>
-  import Vue from 'vue'; 
+  import Vue from 'vue';
+  import Vuex from 'vuex'; 
   import router  from './../routes';
   export default {
     data: () => ({
@@ -121,10 +122,23 @@
       ]
     }),
     created () {
+        this.initialize();
       
     },
     methods: {
-
+        initialize() {
+            var app = this;
+            axios.get('/api/establishment')
+                .then(function (resp) {
+                   // alert(JSON.stringify(resp.data['type']));  
+                   app.$store.commit('changeEstablishment', resp.data);
+                   app.$store.commit('changeType', resp.data['type']);
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error establishment/data :" + resp);
+                }); 
+      }
 
 
     }

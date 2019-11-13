@@ -11,20 +11,50 @@ class DatabaseSeeder extends Seeder
    */
   public function run()
   {
+  	
+  	App\Company::truncate();
+    App\Company::create(["name" => "Empresa de pruebas","rut"=>11367176,"digit"=>"9","commune_id"=>13504,"retc_code"=> 1,"user_id"=> 1,"region_id"=> 13]);
+
+
+// ************************
+
   	App\User::truncate();
   	App\User::create(['name'=> 'Rene Maldonado', 'email'=>'rene.maldonado@gmail.com', 'password'=>'prueba']);
 
-		App\Company::truncate();
-    App\Company::create(["name" => "Empresa de pruebas","rut"=>11367176,"digit"=>"9","commune_id"=>13504,"retc_code"=> 1,"user_id"=> 1,"region_id"=> 13]);
-
     App\Establishment::truncate();
-    App\Establishment::create(["name"=>"Establesimiento de Prueba","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1]);
-
+    App\Establishment::create(["name"=>"Generador de Residuos no Peligrosos","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'GeneradorIndustrial']);
 
     App\UserEstablishment::truncate();
     App\UserEstablishment::create(["user_id"=>1, "establishment_id" => 1, "retc_id" => 119010]);
 
+// ************************
 
+  	App\User::create(['name'=> 'Osvaldo Miranda', 'email'=>'osvaldo.omiranda@gmail.com', 'password'=>'prueba']);
+
+    App\Establishment::create(["name"=>"Generador Municipal","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'GeneradorMunicipal']);
+
+    App\UserEstablishment::create(["user_id"=>2, "establishment_id" => 2, "retc_id" => 119010]);
+
+// ************************
+
+  	App\User::create(['name'=> 'Maritza Barrera', 'email'=>'maritza@gmail.com', 'password'=>'prueba']);
+
+    App\Establishment::create(["name"=>"Centro de Acopio","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'CentroAcopio']);
+
+    App\UserEstablishment::create(["user_id"=>3, "establishment_id" => 3, "retc_id" => 119010]);
+
+
+// ************************
+
+  	App\User::create(['name'=> 'Fredy Ramirez', 'email'=>'frodo@gmail.com', 'password'=>'prueba']);
+
+    App\Establishment::create(["name"=>"Destinatario Final","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'DestinatarioFinal']);
+
+    App\UserEstablishment::create(["user_id"=>4, "establishment_id"=>4, "retc_id" => 119010]);
+
+
+
+// ************************
 
 	  App\Region::truncate();  
 		App\Region::create(['id' => 1, 'name' => 'Tarapacá', 'subdere' => 1, 'order' => 2, 'status' => 1]);

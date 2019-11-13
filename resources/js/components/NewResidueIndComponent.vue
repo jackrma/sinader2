@@ -19,7 +19,7 @@
           class="headline grey lighten-2"
           primary-title
         >
-          Agregar  Residuo
+          Agregar  Residuo Industrial
         </v-card-title>
 
         <v-card-text>
@@ -50,7 +50,7 @@
                             <v-select
                                 :items="processings"
                                 v-model="residue"
-                                label="Proceso"
+                                label="Tipo de Tratamiento"
                             ></v-select> 
 
                         </v-flex>
@@ -59,7 +59,7 @@
                             <v-select
                                 :items="gestion"
                                 v-model="residue"
-                                label="Gestión"
+                                label="Tipo de Gestión"
                             ></v-select> 
 
                         </v-flex>
@@ -101,7 +101,15 @@
                     </v-layout>
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Cantidad (t)"></v-text-field>
+                            <v-text-field type='number' label="Cantidad"></v-text-field>
+                        </v-flex>
+
+                        <v-flex xs3 class="px-1">
+                            <v-select
+                                :items="units"
+                                v-model="unidad"
+                                label="Unidad de Medida"
+                            ></v-select> 
                         </v-flex>
 
                     </v-layout>
@@ -173,6 +181,7 @@
 
         processings:['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
         gestion:['Centro Acopio', 'Gestion 2', 'Gestion 3'],
+        units:['Kg','Ton'],
         }
       }
     }
