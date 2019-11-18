@@ -28,48 +28,6 @@
                         <v-flex  xs3 class="px-1">
 
                             <v-select
-                                :items="destinatarios"
-                                v-model="capitulo"
-                                label="Destinatario"
-                            ></v-select> 
-
-
-                        </v-flex>
-                        <v-flex  xs3 class="px-1">
-
-
-                            <v-select
-                                :items="establishments"
-                                v-model="Establesimientos"
-                                label="Establecimiento"
-                            ></v-select> 
-
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="processings"
-                                v-model="residue"
-                                label="Tipo de Tratamiento"
-                            ></v-select> 
-
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="gestion"
-                                v-model="residue"
-                                label="Tipo de Gestión"
-                            ></v-select> 
-
-                        </v-flex>
-
-                    </v-layout>
-
-                    <v-layout>
-                        <v-flex  xs3 class="px-1">
-
-                            <v-select
                                 :items="capitulos"
                                 v-model="capitulo"
                                 label="Capitulo"
@@ -110,32 +68,6 @@
                                 v-model="unidad"
                                 label="Unidad de Medida"
                             ></v-select> 
-                        </v-flex>
-
-                    </v-layout>
-
-                    <v-layout>
-                        <v-checkbox
-                          v-model="checkbox"
-                          label="Residuo Exportado ?"
-                        ></v-checkbox>
-                    </v-layout>    
-
-                    <v-layout v-if="checkbox">
-                        <v-flex xs3 class="px-1">
-                            <v-text-field  label="País"></v-text-field>
-                        </v-flex>
-
-                        <v-flex xs3 class="px-1">
-                            <v-text-field  label="Empresa"></v-text-field>
-                        </v-flex>
-
-                        <v-flex xs3 class="px-1">
-                            <v-text-field  label="Contacto"></v-text-field>
-                        </v-flex>
-
-                        <v-flex xs3 class="px-1">
-                            <v-text-field  label="Email"></v-text-field>
                         </v-flex>
 
                     </v-layout>
@@ -187,5 +119,3 @@
     }
   
 </script>
-
-

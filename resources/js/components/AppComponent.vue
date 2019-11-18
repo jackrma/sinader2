@@ -82,7 +82,7 @@
         <v-spacer></v-spacer>
       </v-toolbar-title>
 
-        <p class='white text'>Establecimiento: {{ this.$store.getters.establishment.name}}</p> 
+        <p class='white--text'>Establecimiento: {{ this.$store.getters.establishment.name}}</p> 
         
 
       <v-spacer></v-spacer>
@@ -142,7 +142,7 @@
                     if(app.$store.getters.type=='CentroAcopio'){
                         app.items= [
                             { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
-                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '' },
+                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '/receive' },
                             { icon: 'declaration', text: 'Reporte Salida de Residuos', link: '/declarations' },
                             { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
                             { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
@@ -152,7 +152,8 @@
                     if(app.$store.getters.type=='DestinatarioFinal'){
                         app.items= [
                             { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
-                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '' },
+                            { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '/receive' },
+                            { icon: 'declaration', text: 'Reporte Salida de Residuos', link: '/declarations' },
                             { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
                             { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
                             { icon: 'wrap_text', text: 'Tutoriales', link: '/'},

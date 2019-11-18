@@ -7,11 +7,10 @@
           <v-btn icon dark @click="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Nueva Declaración</v-toolbar-title>
+          <v-toolbar-title>Nueva Recepción de Residuos no Peligorsos</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn flat class='white--text'  @click="dialog = false">Declarar Sin Movimiento</v-btn>
-            <v-btn flat class='white--text'  @click="dialog = false">Guardar</v-btn>
+              <v-btn flat class='white--text'  @click="dialog = false">Guardar</v-btn>
           </v-toolbar-items>
         </v-toolbar>
 
@@ -23,25 +22,22 @@
                             <v-text-field v-model="this.declaration.folio"  readonly='true' label="Folio"></v-text-field>
                         </v-flex>
 
-                        <v-flex  xs3 class="px-1">
-                            <v-text-field  v-model="this.declaration.id_vu" readonly='true' label="Id VU"></v-text-field>
-                        </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.company" readonly='true' label="Empresa"></v-text-field>
+                            <v-text-field v-model="this.declaration.company"  label="Empresa"></v-text-field>
                         </v-flex>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.rut" readonly='true' label="Rut"></v-text-field>
+                            <v-text-field v-model="this.declaration.rut"  label="Rut"></v-text-field>
                         </v-flex>
                     </v-layout>
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.establishment" readonly='true'  label="Establesimiento"></v-text-field>
+                            <v-text-field v-model="this.declaration.establishment"  label="Establesimiento"></v-text-field>
                         </v-flex>
  
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.address" readonly='true'  label="Dirección"></v-text-field>
+                            <v-text-field v-model="this.declaration.address"  label="Dirección"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -49,16 +45,16 @@
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.region" readonly='true' label="Región"></v-text-field>
+                            <v-text-field v-model="this.declaration.region"  label="Región"></v-text-field>
                         </v-flex>
                     </v-layout>
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.user" readonly='true' label="Declarado Por"></v-text-field>
+                            <v-text-field v-model="this.declaration.user"  label="Declarado Por"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.report_type" readonly='true' label="Tipo Reporte"></v-text-field>
+                            <v-text-field v-model="this.declaration.report_type" label="Tipo Reporte"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -71,7 +67,7 @@
 
           
 
-                <v-card v-if="this.$store.getters.type=='GeneradorMunicipal'" class="px-5">
+<!--                 <v-card v-if="this.$store.getters.type=='GeneradorMunicipal'" class="px-5">
                     <br>
                     <v-layout>
                         <v-flex xs3 class="px-1">
@@ -125,7 +121,7 @@
                             <v-text-field  label="Por derecho de aseo $/año"></v-text-field>
                         </v-flex>
                     </v-layout>
-                </v-card>
+                </v-card> -->
 
 
         <v-toolbar  color="secondary_green" dark>
@@ -177,9 +173,8 @@
   
   // import { EventBus } from './../eventbus.js';
 
- 
-  import NewResidueIndComponent  from './../components/NewResidueIndComponent';
-  import NewResidueMunComponent  from './../components/NewResidueMunComponent';
+
+  import NewResidueNNComponent  from './../components/NewResidueNNComponent';
 
 
   export default {
@@ -213,15 +208,15 @@
         declaration:  {
             folio: '12345',   
             id_vu:  '7802',    
-            company:  'Municipalidad de Santiago',   
-            rut: '11111111-1',  
-            establishment:  'Municipalidad de Santiago',   
-            address:   'Plaza de Armas S/N',  
-            commune:  'Santiago',    
-            region:  'Metropolitana',   
+            company:  '',   
+            rut: '',  
+            establishment:  '',   
+            address:   '',  
+            commune:  '',    
+            region:  '',   
             user:   'Maritza Barrera', 
-            report_type: 'D.S.N°1/2013 MMA (Anual)',    
-            period: '2018'    
+            report_type: '',    
+            period: ''    
             }
         
       }
@@ -239,24 +234,12 @@
 
         toNewResidue (){
 
-            alert(this.$store.getters.type);
-            if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' ) {
-                var ComponentReserv = Vue.extend(NewResidueIndComponent)
+                var ComponentReserv = Vue.extend(NewResidueNNComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
                 source: '', 
                 }});
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
-            }else {
-                var ComponentReserv = Vue.extend(NewResidueMunComponent)
-                var instance = new ComponentReserv({store: this.$store, propsData: {
-                source: '', 
-                }});
-                instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
-            }
-
-
 
         },
 
