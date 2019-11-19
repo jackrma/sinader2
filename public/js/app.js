@@ -2205,7 +2205,7 @@ __webpack_require__.r(__webpack_exports__);
     toNewResidue: function toNewResidue() {
       alert(this.$store.getters.type);
 
-      if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio') {
+      if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
@@ -2598,7 +2598,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -3427,7 +3426,7 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Ingresado Por',
         value: ''
       }, {
-        text: 'Periodo',
+        text: 'Período',
         value: ''
       }, {
         text: 'Fecha',
@@ -3593,7 +3592,7 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Folio Origen',
         value: ''
       }, {
-        text: 'Periodo Origen',
+        text: 'Período Origen',
         value: ''
       }, {
         text: 'Fecha',
@@ -5677,7 +5676,7 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: {
                               readonly: "true",
-                              label: "Establesimiento"
+                              label: "Establecimiento"
                             },
                             model: {
                               value: this.declaration.establishment,
@@ -5792,7 +5791,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Periodo" },
+                            attrs: { readonly: "true", label: "Período" },
                             model: {
                               value: this.declaration.period,
                               callback: function($$v) {
@@ -6293,7 +6292,9 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("v-toolbar-title", [
-                    _vm._v("Nueva Recepción de Residuos no Peligorsos")
+                    _vm._v(
+                      "Nueva Recepción de Residuos no Peligrosos Generadores No Registrados"
+                    )
                   ]),
                   _vm._v(" "),
                   _c("v-spacer"),
@@ -6395,7 +6396,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Establesimiento" },
+                            attrs: { label: "Establecimiento" },
                             model: {
                               value: this.declaration.establishment,
                               callback: function($$v) {
@@ -6509,7 +6510,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Periodo" },
+                            attrs: { readonly: "true", label: "Período" },
                             model: {
                               value: this.declaration.period,
                               callback: function($$v) {
@@ -6691,11 +6692,11 @@ var render = function() {
                               label: "Establecimiento"
                             },
                             model: {
-                              value: _vm.Establesimientos,
+                              value: _vm.Establecimientos,
                               callback: function($$v) {
-                                _vm.Establesimientos = $$v
+                                _vm.Establecimientos = $$v
                               },
-                              expression: "Establesimientos"
+                              expression: "Establecimientos"
                             }
                           })
                         ],
@@ -7033,11 +7034,11 @@ var render = function() {
                               label: "Establecimiento"
                             },
                             model: {
-                              value: _vm.Establesimientos,
+                              value: _vm.Establecimientos,
                               callback: function($$v) {
-                                _vm.Establesimientos = $$v
+                                _vm.Establecimientos = $$v
                               },
-                              expression: "Establesimientos"
+                              expression: "Establecimientos"
                             }
                           })
                         ],
@@ -7645,7 +7646,7 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: {
                               readonly: "true",
-                              label: "Establesimiento"
+                              label: "Establecimiento"
                             },
                             model: {
                               value: this.declaration.establishment,
@@ -7760,7 +7761,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Periodo" },
+                            attrs: { readonly: "true", label: "Período" },
                             model: {
                               value: this.declaration.period,
                               callback: function($$v) {
@@ -8200,7 +8201,9 @@ var render = function() {
                     { attrs: { color: "main_green", dark: "" } },
                     [
                       _c("v-toolbar-title", [
-                        _vm._v("Recepción de Residuos no Peligrosos")
+                        _vm._v(
+                          "Recepción de Residuos no Peligrosos Generadores No Registrados"
+                        )
                       ]),
                       _vm._v(" "),
                       _c("v-spacer"),
@@ -51385,15 +51388,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************!*\
   !*** ./resources/js/components/ReceiveComponent.vue ***!
   \******************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ReceiveComponent_vue_vue_type_template_id_049aaec5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiveComponent.vue?vue&type=template&id=049aaec5& */ "./resources/js/components/ReceiveComponent.vue?vue&type=template&id=049aaec5&");
 /* harmony import */ var _ReceiveComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiveComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ReceiveComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ReceiveComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ReceiveComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -51423,7 +51425,7 @@ component.options.__file = "resources/js/components/ReceiveComponent.vue"
 /*!*******************************************************************************!*\
   !*** ./resources/js/components/ReceiveComponent.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

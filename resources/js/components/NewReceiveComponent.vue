@@ -7,7 +7,7 @@
           <v-btn icon dark @click="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>Nueva Recepción de Residuos no Peligorsos</v-toolbar-title>
+          <v-toolbar-title>Nueva Recepción de Residuos no Peligrosos Generadores No Registrados</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
               <v-btn flat class='white--text'  @click="dialog = false">Guardar</v-btn>
@@ -33,7 +33,7 @@
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.establishment"  label="Establesimiento"></v-text-field>
+                            <v-text-field v-model="this.declaration.establishment"  label="Establecimiento"></v-text-field>
                         </v-flex>
  
                         <v-flex xs3 class="px-1">
@@ -58,7 +58,7 @@
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Periodo"></v-text-field>
+                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
                         </v-flex>
                     </v-layout>
 

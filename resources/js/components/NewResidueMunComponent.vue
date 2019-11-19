@@ -40,7 +40,7 @@
 
                             <v-select
                                 :items="establishments"
-                                v-model="Establesimientos"
+                                v-model="Establecimientos"
                                 label="Establecimiento"
                             ></v-select> 
 

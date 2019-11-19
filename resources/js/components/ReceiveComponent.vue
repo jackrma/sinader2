@@ -37,7 +37,7 @@
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.establishment" readonly='true'  label="Establesimiento"></v-text-field>
+                            <v-text-field v-model="this.declaration.establishment" readonly='true'  label="Establecimiento"></v-text-field>
                         </v-flex>
  
                         <v-flex xs3 class="px-1">
@@ -62,7 +62,7 @@
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Periodo"></v-text-field>
+                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
                         </v-flex>
                     </v-layout>
 

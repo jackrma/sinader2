@@ -50,7 +50,7 @@
 
     <v-toolbar  color="main_green" dark>
 
-      	<v-toolbar-title>Recepción de Residuos no Peligrosos</v-toolbar-title>
+      	<v-toolbar-title>Recepción de Residuos no Peligrosos Generadores No Registrados</v-toolbar-title>
 
  	    <v-spacer></v-spacer>
         <v-btn @click='toNewReceive' color="main_green">Nueva Recepción</v-btn>
@@ -108,7 +108,7 @@
         headers: [
 
             { text: 'Folio Origen', value: '' },           
-            { text: 'Periodo Origen', value: '' },
+            { text: 'Período Origen', value: '' },
             { text: 'Fecha', value: '' },
             { text: 'Establecimiento', value:''},
             { text: 'Estado', value: '' },

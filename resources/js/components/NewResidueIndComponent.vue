@@ -40,7 +40,7 @@
 
                             <v-select
                                 :items="establishments"
-                                v-model="Establesimientos"
+                                v-model="Establecimientos"
                                 label="Establecimiento"
                             ></v-select> 
 
@@ -52,7 +52,6 @@
                                 v-model="residue"
                                 label="Tipo de Tratamiento"
                             ></v-select> 
-
                         </v-flex>
                         <v-flex xs3 class="px-1">
                             

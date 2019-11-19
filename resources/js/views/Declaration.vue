@@ -105,7 +105,7 @@
 
             { text: 'Folio', value: '' }, 
             { text: 'Ingresado Por', value: '' },            
-            { text: 'Periodo', value: '' },
+            { text: 'Período', value: '' },
             { text: 'Fecha', value: '' },
             { text: 'Estado', value: '' },
             { text: 'Certificado', value: '' },
