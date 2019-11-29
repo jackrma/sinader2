@@ -89,7 +89,8 @@
             <td class="text-xs-right">{{ props.item.sum }}</td>
 
             <td class="justify-center layout px-0">
-                <v-btn small @click="toNewResidue" color="ds_138" dark>Agregar Discrepancia</v-btn>
+                <v-btn small @click="toNewResidue" color="ds_138" dark>Discrepancia</v-btn>
+                <v-btn small @click="toNewTraceability" color="ds_138" dark>Trazabilidad</v-btn>
             </td>   
 
           </template>
@@ -116,6 +117,7 @@
 
  
   import DiscrepancyComponent  from './../components/DiscrepancyComponent';
+  import TraceabilityComponent  from './../components/TraceabilityComponent';
 
 
   export default {
@@ -195,6 +197,20 @@
 
         },
 
+
+        toNewTraceability (){
+
+                var ComponentReserv = Vue.extend(TraceabilityComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+
+
+
+
+        },
 
 
     }

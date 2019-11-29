@@ -66,6 +66,7 @@
         <td class="text-xs-right">{{ props.item.period }}</td>
         <td class="text-xs-right">{{ props.item.user }}</td>
         <td class="text-xs-right">{{ props.item.created_at }}</td>
+        <td class="text-xs-right">{{ props.item.type }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
@@ -108,6 +109,7 @@
             { text: 'Período', value: '' },
             { text: 'Fecha', value: '' },
             { text: 'Estado', value: '' },
+            { text: 'Tipo', value: '' },
             { text: 'Certificado', value: '' },
             { text: 'Accion', value: '' },
         ],
@@ -118,9 +120,11 @@
                 user:'René Maldonado',
                 period: '2019',
                 status: 'ENVIADO',
+                type: 'SALIDA',
                 created_at:'01/10/2019',
                 certificate: 'certificado.pdf',
-            }
+            },
+
         ]
 
         }),
@@ -133,6 +137,30 @@
     methods: {
         initialize(){
 
+            if(this.$store.getters.type=='CentroAcopio') {
+                this.declarations=[
+                {
+                    correlative: 149882,
+                    correlative_dv: 'K',
+                    user:'René Maldonado',
+                    period: '2019',
+                    status: 'ENVIADO',
+                    type: 'SALIDA',
+                    created_at:'01/10/2019',
+                    certificate: 'certificado.pdf',
+                },
+                {
+                    correlative: 149882,
+                    correlative_dv: 'K',
+                    user:'René Maldonado',
+                    period: '2019',
+                    status: 'ENVIADO',
+                    type: 'TRAZABILIDAD',
+                    created_at:'01/10/2019',
+                    certificate: 'certificado.pdf',
+                }
+                ]
+            }
         },  
 
 
