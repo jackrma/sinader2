@@ -20,49 +20,58 @@
 
                     <v-layout>
                         <v-flex  xs3 class="pr-1">
-                            <v-text-field v-model="this.declaration.folio"  readonly='true' label="Folio"></v-text-field>
+                            <v-text-field v-model="this.correlative"  readonly='true' label="Folio"></v-text-field>
                         </v-flex>
 
                         <v-flex  xs3 class="px-1">
-                            <v-text-field  v-model="this.declaration.id_vu" readonly='true' label="Id VU"></v-text-field>
+                            <v-text-field  v-model="this.$store.getters.establishment.id" readonly='true' label="Id VU"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.company" readonly='true' label="Empresa"></v-text-field>
+                            <v-text-field v-model="this.company" readonly='true' label="Empresa"></v-text-field>
                         </v-flex>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.rut" readonly='true' label="Rut"></v-text-field>
+                            <v-text-field v-model="this.rut" readonly='true' label="Rut"></v-text-field>
                         </v-flex>
                     </v-layout>
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.establishment" readonly='true'  label="Establecimiento"></v-text-field>
+                            <v-text-field v-model="this.establishment" readonly='true'  label="Establecimiento"></v-text-field>
                         </v-flex>
  
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.address" readonly='true'  label="Dirección"></v-text-field>
+                            <v-text-field v-model="this.address" readonly='true'  label="Dirección"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.commune"  label="Comuna"></v-text-field>
+                            <v-text-field v-model="this.commune"  label="Comuna"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.region" readonly='true' label="Región"></v-text-field>
+                            <v-text-field v-model="this.region" readonly='true' label="Región"></v-text-field>
                         </v-flex>
                     </v-layout>
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.user" readonly='true' label="Declarado Por"></v-text-field>
+                            <v-text-field v-model="this.$store.getters.user.name" readonly='true' label="Declarado Por"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.report_type" readonly='true' label="Tipo Reporte"></v-text-field>
+                            <v-select
+                                :items="types"
+                                v-model="type"
+                                label="Tipo Reporte"
+                            ></v-select> 
+
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
+                            <v-select
+                                :items="periods"
+                                v-model="period"
+                                label="Tipo Reporte"
+                            ></v-select>
                         </v-flex>
                     </v-layout>
                      <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
@@ -160,10 +169,6 @@
         </v-data-table>
 
 
-
-
-
-
       </v-card>
     </v-dialog>
   </v-row>
@@ -176,7 +181,7 @@
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex';  
   
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
 
  
   import NewResidueIndComponent  from './../components/NewResidueIndComponent';
@@ -188,6 +193,20 @@
       return {
         dialog: true,
         notifications: false,
+
+        type: 'D.S.N°1/2013 MMA (Anual)',
+        types: ['D.S.N°1/2013 MMA (Anual)', 'D.S.N°1/2013 MMA (Mensual)'],
+
+        period: '2019',
+        periods: ['2018','2019','2020'],
+
+        correlative:'',
+        company:'',
+        rut:'',
+        establishment:'',
+        address:'',
+        commune:'',
+        region:'',
 
         headers: [
             { text: 'Descripción del Residuo', value: '' },            
@@ -201,14 +220,6 @@
 
        
         residues: [
-            {
-                residue: '200101 | Metales',
-                sum: '23 t',
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: 'Reciclaje de Metales',
-                gestion:'Valorización',
-            }
         ],
 
         declaration:  {},
@@ -216,46 +227,58 @@
       }
     },
     
-    computed () {
+    created () {
         this.initialize();
+        var app = this;
+        EventBus.$on('saveResidues', function(){   
+            app.refreshList();
+        });
     },
 
     methods: {
         initialize(){
 
-        },  
 
-        createdeclaration(){
 
-            this.dialog = false;
+
+            this.company        = this.$store.getters.company.name;
+            this.rut            = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
+            this.establishment  = this.$store.getters.establishment.name;
+            this.address        = this.$store.getters.establishment.street + this.$store.getters.establishment.number;
+            this.commune        = this.$store.getters.establishment.region.name;
+            this.region         = this.$store.getters.establishment.commune.name;
+            
             var app = this;
             axios.post('/api/declaration/create')
                 .then(function (resp) {    
                     app.declaration = resp.data;
-                    alert(JSON.stringify(resp.data));
+                    app.correlative    = app.declaration.correlative + '-' + app.declaration.correlative_dv; 
                 })
                 .catch(function (resp) {
                     console.log(resp);
                     alert("Error declaration/create :" + resp);
                 });
+
+        },  
+
+        createdeclaration(){
+            this.dialog = false;
+
         },
 
         toTransport (){
-
-
             var ComponentReserv = Vue.extend(TransportComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
             source: '', 
             }});
             instance.$mount();
             this.$refs.container.appendChild(instance.$el);
-
-
         },
 
-        toNewResidue (){
 
-            alert(this.$store.getters.type);
+
+        toNewResidue (){
+            //alert(this.$store.getters.type);
             if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal' ) {
                 var ComponentReserv = Vue.extend(NewResidueIndComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
@@ -273,8 +296,11 @@
             }
 
 
-
         },
+
+        refreshList(){
+            this.residues.push(this.$store.getters.residue);
+        },   
 
 
 

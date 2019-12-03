@@ -1866,8 +1866,23 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       var app = this;
+      var app = this;
+      axios.get('/api/user').then(function (resp) {
+        // alert(JSON.stringify(resp.data));  
+        app.$store.commit('changeUser', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error user/data :" + resp);
+      });
+      axios.get('/api/company').then(function (resp) {
+        // alert(JSON.stringify(resp.data));  
+        app.$store.commit('changeCompany', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error company/data :" + resp);
+      });
       axios.get('/api/establishment').then(function (resp) {
-        // alert(JSON.stringify(resp.data['type']));  
+        // alert(JSON.stringify(resp.data));  
         app.$store.commit('changeEstablishment', resp.data);
         app.$store.commit('changeType', resp.data['type']);
 
@@ -1972,9 +1987,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../components/NewResidueIndComponent */ "./resources/js/components/NewResidueIndComponent.vue");
-/* harmony import */ var _components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewResidueMunComponent */ "./resources/js/components/NewResidueMunComponent.vue");
-/* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewResidueIndComponent */ "./resources/js/components/NewResidueIndComponent.vue");
+/* harmony import */ var _components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/NewResidueMunComponent */ "./resources/js/components/NewResidueMunComponent.vue");
+/* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2148,7 +2169,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
- // import { EventBus } from './../eventbus.js';
+
 
 
 
@@ -2158,6 +2179,17 @@ __webpack_require__.r(__webpack_exports__);
     return {
       dialog: true,
       notifications: false,
+      type: 'D.S.N°1/2013 MMA (Anual)',
+      types: ['D.S.N°1/2013 MMA (Anual)', 'D.S.N°1/2013 MMA (Mensual)'],
+      period: '2019',
+      periods: ['2018', '2019', '2020'],
+      correlative: '',
+      company: '',
+      rut: '',
+      establishment: '',
+      address: '',
+      commune: '',
+      region: '',
       headers: [{
         text: 'Descripción del Residuo',
         value: ''
@@ -2177,35 +2209,39 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Tipo de Gestión',
         value: ''
       }],
-      residues: [{
-        residue: '200101 | Metales',
-        sum: '23 t',
-        to: '92176000-0 | Gerdau Aza SA',
-        establishment: '12345 | Gerdau Aza Colina',
-        processing: 'Reciclaje de Metales',
-        gestion: 'Valorización'
-      }],
+      residues: [],
       declaration: {}
     };
   },
-  computed: function computed() {
+  created: function created() {
     this.initialize();
+    var app = this;
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
+      app.refreshList();
+    });
   },
   methods: {
-    initialize: function initialize() {},
-    createdeclaration: function createdeclaration() {
-      this.dialog = false;
+    initialize: function initialize() {
+      this.company = this.$store.getters.company.name;
+      this.rut = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
+      this.establishment = this.$store.getters.establishment.name;
+      this.address = this.$store.getters.establishment.street + this.$store.getters.establishment.number;
+      this.commune = this.$store.getters.establishment.region.name;
+      this.region = this.$store.getters.establishment.commune.name;
       var app = this;
       axios.post('/api/declaration/create').then(function (resp) {
         app.declaration = resp.data;
-        alert(JSON.stringify(resp.data));
+        app.correlative = app.declaration.correlative + '-' + app.declaration.correlative_dv;
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error declaration/create :" + resp);
       });
     },
+    createdeclaration: function createdeclaration() {
+      this.dialog = false;
+    },
     toTransport: function toTransport() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -2216,10 +2252,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.container.appendChild(instance.$el);
     },
     toNewResidue: function toNewResidue() {
-      alert(this.$store.getters.type);
-
+      //alert(this.$store.getters.type);
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2229,7 +2264,7 @@ __webpack_require__.r(__webpack_exports__);
         instance.$mount();
         this.$refs.container.appendChild(instance.$el);
       } else {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2239,6 +2274,9 @@ __webpack_require__.r(__webpack_exports__);
         instance.$mount();
         this.$refs.container.appendChild(instance.$el);
       }
+    },
+    refreshList: function refreshList() {
+      this.residues.push(this.$store.getters.residue);
     }
   }
 });
@@ -2611,6 +2649,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 //
 //
 //
@@ -2772,21 +2814,120 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       checkbox: false,
       dialog: true,
-      capitulos: ['capitulo prueba 1', 'capitulo prueba 2', 'capitulo prueba 3', 'capitulo prueba 4'],
-      subcapitulos: ['subcapitulo prueba 1', 'subcapitulo prueba 2', 'subcapitulo prueba 3', 'subcapitulo prueba 4'],
-      residues: ['Papel y cartón', 'residuo 2', 'residuo 3'],
-      tipos_recolecciom: ['Punto Verde', 'Tipo Recolección 2', 'Tipo Recolección 3'],
-      destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2'],
-      establishments: ['4989 | Planta Colina', '4990 | Planta 2'],
-      processings: ['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-      gestion: ['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-      units: ['Kg', 'Ton']
+      cantidad: 0,
+      unidad: '',
+      residue: '',
+      residuetext: '',
+      capitulos: '',
+      subcapitulos: '',
+      residues: '',
+      tipos_recoleccion: '',
+      destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA'],
+      establishments: ['12345 | Gerdau Aza Colina', '12345 | Gerdau Aza Colina'],
+      procesing: '',
+      processings: '',
+      gestion: '',
+      gestions: '',
+      units: ''
     };
+  },
+  created: function created() {
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {
+      var app = this;
+      axios.get('/api/unit').then(function (resp) {
+        app.units = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error unit :" + resp);
+      });
+      axios.get('/api/managetype').then(function (resp) {
+        app.gestions = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error ManageType :" + resp);
+      });
+      axios.get('/api/processtype').then(function (resp) {
+        app.processings = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error ProcessType :" + resp);
+      });
+      axios.get('/api/recolectiontype').then(function (resp) {
+        app.tipos_recoleccion = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error RecolectionType :" + resp);
+      });
+      axios.get('/api/lerchapter').then(function (resp) {
+        app.capitulos = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
+    },
+    changeChapter: function changeChapter(chapter_selected) {
+      var app = this;
+      axios.get('/api/lersubchapter/' + chapter_selected.id).then(function (resp) {
+        app.subcapitulos = resp.data;
+        app.residues = [];
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
+    },
+    changeSupChapter: function changeSupChapter(subchapter_selected) {
+      var app = this;
+      axios.get('/api/lerwaste/' + subchapter_selected.id).then(function (resp) {
+        app.residues = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
+    },
+    changeResidue: function changeResidue(residue_selected) {
+      this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
+    },
+    saveResidue: function saveResidue() {
+      this.residue = {
+        residue: this.residuetext,
+        sum: this.cantidad + ' ' + this.unidad,
+        to: '92176000-0 | Gerdau Aza SA',
+        establishment: '12345 | Gerdau Aza Colina',
+        processing: this.procesing,
+        gestion: this.gestion
+      };
+      this.$store.commit('changeResidue', this.residue);
+      this.dialog = false;
+      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
+    }
   }
 });
 
@@ -4305,7 +4446,6 @@ __webpack_require__.r(__webpack_exports__);
       var app = this;
       axios.get('/api/declarations').then(function (resp) {
         app.declarations = resp.data;
-        alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error declarations/index :" + resp);
@@ -6452,11 +6592,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Folio" },
                             model: {
-                              value: this.declaration.folio,
+                              value: this.correlative,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "folio", $$v)
+                                _vm.$set(this, "correlative", $$v)
                               },
-                              expression: "this.declaration.folio"
+                              expression: "this.correlative"
                             }
                           })
                         ],
@@ -6470,11 +6610,15 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Id VU" },
                             model: {
-                              value: this.declaration.id_vu,
+                              value: this.$store.getters.establishment.id,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "id_vu", $$v)
+                                _vm.$set(
+                                  this.$store.getters.establishment,
+                                  "id",
+                                  $$v
+                                )
                               },
-                              expression: "this.declaration.id_vu"
+                              expression: "this.$store.getters.establishment.id"
                             }
                           })
                         ],
@@ -6488,11 +6632,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Empresa" },
                             model: {
-                              value: this.declaration.company,
+                              value: this.company,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "company", $$v)
+                                _vm.$set(this, "company", $$v)
                               },
-                              expression: "this.declaration.company"
+                              expression: "this.company"
                             }
                           })
                         ],
@@ -6506,11 +6650,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Rut" },
                             model: {
-                              value: this.declaration.rut,
+                              value: this.rut,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "rut", $$v)
+                                _vm.$set(this, "rut", $$v)
                               },
-                              expression: "this.declaration.rut"
+                              expression: "this.rut"
                             }
                           })
                         ],
@@ -6533,11 +6677,11 @@ var render = function() {
                               label: "Establecimiento"
                             },
                             model: {
-                              value: this.declaration.establishment,
+                              value: this.establishment,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "establishment", $$v)
+                                _vm.$set(this, "establishment", $$v)
                               },
-                              expression: "this.declaration.establishment"
+                              expression: "this.establishment"
                             }
                           })
                         ],
@@ -6551,11 +6695,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Dirección" },
                             model: {
-                              value: this.declaration.address,
+                              value: this.address,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "address", $$v)
+                                _vm.$set(this, "address", $$v)
                               },
-                              expression: "this.declaration.address"
+                              expression: "this.address"
                             }
                           })
                         ],
@@ -6569,11 +6713,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Comuna" },
                             model: {
-                              value: this.declaration.commune,
+                              value: this.commune,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "commune", $$v)
+                                _vm.$set(this, "commune", $$v)
                               },
-                              expression: "this.declaration.commune"
+                              expression: "this.commune"
                             }
                           })
                         ],
@@ -6587,11 +6731,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Región" },
                             model: {
-                              value: this.declaration.region,
+                              value: this.region,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "region", $$v)
+                                _vm.$set(this, "region", $$v)
                               },
-                              expression: "this.declaration.region"
+                              expression: "this.region"
                             }
                           })
                         ],
@@ -6611,11 +6755,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Declarado Por" },
                             model: {
-                              value: this.declaration.user,
+                              value: this.$store.getters.user.name,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "user", $$v)
+                                _vm.$set(this.$store.getters.user, "name", $$v)
                               },
-                              expression: "this.declaration.user"
+                              expression: "this.$store.getters.user.name"
                             }
                           })
                         ],
@@ -6626,14 +6770,14 @@ var render = function() {
                         "v-flex",
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
-                          _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Tipo Reporte" },
+                          _c("v-select", {
+                            attrs: { items: _vm.types, label: "Tipo Reporte" },
                             model: {
-                              value: this.declaration.report_type,
+                              value: _vm.type,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "report_type", $$v)
+                                _vm.type = $$v
                               },
-                              expression: "this.declaration.report_type"
+                              expression: "type"
                             }
                           })
                         ],
@@ -6644,14 +6788,17 @@ var render = function() {
                         "v-flex",
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
-                          _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Período" },
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.periods,
+                              label: "Tipo Reporte"
+                            },
                             model: {
-                              value: this.declaration.period,
+                              value: _vm.period,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "period", $$v)
+                                _vm.period = $$v
                               },
-                              expression: "this.declaration.period"
+                              expression: "period"
                             }
                           })
                         ],
@@ -7537,11 +7684,11 @@ var render = function() {
                               label: "Destinatario"
                             },
                             model: {
-                              value: _vm.capitulo,
+                              value: _vm.destiny,
                               callback: function($$v) {
-                                _vm.capitulo = $$v
+                                _vm.destiny = $$v
                               },
-                              expression: "capitulo"
+                              expression: "destiny"
                             }
                           })
                         ],
@@ -7558,11 +7705,11 @@ var render = function() {
                               label: "Establecimiento"
                             },
                             model: {
-                              value: _vm.Establecimientos,
+                              value: _vm.establishment,
                               callback: function($$v) {
-                                _vm.Establecimientos = $$v
+                                _vm.establishment = $$v
                               },
-                              expression: "Establecimientos"
+                              expression: "establishment"
                             }
                           })
                         ],
@@ -7576,14 +7723,15 @@ var render = function() {
                           _c("v-select", {
                             attrs: {
                               items: _vm.processings,
-                              label: "Tipo de Tratamiento"
+                              label: "Tipo de Tratamiento",
+                              "item-text": "name"
                             },
                             model: {
-                              value: _vm.residue,
+                              value: _vm.procesing,
                               callback: function($$v) {
-                                _vm.residue = $$v
+                                _vm.procesing = $$v
                               },
-                              expression: "residue"
+                              expression: "procesing"
                             }
                           })
                         ],
@@ -7596,15 +7744,16 @@ var render = function() {
                         [
                           _c("v-select", {
                             attrs: {
-                              items: _vm.gestion,
-                              label: "Tipo de Gestión"
+                              items: _vm.gestions,
+                              label: "Tipo de Gestión",
+                              "item-text": "name"
                             },
                             model: {
-                              value: _vm.residue,
+                              value: _vm.gestion,
                               callback: function($$v) {
-                                _vm.residue = $$v
+                                _vm.gestion = $$v
                               },
-                              expression: "residue"
+                              expression: "gestion"
                             }
                           })
                         ],
@@ -7619,10 +7768,16 @@ var render = function() {
                     [
                       _c(
                         "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
+                        { staticClass: "px-1", attrs: { xs4: "" } },
                         [
                           _c("v-select", {
-                            attrs: { items: _vm.capitulos, label: "Capitulo" },
+                            attrs: {
+                              items: _vm.capitulos,
+                              label: "Capitulo",
+                              "item-text": "name",
+                              "return-object": ""
+                            },
+                            on: { change: _vm.changeChapter },
                             model: {
                               value: _vm.capitulo,
                               callback: function($$v) {
@@ -7637,13 +7792,16 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
+                        { staticClass: "px-1", attrs: { xs4: "" } },
                         [
                           _c("v-select", {
                             attrs: {
                               items: _vm.subcapitulos,
-                              label: "Sub Capitulo"
+                              label: "Sub Capitulo",
+                              "item-text": "name",
+                              "return-object": ""
                             },
+                            on: { change: _vm.changeSupChapter },
                             model: {
                               value: _vm.subcapitulo,
                               callback: function($$v) {
@@ -7658,10 +7816,16 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
+                        { staticClass: "px-1", attrs: { xs4: "" } },
                         [
                           _c("v-select", {
-                            attrs: { items: _vm.residues, label: "Residuo" },
+                            attrs: {
+                              items: _vm.residues,
+                              label: "Residuo",
+                              "item-text": "name",
+                              "return-object": ""
+                            },
+                            on: { change: _vm.changeResidue },
                             model: {
                               value: _vm.residue,
                               callback: function($$v) {
@@ -7685,7 +7849,14 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { type: "number", label: "Cantidad" }
+                            attrs: { type: "number", label: "Cantidad" },
+                            model: {
+                              value: _vm.cantidad,
+                              callback: function($$v) {
+                                _vm.cantidad = $$v
+                              },
+                              expression: "cantidad"
+                            }
                           })
                         ],
                         1
@@ -7698,7 +7869,8 @@ var render = function() {
                           _c("v-select", {
                             attrs: {
                               items: _vm.units,
-                              label: "Unidad de Medida"
+                              label: "Unidad de Medida",
+                              "item-text": "name"
                             },
                             model: {
                               value: _vm.unidad,
@@ -7793,7 +7965,7 @@ var render = function() {
                       attrs: { color: "main_green" },
                       on: {
                         click: function($event) {
-                          _vm.dialog = false
+                          return _vm.saveResidue()
                         }
                       }
                     },
@@ -53938,6 +54110,28 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/eventbus.js":
+/*!**********************************!*\
+  !*** ./resources/js/eventbus.js ***!
+  \**********************************/
+/*! exports provided: EventBus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus", function() { return EventBus; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); // Ejemplo de uso EventBus
+// import { EventBus } from './../eventbus.js';
+//     EventBus.$on('saveCovsReading', function(){    
+//         app.initialize();
+//     });
+//     EventBus.$emit('refreshDeclaration', 'someValue');
+
+/***/ }),
+
 /***/ "./resources/js/routes.js":
 /*!********************************!*\
   !*** ./resources/js/routes.js ***!
@@ -54017,7 +54211,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     type: '',
     establishment: '',
     user: '',
-    declaration_id: 0
+    company: '',
+    residue: ''
   },
   mutations: {
     changeType: function changeType(state, type) {
@@ -54032,8 +54227,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     changeUser: function changeUser(state, user) {
       state.user = user;
     },
-    changeDeclaration: function changeDeclaration(state, declaration_id) {
-      state.declaration_id = declaration_id;
+    changeCompany: function changeCompany(state, company) {
+      state.company = company;
+    },
+    changeResidue: function changeResidue(state, residue) {
+      state.residue = residue;
     }
   },
   getters: {
@@ -54049,19 +54247,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     user: function user(state) {
       return state.user;
     },
-    declaration_id: function (_declaration_id) {
-      function declaration_id(_x) {
-        return _declaration_id.apply(this, arguments);
-      }
-
-      declaration_id.toString = function () {
-        return _declaration_id.toString();
-      };
-
-      return declaration_id;
-    }(function (state) {
-      return declaration_id;
-    })
+    company: function company(state) {
+      return state.company;
+    },
+    residue: function residue(state) {
+      return state.residue;
+    }
   },
   plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__["default"])()]
 }));
@@ -54433,8 +54624,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/osvaldo/sinader2/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/osvaldo/sinader2/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/osvaldo/sissina/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/osvaldo/sissina/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

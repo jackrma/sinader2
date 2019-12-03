@@ -13,7 +13,8 @@ export default new Vuex.Store(
 	    type:'',
 	    establishment: '',
 	    user: '',
-	    declaration_id: 0,
+	    company: '',
+	    residue:'',
 
 	},
 	mutations: {
@@ -30,8 +31,11 @@ export default new Vuex.Store(
 		changeUser(state, user) {
 		   	state.user = user
 		},
-		changeDeclaration(state, declaration_id) {
-		   	state.declaration_id = declaration_id
+		changeCompany(state, company) {
+		   	state.company = company;
+		},
+		changeResidue(state, residue) {
+		   	state.residue = residue;
 		},
 	},
 	getters: {
@@ -39,7 +43,8 @@ export default new Vuex.Store(
 		token: state => state.token,
 		establishment: state => state.establishment, 
 		user: state => state.user,
-		declaration_id: state=>declaration_id,
+		company: state => state.company,
+		residue: state => state.residue,
 	},
     plugins: [
     	createPersistedState()

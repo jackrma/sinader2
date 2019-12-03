@@ -168,7 +168,6 @@
             axios.get('/api/declarations')
                 .then(function (resp) {    
                     app.declarations = resp.data;
-                    alert(JSON.stringify(resp.data));
                 })
                 .catch(function (resp) {
                     console.log(resp);
