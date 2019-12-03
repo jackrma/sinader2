@@ -23,7 +23,7 @@
         </v-card-title>
 
         <v-card-text>
-     
+            <v-form ref="form"  lazy-validation>
                     <v-layout>
                         <v-flex  xs3 class="px-1">
 
@@ -31,7 +31,7 @@
                                 :items="destinatarios"
                                 v-model="destiny"
                                 label="Destinatario"
-
+                                :rules = "generalRule"
                             ></v-select> 
 
 
@@ -43,6 +43,7 @@
                                 :items="establishments"
                                 v-model="establishment"
                                 label="Establecimiento"
+                                :rules = "generalRule"
                             ></v-select> 
 
                         </v-flex>
@@ -53,6 +54,7 @@
                                 v-model="procesing"
                                 label="Tipo de Tratamiento"
                                 item-text="name"  
+                                :rules = "generalRule"
                             ></v-select> 
                         </v-flex>
                         <v-flex xs3 class="px-1">
@@ -62,6 +64,7 @@
                                 v-model="gestion"
                                 label="Tipo de Gestión"
                                 item-text="name" 
+                                :rules = "generalRule"
                             ></v-select> 
 
                         </v-flex>
@@ -75,7 +78,7 @@
                                 :items="capitulos"
                                 v-model="capitulo"
                                 label="Capitulo"
-                                
+                                :rules = "generalRule"
                                 item-text="name"  
                                 v-on:change="changeChapter"
                                 return-object
@@ -92,6 +95,7 @@
                                 :items="subcapitulos"
                                 v-model="subcapitulo"
                                 label="Sub Capitulo"
+                                :rules = "generalRule"
                                 item-text="name" 
                                 v-on:change="changeSupChapter"
                                 return-object
@@ -108,6 +112,7 @@
                                 item-text="name" 
                                 v-on:change="changeResidue"
                                 return-object
+                                :rules = "generalRule"
                             ></v-select> 
 
                         </v-flex>
@@ -115,7 +120,7 @@
                     </v-layout>
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model='cantidad' type='number' label="Cantidad"></v-text-field>
+                            <v-text-field  :rules = "numberRule" v-model='cantidad' type='number' label="Cantidad"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -124,6 +129,7 @@
                                 v-model="unidad"
                                 label="Unidad de Medida"
                                 item-text="name" 
+                                :rules = "generalRule"
                             ></v-select> 
                         </v-flex>
 
@@ -154,7 +160,7 @@
                         </v-flex>
 
                     </v-layout>
-
+            </v-form>        
 
         </v-card-text>
 
@@ -186,6 +192,12 @@
   export default {
     data () {
       return {
+
+        generalRule: [v => !!v || 'Campo requerido'],
+        numberRule: [v => !!v || 'Campo requerido', v => v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico',],
+
+
+
         checkbox:false,
         dialog: true,
 
@@ -296,23 +308,26 @@
 
         saveResidue(){
 
-            this.residue = {
-                residue: this.residuetext,
-                sum: this.cantidad + ' ' + this.unidad,
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: this.procesing,
-                gestion: this.gestion,
+            if (this.$refs.form.validate()){
+
+                this.residue = {
+                    residue: this.residuetext,
+                    sum: this.cantidad + ' ' + this.unidad,
+                    to: '92176000-0 | Gerdau Aza SA',
+                    establishment: '12345 | Gerdau Aza Colina',
+                    processing: this.procesing,
+                    gestion: this.gestion,
 
 
-            };
+                };
 
 
-            this.$store.commit('changeResidue', this.residue);
-            this.dialog = false;
+                this.$store.commit('changeResidue', this.residue);
 
-            EventBus.$emit('saveResidues', 'someValue'); 
+                this.dialog = false;
 
+                EventBus.$emit('saveResidues', 'someValue'); 
+            }
             
         }
     }

@@ -2830,6 +2830,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2837,6 +2843,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      generalRule: [function (v) {
+        return !!v || 'Campo requerido';
+      }],
+      numberRule: [function (v) {
+        return !!v || 'Campo requerido';
+      }, function (v) {
+        return v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico';
+      }],
       checkbox: false,
       dialog: true,
       cantidad: 0,
@@ -2916,17 +2930,19 @@ __webpack_require__.r(__webpack_exports__);
       this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
     },
     saveResidue: function saveResidue() {
-      this.residue = {
-        residue: this.residuetext,
-        sum: this.cantidad + ' ' + this.unidad,
-        to: '92176000-0 | Gerdau Aza SA',
-        establishment: '12345 | Gerdau Aza Colina',
-        processing: this.procesing,
-        gestion: this.gestion
-      };
-      this.$store.commit('changeResidue', this.residue);
-      this.dialog = false;
-      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
+      if (this.$refs.form.validate()) {
+        this.residue = {
+          residue: this.residuetext,
+          sum: this.cantidad + ' ' + this.unidad,
+          to: '92176000-0 | Gerdau Aza SA',
+          establishment: '12345 | Gerdau Aza Colina',
+          processing: this.procesing,
+          gestion: this.gestion
+        };
+        this.$store.commit('changeResidue', this.residue);
+        this.dialog = false;
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
+      }
     }
   }
 });
@@ -7672,255 +7688,29 @@ var render = function() {
                 "v-card-text",
                 [
                   _c(
-                    "v-layout",
+                    "v-form",
+                    { ref: "form", attrs: { "lazy-validation": "" } },
                     [
                       _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.destinatarios,
-                              label: "Destinatario"
-                            },
-                            model: {
-                              value: _vm.destiny,
-                              callback: function($$v) {
-                                _vm.destiny = $$v
-                              },
-                              expression: "destiny"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.establishments,
-                              label: "Establecimiento"
-                            },
-                            model: {
-                              value: _vm.establishment,
-                              callback: function($$v) {
-                                _vm.establishment = $$v
-                              },
-                              expression: "establishment"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.processings,
-                              label: "Tipo de Tratamiento",
-                              "item-text": "name"
-                            },
-                            model: {
-                              value: _vm.procesing,
-                              callback: function($$v) {
-                                _vm.procesing = $$v
-                              },
-                              expression: "procesing"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.gestions,
-                              label: "Tipo de Gestión",
-                              "item-text": "name"
-                            },
-                            model: {
-                              value: _vm.gestion,
-                              callback: function($$v) {
-                                _vm.gestion = $$v
-                              },
-                              expression: "gestion"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    [
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.capitulos,
-                              label: "Capitulo",
-                              "item-text": "name",
-                              "return-object": ""
-                            },
-                            on: { change: _vm.changeChapter },
-                            model: {
-                              value: _vm.capitulo,
-                              callback: function($$v) {
-                                _vm.capitulo = $$v
-                              },
-                              expression: "capitulo"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.subcapitulos,
-                              label: "Sub Capitulo",
-                              "item-text": "name",
-                              "return-object": ""
-                            },
-                            on: { change: _vm.changeSupChapter },
-                            model: {
-                              value: _vm.subcapitulo,
-                              callback: function($$v) {
-                                _vm.subcapitulo = $$v
-                              },
-                              expression: "subcapitulo"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.residues,
-                              label: "Residuo",
-                              "item-text": "name",
-                              "return-object": ""
-                            },
-                            on: { change: _vm.changeResidue },
-                            model: {
-                              value: _vm.residue,
-                              callback: function($$v) {
-                                _vm.residue = $$v
-                              },
-                              expression: "residue"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    [
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { type: "number", label: "Cantidad" },
-                            model: {
-                              value: _vm.cantidad,
-                              callback: function($$v) {
-                                _vm.cantidad = $$v
-                              },
-                              expression: "cantidad"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.units,
-                              label: "Unidad de Medida",
-                              "item-text": "name"
-                            },
-                            model: {
-                              value: _vm.unidad,
-                              callback: function($$v) {
-                                _vm.unidad = $$v
-                              },
-                              expression: "unidad"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    [
-                      _c("v-checkbox", {
-                        attrs: { label: "Residuo Exportado ?" },
-                        model: {
-                          value: _vm.checkbox,
-                          callback: function($$v) {
-                            _vm.checkbox = $$v
-                          },
-                          expression: "checkbox"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm.checkbox
-                    ? _c(
                         "v-layout",
                         [
                           _c(
                             "v-flex",
                             { staticClass: "px-1", attrs: { xs3: "" } },
-                            [_c("v-text-field", { attrs: { label: "País" } })],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
                             [
-                              _c("v-text-field", {
-                                attrs: { label: "Empresa" }
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.destinatarios,
+                                  label: "Destinatario",
+                                  rules: _vm.generalRule
+                                },
+                                model: {
+                                  value: _vm.destiny,
+                                  callback: function($$v) {
+                                    _vm.destiny = $$v
+                                  },
+                                  expression: "destiny"
+                                }
                               })
                             ],
                             1
@@ -7930,8 +7720,19 @@ var render = function() {
                             "v-flex",
                             { staticClass: "px-1", attrs: { xs3: "" } },
                             [
-                              _c("v-text-field", {
-                                attrs: { label: "Contacto" }
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.establishments,
+                                  label: "Establecimiento",
+                                  rules: _vm.generalRule
+                                },
+                                model: {
+                                  value: _vm.establishment,
+                                  callback: function($$v) {
+                                    _vm.establishment = $$v
+                                  },
+                                  expression: "establishment"
+                                }
                               })
                             ],
                             1
@@ -7940,13 +7741,255 @@ var render = function() {
                           _c(
                             "v-flex",
                             { staticClass: "px-1", attrs: { xs3: "" } },
-                            [_c("v-text-field", { attrs: { label: "Email" } })],
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.processings,
+                                  label: "Tipo de Tratamiento",
+                                  "item-text": "name",
+                                  rules: _vm.generalRule
+                                },
+                                model: {
+                                  value: _vm.procesing,
+                                  callback: function($$v) {
+                                    _vm.procesing = $$v
+                                  },
+                                  expression: "procesing"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs3: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.gestions,
+                                  label: "Tipo de Gestión",
+                                  "item-text": "name",
+                                  rules: _vm.generalRule
+                                },
+                                model: {
+                                  value: _vm.gestion,
+                                  callback: function($$v) {
+                                    _vm.gestion = $$v
+                                  },
+                                  expression: "gestion"
+                                }
+                              })
+                            ],
                             1
                           )
                         ],
                         1
-                      )
-                    : _vm._e()
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs4: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.capitulos,
+                                  label: "Capitulo",
+                                  rules: _vm.generalRule,
+                                  "item-text": "name",
+                                  "return-object": ""
+                                },
+                                on: { change: _vm.changeChapter },
+                                model: {
+                                  value: _vm.capitulo,
+                                  callback: function($$v) {
+                                    _vm.capitulo = $$v
+                                  },
+                                  expression: "capitulo"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs4: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.subcapitulos,
+                                  label: "Sub Capitulo",
+                                  rules: _vm.generalRule,
+                                  "item-text": "name",
+                                  "return-object": ""
+                                },
+                                on: { change: _vm.changeSupChapter },
+                                model: {
+                                  value: _vm.subcapitulo,
+                                  callback: function($$v) {
+                                    _vm.subcapitulo = $$v
+                                  },
+                                  expression: "subcapitulo"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs4: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.residues,
+                                  label: "Residuo",
+                                  "item-text": "name",
+                                  "return-object": "",
+                                  rules: _vm.generalRule
+                                },
+                                on: { change: _vm.changeResidue },
+                                model: {
+                                  value: _vm.residue,
+                                  callback: function($$v) {
+                                    _vm.residue = $$v
+                                  },
+                                  expression: "residue"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        [
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs3: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  rules: _vm.numberRule,
+                                  type: "number",
+                                  label: "Cantidad"
+                                },
+                                model: {
+                                  value: _vm.cantidad,
+                                  callback: function($$v) {
+                                    _vm.cantidad = $$v
+                                  },
+                                  expression: "cantidad"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { staticClass: "px-1", attrs: { xs3: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.units,
+                                  label: "Unidad de Medida",
+                                  "item-text": "name",
+                                  rules: _vm.generalRule
+                                },
+                                model: {
+                                  value: _vm.unidad,
+                                  callback: function($$v) {
+                                    _vm.unidad = $$v
+                                  },
+                                  expression: "unidad"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        [
+                          _c("v-checkbox", {
+                            attrs: { label: "Residuo Exportado ?" },
+                            model: {
+                              value: _vm.checkbox,
+                              callback: function($$v) {
+                                _vm.checkbox = $$v
+                              },
+                              expression: "checkbox"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.checkbox
+                        ? _c(
+                            "v-layout",
+                            [
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "País" }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Empresa" }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Contacto" }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Email" }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    ],
+                    1
+                  )
                 ],
                 1
               ),
