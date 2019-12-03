@@ -30,11 +30,6 @@ class DeclarationController extends Controller
     public function create()
     {
 
-        Info('***************');
-        Info('Declaration');
-        Info('***************');
-
-
         $user = Auth::user();
         $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
 
