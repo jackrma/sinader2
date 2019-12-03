@@ -2185,19 +2185,7 @@ __webpack_require__.r(__webpack_exports__);
         processing: 'Reciclaje de Metales',
         gestion: 'Valorización'
       }],
-      declaration: {
-        folio: '12345',
-        id_vu: '7802',
-        company: 'Municipalidad de Santiago',
-        rut: '11111111-1',
-        establishment: 'Municipalidad de Santiago',
-        address: 'Plaza de Armas S/N',
-        commune: 'Santiago',
-        region: 'Metropolitana',
-        user: 'Maritza Barrera',
-        report_type: 'D.S.N°1/2013 MMA (Anual)',
-        period: '2018'
-      }
+      declaration: {}
     };
   },
   computed: function computed() {
@@ -2205,6 +2193,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {},
+    createdeclaration: function createdeclaration() {
+      this.dialog = false;
+      var app = this;
+      axios.post('/api/declaration/create').then(function (resp) {
+        app.declaration = resp.data;
+        alert(JSON.stringify(resp.data));
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declaration/create :" + resp);
+      });
+    },
     toTransport: function toTransport() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
       var instance = new ComponentReserv({
@@ -4259,16 +4258,17 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Accion',
         value: ''
       }],
-      declarations: [{
-        correlative: 149882,
-        correlative_dv: 'K',
-        user: 'René Maldonado',
-        period: '2019',
-        status: 'ENVIADO',
-        type: 'SALIDA',
-        created_at: '01/10/2019',
-        certificate: 'certificado.pdf'
-      }]
+      declarations: [// {
+        //     correlative: 149882,
+        //     correlative_dv: 'K',
+        //     user:'René Maldonado',
+        //     period: '2019',
+        //     status: 'ENVIADO',
+        //     type: 'SALIDA',
+        //     created_at:'01/10/2019',
+        //     certificate: 'certificado.pdf',
+        // },
+      ]
     };
   },
   created: function created() {
@@ -4276,27 +4276,40 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {
-      if (this.$store.getters.type == 'CentroAcopio') {
-        this.declarations = [{
-          correlative: 149882,
-          correlative_dv: 'K',
-          user: 'René Maldonado',
-          period: '2019',
-          status: 'ENVIADO',
-          type: 'SALIDA',
-          created_at: '01/10/2019',
-          certificate: 'certificado.pdf'
-        }, {
-          correlative: 149882,
-          correlative_dv: 'K',
-          user: 'René Maldonado',
-          period: '2019',
-          status: 'ENVIADO',
-          type: 'TRAZABILIDAD',
-          created_at: '01/10/2019',
-          certificate: 'certificado.pdf'
-        }];
-      }
+      this.getdecalrations(); // if(this.$store.getters.type=='CentroAcopio') {
+      //     this.declarations=[
+      //     {
+      //         correlative: 149882,
+      //         correlative_dv: 'K',
+      //         user:'René Maldonado',
+      //         period: '2019',
+      //         status: 'ENVIADO',
+      //         type: 'SALIDA',
+      //         created_at:'01/10/2019',
+      //         certificate: 'certificado.pdf',
+      //     },
+      //     {
+      //         correlative: 149882,
+      //         correlative_dv: 'K',
+      //         user:'René Maldonado',
+      //         period: '2019',
+      //         status: 'ENVIADO',
+      //         type: 'TRAZABILIDAD',
+      //         created_at:'01/10/2019',
+      //         certificate: 'certificado.pdf',
+      //     }
+      //     ]
+      // }
+    },
+    getdecalrations: function getdecalrations() {
+      var app = this;
+      axios.get('/api/declarations').then(function (resp) {
+        app.declarations = resp.data;
+        alert(JSON.stringify(resp.data));
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
     },
     toNewDeclaration: function toNewDeclaration() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
@@ -6410,7 +6423,7 @@ var render = function() {
                           attrs: { flat: "" },
                           on: {
                             click: function($event) {
-                              _vm.dialog = false
+                              return _vm.createdeclaration()
                             }
                           }
                         },
@@ -6648,15 +6661,17 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: { click: _vm.toTransport }
-                    },
-                    [_vm._v("Agregar Transporte")]
-                  )
+                  this.$store.getters.type == "CentroAcopio"
+                    ? _c(
+                        "v-btn",
+                        {
+                          staticClass: "white--text",
+                          attrs: { color: "main_green" },
+                          on: { click: _vm.toTransport }
+                        },
+                        [_vm._v("Agregar Transporte")]
+                      )
+                    : _vm._e()
                 ],
                 1
               ),

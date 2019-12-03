@@ -34,4 +34,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/requisition/reject', 'RequisitionController@reject');
 
     Route::get('/establishment', 'EstablishmentController@data');
+
+
+
+    Route::get('/declarations', 'DeclarationController@index');
+    Route::post('/declaration/create', 'DeclarationController@create');
 });

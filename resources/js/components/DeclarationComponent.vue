@@ -11,7 +11,7 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn flat class='white--text'  @click="dialog = false">Declarar Sin Movimiento</v-btn>
-            <v-btn flat class='white--text'  @click="dialog = false">Guardar</v-btn>
+            <v-btn flat class='white--text'  @click="createdeclaration()">Guardar</v-btn>
           </v-toolbar-items>
         </v-toolbar>
 
@@ -65,7 +65,7 @@
                             <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
                         </v-flex>
                     </v-layout>
-                     <v-btn @click='toTransport' class='white--text' color="main_green">Agregar Transporte</v-btn>
+                     <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
 
                 </v-card>
         
@@ -211,19 +211,7 @@
             }
         ],
 
-        declaration:  {
-            folio: '12345',   
-            id_vu:  '7802',    
-            company:  'Municipalidad de Santiago',   
-            rut: '11111111-1',  
-            establishment:  'Municipalidad de Santiago',   
-            address:   'Plaza de Armas S/N',  
-            commune:  'Santiago',    
-            region:  'Metropolitana',   
-            user:   'Maritza Barrera', 
-            report_type: 'D.S.N°1/2013 MMA (Anual)',    
-            period: '2018'    
-            }
+        declaration:  {},
         
       }
     },
@@ -234,8 +222,23 @@
 
     methods: {
         initialize(){
-            
+
         },  
+
+        createdeclaration(){
+
+            this.dialog = false;
+            var app = this;
+            axios.post('/api/declaration/create')
+                .then(function (resp) {    
+                    app.declaration = resp.data;
+                    alert(JSON.stringify(resp.data));
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declaration/create :" + resp);
+                });
+        },
 
         toTransport (){
 

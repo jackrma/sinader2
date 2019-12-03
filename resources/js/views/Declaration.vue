@@ -114,16 +114,16 @@
             { text: 'Accion', value: '' },
         ],
         declarations: [
-            {
-                correlative: 149882,
-                correlative_dv: 'K',
-                user:'René Maldonado',
-                period: '2019',
-                status: 'ENVIADO',
-                type: 'SALIDA',
-                created_at:'01/10/2019',
-                certificate: 'certificado.pdf',
-            },
+            // {
+            //     correlative: 149882,
+            //     correlative_dv: 'K',
+            //     user:'René Maldonado',
+            //     period: '2019',
+            //     status: 'ENVIADO',
+            //     type: 'SALIDA',
+            //     created_at:'01/10/2019',
+            //     certificate: 'certificado.pdf',
+            // },
 
         ]
 
@@ -136,32 +136,46 @@
     
     methods: {
         initialize(){
-
-            if(this.$store.getters.type=='CentroAcopio') {
-                this.declarations=[
-                {
-                    correlative: 149882,
-                    correlative_dv: 'K',
-                    user:'René Maldonado',
-                    period: '2019',
-                    status: 'ENVIADO',
-                    type: 'SALIDA',
-                    created_at:'01/10/2019',
-                    certificate: 'certificado.pdf',
-                },
-                {
-                    correlative: 149882,
-                    correlative_dv: 'K',
-                    user:'René Maldonado',
-                    period: '2019',
-                    status: 'ENVIADO',
-                    type: 'TRAZABILIDAD',
-                    created_at:'01/10/2019',
-                    certificate: 'certificado.pdf',
-                }
-                ]
-            }
+            this.getdecalrations();
+            // if(this.$store.getters.type=='CentroAcopio') {
+            //     this.declarations=[
+            //     {
+            //         correlative: 149882,
+            //         correlative_dv: 'K',
+            //         user:'René Maldonado',
+            //         period: '2019',
+            //         status: 'ENVIADO',
+            //         type: 'SALIDA',
+            //         created_at:'01/10/2019',
+            //         certificate: 'certificado.pdf',
+            //     },
+            //     {
+            //         correlative: 149882,
+            //         correlative_dv: 'K',
+            //         user:'René Maldonado',
+            //         period: '2019',
+            //         status: 'ENVIADO',
+            //         type: 'TRAZABILIDAD',
+            //         created_at:'01/10/2019',
+            //         certificate: 'certificado.pdf',
+            //     }
+            //     ]
+            // }
         },  
+
+        getdecalrations(){
+            var app = this;
+            axios.get('/api/declarations')
+                .then(function (resp) {    
+                    app.declarations = resp.data;
+                    alert(JSON.stringify(resp.data));
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+
+        },
 
 
         toNewDeclaration (){
