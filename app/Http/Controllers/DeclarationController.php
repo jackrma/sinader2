@@ -83,4 +83,12 @@ class DeclarationController extends Controller
     {
         //
     }
+    
+    public function pdf()
+    {        
+
+        $pdf = PDF::loadView('Declaration', compact('declaration'));
+
+        return $pdf->download('Declaracion.pdf');
+    }
 }

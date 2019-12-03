@@ -13,10 +13,10 @@ class CreateLerSubTable extends Migration
      */
     public function up()
     {
-        Schema::create('ler_subcapitulos', function (Blueprint $table) {
+        Schema::create('ler_subchapter', function (Blueprint $table) {
             $table->integer('id');
-            $table->integer('capitulo_id')->references('id')->on('ler_capitulo');
-            $table->string("name");
+            $table->integer('chapter_id')->references('id')->on('ler_chapter');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateLerSubTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ler_subcapitulos');
+        Schema::dropIfExists('ler_subchapter');
     }
 }
