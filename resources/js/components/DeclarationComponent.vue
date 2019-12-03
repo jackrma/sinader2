@@ -65,6 +65,7 @@
                             <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
                         </v-flex>
                     </v-layout>
+                     <v-btn @click='toTransport' class='white--text' color="main_green">Agregar Transporte</v-btn>
 
                 </v-card>
         
@@ -180,7 +181,7 @@
  
   import NewResidueIndComponent  from './../components/NewResidueIndComponent';
   import NewResidueMunComponent  from './../components/NewResidueMunComponent';
-
+  import TransportComponent  from './../components/TransportComponent';
 
   export default {
     data () {
@@ -236,6 +237,18 @@
             
         },  
 
+        toTransport (){
+
+
+            var ComponentReserv = Vue.extend(TransportComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            source: '', 
+            }});
+            instance.$mount();
+            this.$refs.container.appendChild(instance.$el);
+
+
+        },
 
         toNewResidue (){
 
