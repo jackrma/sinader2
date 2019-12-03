@@ -18,9 +18,6 @@ class EstablishmentController extends Controller
 
 		$establishment = Establishment::where('id',$ue->establishment_id)->with('commune')->with('region')->get()->first();
 
-		Info('******************');
-		Info($establishment);
-		Info('******************');
 
 		return response()->json($establishment);
 	}
