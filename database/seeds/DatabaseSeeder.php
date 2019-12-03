@@ -444,24 +444,24 @@ class DatabaseSeeder extends Seeder
 		App\LerChapter::create(['id' => 20, 'name' => 'Residuos municipales (residuos domésticos y residuos asimilables procedentes de los comercios, industrias e instituciones), incluidas las fracciones recogidas selectivamente']);
 
 
-		App\LerSubchapter::truncate();
-		App\LerSubchapter::create(['id' => 1 ,'chapter_id' => 1 , 'name' => 'Residuos de la extracción de minerales']);
-		App\LerSubchapter::create(['id' => 1 ,'chapter_id' => 3 , 'name' => 'Residuos de la transformación física y química de minerales metálicos']);
-		App\LerSubchapter::create(['id' => 1 ,'chapter_id' => 4 , 'name' => 'Residuos de la transformación física y química de minerales no metálicos']);
-		App\LerSubchapter::create(['id' => 1 ,'chapter_id' => 5 , 'name' => 'Lodos y otros residuos de perforaciones']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 1 , 'name' => 'Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 2 , 'name' => 'Residuos de la preparación y elaboración de carne, pescado y otros alimentos de origen animal']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 3 , 'name' => 'Residuos de la preparación y elaboración de frutas, hortalizas, cereales, aceites comestibles, cacao, café, té y tabaco; producción de conservas; producción de levadura y extracto de levadura, preparación y fermentación de melazas']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 4 , 'name' => 'Residuos de la elaboración de azúcar']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 5 , 'name' => 'Residuos de la industria de productos lácteos']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 6 , 'name' => 'Residuos de la industria de panadería y pastelería']);
-		App\LerSubchapter::create(['id' => 2 ,'chapter_id' => 7 , 'name' => 'Residuos de la producción de bebidas alcohólicas y no alcohólicas (excepto café, té y cacao)']);
-		App\LerSubchapter::create(['id' => 3 ,'chapter_id' => 1 , 'name' => 'Residuos de la transformación de la madera y de la producción de tableros y muebles']);
-		App\LerSubchapter::create(['id' => 3 ,'chapter_id' => 2 , 'name' => 'Residuos de los tratamientos de conservación de la madera']);
-		App\LerSubchapter::create(['id' => 3 ,'chapter_id' => 3 , 'name' => 'Residuos de la producción y transformación de pasta de papel, papel y cartón']);
-		App\LerSubchapter::create(['id' => 4 ,'chapter_id' => 1 , 'name' => 'Residuos de las industrias del cuero y de la piel']);
-		App\LerSubchapter::create(['id' => 4 ,'chapter_id' => 2 , 'name' => 'Residuos de la industria textil']);
-		App\LerSubchapter::create(['id' => 5 ,'chapter_id' => 1 , 'name' => 'Residuos del refino de petróleo']);
+		App\LerSubChapter::truncate();
+		App\LerSubChapter::create(['id' => 1 ,'chapter_id' => 1 , 'name' => 'Residuos de la extracción de minerales']);
+		App\LerSubChapter::create(['id' => 1 ,'chapter_id' => 3 , 'name' => 'Residuos de la transformación física y química de minerales metálicos']);
+		App\LerSubChapter::create(['id' => 1 ,'chapter_id' => 4 , 'name' => 'Residuos de la transformación física y química de minerales no metálicos']);
+		App\LerSubChapter::create(['id' => 1 ,'chapter_id' => 5 , 'name' => 'Lodos y otros residuos de perforaciones']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 1 , 'name' => 'Residuos de la agricultura, horticultura, acuicultura, silvicultura, caza y pesca']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 2 , 'name' => 'Residuos de la preparación y elaboración de carne, pescado y otros alimentos de origen animal']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 3 , 'name' => 'Residuos de la preparación y elaboración de frutas, hortalizas, cereales, aceites comestibles, cacao, café, té y tabaco; producción de conservas; producción de levadura y extracto de levadura, preparación y fermentación de melazas']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 4 , 'name' => 'Residuos de la elaboración de azúcar']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 5 , 'name' => 'Residuos de la industria de productos lácteos']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 6 , 'name' => 'Residuos de la industria de panadería y pastelería']);
+		App\LerSubChapter::create(['id' => 2 ,'chapter_id' => 7 , 'name' => 'Residuos de la producción de bebidas alcohólicas y no alcohólicas (excepto café, té y cacao)']);
+		App\LerSubChapter::create(['id' => 3 ,'chapter_id' => 1 , 'name' => 'Residuos de la transformación de la madera y de la producción de tableros y muebles']);
+		App\LerSubChapter::create(['id' => 3 ,'chapter_id' => 2 , 'name' => 'Residuos de los tratamientos de conservación de la madera']);
+		App\LerSubChapter::create(['id' => 3 ,'chapter_id' => 3 , 'name' => 'Residuos de la producción y transformación de pasta de papel, papel y cartón']);
+		App\LerSubChapter::create(['id' => 4 ,'chapter_id' => 1 , 'name' => 'Residuos de las industrias del cuero y de la piel']);
+		App\LerSubChapter::create(['id' => 4 ,'chapter_id' => 2 , 'name' => 'Residuos de la industria textil']);
+		App\LerSubChapter::create(['id' => 5 ,'chapter_id' => 1 , 'name' => 'Residuos del refino de petróleo']);
 
 		App\ManageType::truncate();
 		App\ManageType::create(['id' => 1 , 'name' => 'Centro de Acopio']);
