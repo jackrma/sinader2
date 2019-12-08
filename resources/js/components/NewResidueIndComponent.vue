@@ -29,8 +29,9 @@
 
                             <v-select
                                 :items="destinatarios"
-                                v-model="capitulo"
+                                v-model="destiny"
                                 label="Destinatario"
+
                             ></v-select> 
 
 
@@ -40,7 +41,7 @@
 
                             <v-select
                                 :items="establishments"
-                                v-model="Establecimientos"
+                                v-model="establishment"
                                 label="Establecimiento"
                             ></v-select> 
 
@@ -49,16 +50,18 @@
                             
                             <v-select
                                 :items="processings"
-                                v-model="residue"
+                                v-model="procesing"
                                 label="Tipo de Tratamiento"
+                                item-text="name"  
                             ></v-select> 
                         </v-flex>
                         <v-flex xs3 class="px-1">
                             
                             <v-select
-                                :items="gestion"
-                                v-model="residue"
+                                :items="gestions"
+                                v-model="gestion"
                                 label="Tipo de Gestión"
+                                item-text="name" 
                             ></v-select> 
 
                         </v-flex>
@@ -66,33 +69,45 @@
                     </v-layout>
 
                     <v-layout>
-                        <v-flex  xs3 class="px-1">
+                        <v-flex  xs4 class="px-1">
 
                             <v-select
                                 :items="capitulos"
                                 v-model="capitulo"
                                 label="Capitulo"
+                                
+                                item-text="name"  
+                                v-on:change="changeChapter"
+                                return-object
+
+
                             ></v-select> 
 
 
                         </v-flex>
-                        <v-flex  xs3 class="px-1">
+                        <v-flex  xs4 class="px-1">
 
 
                             <v-select
                                 :items="subcapitulos"
                                 v-model="subcapitulo"
                                 label="Sub Capitulo"
+                                item-text="name" 
+                                v-on:change="changeSupChapter"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
-                        <v-flex xs3 class="px-1">
+                        <v-flex xs4 class="px-1">
                             
 
                             <v-select
                                 :items="residues"
                                 v-model="residue"
                                 label="Residuo"
+                                item-text="name" 
+                                v-on:change="changeResidue"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
@@ -100,7 +115,7 @@
                     </v-layout>
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field type='number' label="Cantidad"></v-text-field>
+                            <v-text-field v-model='cantidad' type='number' label="Cantidad"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -108,6 +123,7 @@
                                 :items="units"
                                 v-model="unidad"
                                 label="Unidad de Medida"
+                                item-text="name" 
                             ></v-select> 
                         </v-flex>
 
@@ -149,7 +165,7 @@
           <v-btn
             color="main_green"
             class='white--text'
-            @click="dialog = false"
+            @click="saveResidue()"
           >
             Guardar
           </v-btn>
@@ -160,7 +176,11 @@
 </template>
 
 <script>
-
+  import Vue from 'vue';  
+  import Vuex from 'vuex'; 
+  import { mapState } from 'vuex';  
+  
+  import { EventBus } from './../eventbus.js';
 
 
   export default {
@@ -169,21 +189,134 @@
         checkbox:false,
         dialog: true,
 
-        capitulos: ['capitulo prueba 1','capitulo prueba 2', 'capitulo prueba 3','capitulo prueba 4'],
-        subcapitulos: ['subcapitulo prueba 1','subcapitulo prueba 2', 'subcapitulo prueba 3','subcapitulo prueba 4'],
-        residues: ['Papel y cartón', 'residuo 2', 'residuo 3'],
+        cantidad:0,
+        unidad:'',
+
+        residue:'',
+        residuetext:'',
+        capitulos: '',
+        subcapitulos: '',
+        residues: '',
         
-        tipos_recolecciom: ['Punto Verde','Tipo Recolección 2','Tipo Recolección 3'],
+        tipos_recoleccion: '',
 
-        destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2' ],
-        establishments: ['4989 | Planta Colina','4990 | Planta 2'],
+        destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA' ],
+        establishments: ['12345 | Gerdau Aza Colina','12345 | Gerdau Aza Colina'],
 
-        processings:['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-        gestion:['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-        units:['Kg','Ton'],
+        procesing:'',
+        processings:'',
+        gestion:'',
+        gestions:'',
+        units:'',
         }
-      }
+    },
+    created(){
+        this.initialize();
+    },
+    methods: {
+        initialize(){
+            var app = this;
+            axios.get('/api/unit')
+                .then(function (resp) {    
+                    app.units = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+
+            axios.get('/api/managetype')
+                .then(function (resp) {    
+                    app.gestions = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error ManageType :" + resp);
+                });
+
+            axios.get('/api/processtype')
+                .then(function (resp) {    
+                    app.processings = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error ProcessType :" + resp);
+                });
+
+            axios.get('/api/recolectiontype')
+                .then(function (resp) {    
+                    app.tipos_recoleccion = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error RecolectionType :" + resp);
+                });
+            axios.get('/api/lerchapter')
+                .then(function (resp) {    
+                    app.capitulos = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+
+        },
+
+        changeChapter(chapter_selected){
+            var app = this;
+            
+            axios.get('/api/lersubchapter/' + chapter_selected.id)
+                .then(function (resp) {   
+                    app.subcapitulos = resp.data;
+                    app.residues = [];
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+        },
+
+        changeSupChapter(subchapter_selected){
+            var app = this;
+            
+            axios.get('/api/lerwaste/' + subchapter_selected.id)
+                .then(function (resp) {   
+                    app.residues = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+        },
+
+        changeResidue(residue_selected){
+            this.residuetext = residue_selected.waste_code +' | '+ residue_selected.name;
+
+        },
+
+        saveResidue(){
+
+            this.residue = {
+                residue: this.residuetext,
+                sum: this.cantidad + ' ' + this.unidad,
+                to: '92176000-0 | Gerdau Aza SA',
+                establishment: '12345 | Gerdau Aza Colina',
+                processing: this.procesing,
+                gestion: this.gestion,
+
+
+            };
+
+
+            this.$store.commit('changeResidue', this.residue);
+            this.dialog = false;
+
+            EventBus.$emit('saveResidues', 'someValue'); 
+
+            
+        }
     }
+}
   
 </script>
 

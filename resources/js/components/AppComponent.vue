@@ -123,9 +123,31 @@
     methods: {
         initialize() {
             var app = this;
+
+            var app = this;
+            axios.get('/api/user')
+                .then(function (resp) {
+                   // alert(JSON.stringify(resp.data));  
+                   app.$store.commit('changeUser', resp.data);
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error user/data :" + resp);
+                }); 
+
+            axios.get('/api/company')
+                .then(function (resp) {
+                    // alert(JSON.stringify(resp.data));  
+                   app.$store.commit('changeCompany', resp.data);
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error company/data :" + resp);
+                }); 
+
             axios.get('/api/establishment')
                 .then(function (resp) {
-                   // alert(JSON.stringify(resp.data['type']));  
+                   // alert(JSON.stringify(resp.data));  
                    app.$store.commit('changeEstablishment', resp.data);
                    app.$store.commit('changeType', resp.data['type']);
 

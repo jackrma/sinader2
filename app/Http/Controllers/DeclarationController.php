@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Declaration;
+use App\User;
+use App\UserEstablishment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class DeclarationController extends Controller
 {
@@ -25,7 +29,40 @@ class DeclarationController extends Controller
      */
     public function create()
     {
-        //
+
+        Info('***************');
+        Info('Declaration');
+        Info('***************');
+
+
+        $user = Auth::user();
+        $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
+
+        Info($user_establishment);
+        $last_declaration = Declaration::where('establishment_id', $user_establishment->establishment_id)->get()->last();
+
+        
+
+
+        $declaration = new Declaration();
+        $declaration->correlative       = $user_establishment->establishment_id . 1;
+        if($last_declaration){
+            $declaration->correlative   = $user_establishment->establishment_id . $last_declaration->correlative + 1; 
+        }
+        
+        $declaration->correlative_dv    = '2';
+        $declaration->establishment_id  = $user_establishment->establishment_id;
+        $declaration->user_id           = $user->id;   
+        // $declaration->carrier_id        = 0;
+        // $declaration->receiver_id       = 0;
+        // $declaration->type              = 'D.S.N°1/2013 MMA (Anual)';
+        // $declaration->period            =  2019;
+        $declaration->status            = 'CREADA';
+
+        // $declaration->save();
+
+        return response()->json($declaration);
+        
     }
 
     /**
@@ -87,8 +124,8 @@ class DeclarationController extends Controller
     public function pdf()
     {        
 
-        $pdf = PDF::loadView('Declaration', compact('declaration'));
+        // $pdf = PDF::loadView('Declaration', compact('declaration'));
 
-        return $pdf->download('Declaracion.pdf');
+        // return $pdf->download('Declaracion.pdf');
     }
 }

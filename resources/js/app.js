@@ -57,6 +57,9 @@ Vue.use(Vuetify, {
         success: '#4CAF50',
         warning: '#FFC107'
 
+
+
+
         // main_green: '#079992',
         // secondary_green: '#38ACA9',
         // highlight_green: '#6BEC87',

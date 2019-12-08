@@ -34,4 +34,20 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/requisition/reject', 'RequisitionController@reject');
 
     Route::get('/establishment', 'EstablishmentController@data');
+    Route::get('/user', 'UserController@data');
+    Route::get('/company', 'CompanyController@data');
+
+	Route::get('/lerchapter', 'LerChapterController@data');
+	Route::get('/lersubchapter/{lerchapter_id}', 'LerSubChapterController@data');
+	Route::get('/lerwaste/{lersubchapter_id}', 'LerWasteController@data');
+	Route::get('/managetype', 'ManageTypeController@data');
+	Route::get('/processtype', 'ProcessTypeController@data');
+	Route::get('/recolectionype', 'RecolectionTypeController@data');
+	Route::get('/unit', 'UnitController@data');
+
+
+
+
+    Route::get('/declarations', 'DeclarationController@index');
+    Route::post('/declaration/create', 'DeclarationController@create');
 });
