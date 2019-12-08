@@ -19,7 +19,7 @@
           class="headline grey lighten-2"
           primary-title
         >
-           Buscar Empresa Trasnporte
+           Buscar Empresa Transporte
         </v-card-title>
 
         <v-card-text>

@@ -20,8 +20,8 @@ class CreateWasteDetailTable extends Migration
             $table->integer('quantity');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
-            $table->integer('process_id')->references('id')->on('concept_detail');
-            $table->integer('unitm_id')->references('id')->on('concept_detail');
+            $table->integer('process_id')->references('id')->on('process_type');
+            $table->integer('unitm_id')->references('id')->on('units');
             $table->timestamps();
         });
     }
