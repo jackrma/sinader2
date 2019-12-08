@@ -19,8 +19,6 @@ class CreateDeclarationsTable extends Migration
             $table->string("correlative_dv");
             $table->integer("establishment_id")->references('id')->on('establishment');
             $table->integer("user_id")->references('id')->on('user');
-            $table->integer("carrier_id")->references('id')->on('carrier');
-            $table->integer("receiver_id")->references('id')->on('establishment');
             $table->string("type");
             $table->string("period");
             $table->string("status");

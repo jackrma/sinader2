@@ -132,6 +132,10 @@
 
     created () {
         this.initialize();
+        var app = this;
+        EventBus.$on('saveDeclaration', function(){   
+            app.getdecalrations();
+        });
     },
     
     methods: {

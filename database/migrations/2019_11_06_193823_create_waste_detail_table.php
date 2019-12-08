@@ -14,14 +14,33 @@ class CreateWasteDetailTable extends Migration
     public function up()
     {
         Schema::create('waste_details', function (Blueprint $table) {
+
             $table->bigIncrements('id');
-            $table->integer('detail_id')->references('id')->on('declaration');
-            $table->integer('waste_id')->references('id')->on('ler_waste');
+            $table->integer('declaration_id')->references('id')->on('declaration');
+
+            $table->string('waste');
+
+            $table->string('company');
+            $table->string('establishment');
+            $table->string('processing');
+            $table->string('gestion');
+            
+            $table->string('pais')->nullable();
+            $table->string('empresa')->nullable();
+            $table->string('contacto')->nullable();
+            $table->string('email')->nullable();
+
+            
             $table->integer('quantity');
+            $table->integer('waste_id')->references('id')->on('ler_waste');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
-            $table->integer('process_id')->references('id')->on('concept_detail');
-            $table->integer('unitm_id')->references('id')->on('concept_detail');
+            $table->integer('manage_id')->references('id')->on('manage_types');
+            $table->integer('process_id')->references('id')->on('process_types');
+            $table->integer('unit_id')->references('id')->on('units');
+
+            $table->integer('carrier_id')->references('id')->on('carriers');
+
             $table->timestamps();
         });
     }

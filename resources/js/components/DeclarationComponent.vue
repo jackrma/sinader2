@@ -152,9 +152,9 @@
          
         >
           <template v-slot:items="props">
-            <td class="text-xs-right">{{ props.item.residue }}</td>
+            <td class="text-xs-right">{{ props.item.waste }}</td>
             <td class="text-xs-right">{{ props.item.sum }}</td>
-            <td class="text-xs-right">{{ props.item.to }}</td>
+            <td class="text-xs-right">{{ props.item.company }}</td>
             <td class="text-xs-right">{{ props.item.establishment }}</td>
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
@@ -239,8 +239,6 @@
         initialize(){
 
 
-
-
             this.company        = this.$store.getters.company.name;
             this.rut            = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
             this.establishment  = this.$store.getters.establishment.name;
@@ -262,7 +260,30 @@
         },  
 
         createdeclaration(){
-            this.dialog = false;
+
+            var declaration = {
+                correlative: this.declaration.correlative,
+                correlative_dv: this.declaration.correlative_dv,
+                
+                type: this.type,
+                period: this.period,
+                carrier: 0,
+                waste_detail: this.residues,
+            }
+
+            if(this.residues.length>0){
+                axios.post('/api/declaration/store', {declaration: declaration})
+                    .then(function (resp) {    
+                        EventBus.$emit('saveDeclaration', 'someValue');
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Error declaration/store :" + resp);
+                    });
+                this.dialog = false;
+            } else {
+                alert('No se han ingresado residuos');
+            }
 
         },
 

@@ -46,8 +46,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/unit', 'UnitController@data');
 
 
-
-
     Route::get('/declarations', 'DeclarationController@index');
     Route::post('/declaration/create', 'DeclarationController@create');
+	Route::post('/declaration/store', 'DeclarationController@store');
+
+
 });

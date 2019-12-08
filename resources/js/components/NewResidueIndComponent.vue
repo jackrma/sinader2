@@ -32,6 +32,7 @@
                                 v-model="destiny"
                                 label="Destinatario"
                                 :rules = "generalRule"
+                                return-object
                             ></v-select> 
 
 
@@ -44,6 +45,7 @@
                                 v-model="establishment"
                                 label="Establecimiento"
                                 :rules = "generalRule"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
@@ -55,6 +57,8 @@
                                 label="Tipo de Tratamiento"
                                 item-text="name"  
                                 :rules = "generalRule"
+                                v-on:change="changeProcess"
+                                return-object
                             ></v-select> 
                         </v-flex>
                         <v-flex xs3 class="px-1">
@@ -65,6 +69,8 @@
                                 label="Tipo de Gestión"
                                 item-text="name" 
                                 :rules = "generalRule"
+                                v-on:change="changeGestion"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
@@ -79,18 +85,14 @@
                                 v-model="capitulo"
                                 label="Capitulo"
                                 :rules = "generalRule"
-                                item-text="name"  
+                                item-text="name"   
                                 v-on:change="changeChapter"
                                 return-object
-
-
                             ></v-select> 
 
 
                         </v-flex>
                         <v-flex  xs4 class="px-1">
-
-
                             <v-select
                                 :items="subcapitulos"
                                 v-model="subcapitulo"
@@ -103,8 +105,6 @@
 
                         </v-flex>
                         <v-flex xs4 class="px-1">
-                            
-
                             <v-select
                                 :items="residues"
                                 v-model="residue"
@@ -114,7 +114,6 @@
                                 return-object
                                 :rules = "generalRule"
                             ></v-select> 
-
                         </v-flex>
                         
                     </v-layout>
@@ -130,6 +129,8 @@
                                 label="Unidad de Medida"
                                 item-text="name" 
                                 :rules = "generalRule"
+                                v-on:change="changeUnit"
+                                return-object
                             ></v-select> 
                         </v-flex>
 
@@ -144,19 +145,19 @@
 
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="País"></v-text-field>
+                            <v-text-field v-model="pais" label="País"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Empresa"></v-text-field>
+                            <v-text-field v-model="empresa" label="Empresa"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Contacto"></v-text-field>
+                            <v-text-field v-model="contacto" label="Contacto"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Email"></v-text-field>
+                            <v-text-field v-model="email" label="Email"></v-text-field>
                         </v-flex>
 
                     </v-layout>
@@ -203,12 +204,24 @@
 
         cantidad:0,
         unidad:'',
-
+        destiny:'',
         residue:'',
         residuetext:'',
         capitulos: '',
         subcapitulos: '',
         residues: '',
+
+        company_selected:1,
+        establishment_selected:1,
+        residue_selected:'',
+        process_selected:'',
+        gestion_selected:'',
+        unit_selected:'',
+
+        pais:'',
+        empresa:'',
+        contacto:'',
+        email:'',
         
         tipos_recoleccion: '',
 
@@ -302,8 +315,29 @@
         },
 
         changeResidue(residue_selected){
+            this.residue_selected = residue_selected;
             this.residuetext = residue_selected.waste_code +' | '+ residue_selected.name;
+        },
 
+        changeCompany(company_selected){
+
+            this.company_selected = company_selected;
+        },
+
+        changeEstablishment(establishment_selected){
+            this.establishment_selected = establishment_selected;
+        },
+
+        changeProcess(process_selected){
+            this.process_selected = process_selected;
+        },
+
+        changeGestion(gestion_selected){
+            this.gestion_selected = gestion_selected;
+        },
+
+        changeUnit(unit_selected){
+            this.unit_selected = unit_selected;
         },
 
         saveResidue(){
@@ -311,16 +345,28 @@
             if (this.$refs.form.validate()){
 
                 this.residue = {
-                    residue: this.residuetext,
-                    sum: this.cantidad + ' ' + this.unidad,
-                    to: '92176000-0 | Gerdau Aza SA',
+                    waste: this.residuetext,
+                    sum: this.cantidad + ' ' + this.unidad.name,
+                    company: '92176000-0 | Gerdau Aza SA',
                     establishment: '12345 | Gerdau Aza Colina',
-                    processing: this.procesing,
-                    gestion: this.gestion,
+                    processing: this.procesing.name,
+                    gestion: this.gestion.name,
+                    pais: this.pais,
+                    empresa: this.empresa,
+                    contacto: this.contacto,
+                    email: this.email,
 
-
+                    // company_id: this.company_selected.id,
+                    company_id: 1,
+                    // establishment_id: this.establishment_selected.id,
+                    establishment_id: 1,
+                    process_id: this.process_selected.id,
+                    gestion_id: this.gestion_selected.id,
+                    quantity: this.cantidad,
+                    waste_id: this.residue_selected.id,
+                    unit_id: this.unit_selected.id,
+                    carrier_id: 1,
                 };
-
 
                 this.$store.commit('changeResidue', this.residue);
 

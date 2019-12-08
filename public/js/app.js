@@ -2238,7 +2238,28 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createdeclaration: function createdeclaration() {
-      this.dialog = false;
+      var declaration = {
+        correlative: this.declaration.correlative,
+        correlative_dv: this.declaration.correlative_dv,
+        type: this.type,
+        period: this.period,
+        carrier: 0,
+        waste_detail: this.residues
+      };
+
+      if (this.residues.length > 0) {
+        axios.post('/api/declaration/store', {
+          declaration: declaration
+        }).then(function (resp) {
+          _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDeclaration', 'someValue');
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error declaration/store :" + resp);
+        });
+        this.dialog = false;
+      } else {
+        alert('No se han ingresado residuos');
+      }
     },
     toTransport: function toTransport() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
@@ -2836,6 +2857,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2855,11 +2877,22 @@ __webpack_require__.r(__webpack_exports__);
       dialog: true,
       cantidad: 0,
       unidad: '',
+      destiny: '',
       residue: '',
       residuetext: '',
       capitulos: '',
       subcapitulos: '',
       residues: '',
+      company_selected: 1,
+      establishment_selected: 1,
+      residue_selected: '',
+      process_selected: '',
+      gestion_selected: '',
+      unit_selected: '',
+      pais: '',
+      empresa: '',
+      contacto: '',
+      email: '',
       tipos_recoleccion: '',
       destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA'],
       establishments: ['12345 | Gerdau Aza Colina', '12345 | Gerdau Aza Colina'],
@@ -2927,17 +2960,47 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     changeResidue: function changeResidue(residue_selected) {
+      this.residue_selected = residue_selected;
       this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
+    },
+    changeCompany: function changeCompany(company_selected) {
+      this.company_selected = company_selected;
+    },
+    changeEstablishment: function changeEstablishment(establishment_selected) {
+      this.establishment_selected = establishment_selected;
+    },
+    changeProcess: function changeProcess(process_selected) {
+      this.process_selected = process_selected;
+    },
+    changeGestion: function changeGestion(gestion_selected) {
+      this.gestion_selected = gestion_selected;
+    },
+    changeUnit: function changeUnit(unit_selected) {
+      this.unit_selected = unit_selected;
     },
     saveResidue: function saveResidue() {
       if (this.$refs.form.validate()) {
         this.residue = {
-          residue: this.residuetext,
-          sum: this.cantidad + ' ' + this.unidad,
-          to: '92176000-0 | Gerdau Aza SA',
+          waste: this.residuetext,
+          sum: this.cantidad + ' ' + this.unidad.name,
+          company: '92176000-0 | Gerdau Aza SA',
           establishment: '12345 | Gerdau Aza Colina',
-          processing: this.procesing,
-          gestion: this.gestion
+          processing: this.procesing.name,
+          gestion: this.gestion.name,
+          pais: this.pais,
+          empresa: this.empresa,
+          contacto: this.contacto,
+          email: this.email,
+          // company_id: this.company_selected.id,
+          company_id: 1,
+          // establishment_id: this.establishment_selected.id,
+          establishment_id: 1,
+          process_id: this.process_selected.id,
+          gestion_id: this.gestion_selected.id,
+          quantity: this.cantidad,
+          waste_id: this.residue_selected.id,
+          unit_id: this.unit_selected.id,
+          carrier_id: 1
         };
         this.$store.commit('changeResidue', this.residue);
         this.dialog = false;
@@ -4430,6 +4493,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.initialize();
+    var app = this;
+    EventBus.$on('saveDeclaration', function () {
+      app.getdecalrations();
+    });
   },
   methods: {
     initialize: function initialize() {
@@ -7051,7 +7118,7 @@ var render = function() {
                     fn: function(props) {
                       return [
                         _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.residue))
+                          _vm._v(_vm._s(props.item.waste))
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
@@ -7059,7 +7126,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.to))
+                          _vm._v(_vm._s(props.item.company))
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
@@ -7702,7 +7769,8 @@ var render = function() {
                                 attrs: {
                                   items: _vm.destinatarios,
                                   label: "Destinatario",
-                                  rules: _vm.generalRule
+                                  rules: _vm.generalRule,
+                                  "return-object": ""
                                 },
                                 model: {
                                   value: _vm.destiny,
@@ -7724,7 +7792,8 @@ var render = function() {
                                 attrs: {
                                   items: _vm.establishments,
                                   label: "Establecimiento",
-                                  rules: _vm.generalRule
+                                  rules: _vm.generalRule,
+                                  "return-object": ""
                                 },
                                 model: {
                                   value: _vm.establishment,
@@ -7747,8 +7816,10 @@ var render = function() {
                                   items: _vm.processings,
                                   label: "Tipo de Tratamiento",
                                   "item-text": "name",
-                                  rules: _vm.generalRule
+                                  rules: _vm.generalRule,
+                                  "return-object": ""
                                 },
+                                on: { change: _vm.changeProcess },
                                 model: {
                                   value: _vm.procesing,
                                   callback: function($$v) {
@@ -7770,8 +7841,10 @@ var render = function() {
                                   items: _vm.gestions,
                                   label: "Tipo de Gestión",
                                   "item-text": "name",
-                                  rules: _vm.generalRule
+                                  rules: _vm.generalRule,
+                                  "return-object": ""
                                 },
+                                on: { change: _vm.changeGestion },
                                 model: {
                                   value: _vm.gestion,
                                   callback: function($$v) {
@@ -7902,8 +7975,10 @@ var render = function() {
                                   items: _vm.units,
                                   label: "Unidad de Medida",
                                   "item-text": "name",
-                                  rules: _vm.generalRule
+                                  rules: _vm.generalRule,
+                                  "return-object": ""
                                 },
+                                on: { change: _vm.changeUnit },
                                 model: {
                                   value: _vm.unidad,
                                   callback: function($$v) {
@@ -7945,7 +8020,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "País" }
+                                    attrs: { label: "País" },
+                                    model: {
+                                      value: _vm.pais,
+                                      callback: function($$v) {
+                                        _vm.pais = $$v
+                                      },
+                                      expression: "pais"
+                                    }
                                   })
                                 ],
                                 1
@@ -7956,7 +8038,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Empresa" }
+                                    attrs: { label: "Empresa" },
+                                    model: {
+                                      value: _vm.empresa,
+                                      callback: function($$v) {
+                                        _vm.empresa = $$v
+                                      },
+                                      expression: "empresa"
+                                    }
                                   })
                                 ],
                                 1
@@ -7967,7 +8056,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Contacto" }
+                                    attrs: { label: "Contacto" },
+                                    model: {
+                                      value: _vm.contacto,
+                                      callback: function($$v) {
+                                        _vm.contacto = $$v
+                                      },
+                                      expression: "contacto"
+                                    }
                                   })
                                 ],
                                 1
@@ -7978,7 +8074,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Email" }
+                                    attrs: { label: "Email" },
+                                    model: {
+                                      value: _vm.email,
+                                      callback: function($$v) {
+                                        _vm.email = $$v
+                                      },
+                                      expression: "email"
+                                    }
                                   })
                                 ],
                                 1
