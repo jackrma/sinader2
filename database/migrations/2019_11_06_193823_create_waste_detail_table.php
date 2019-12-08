@@ -35,6 +35,7 @@ class CreateWasteDetailTable extends Migration
             $table->integer('waste_id')->references('id')->on('ler_waste');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
+
             $table->integer('manage_id')->references('id')->on('manage_types');
             $table->integer('process_id')->references('id')->on('process_types');
             $table->integer('unit_id')->references('id')->on('units');

@@ -19,7 +19,7 @@
           class="headline grey lighten-2"
           primary-title
         >
-          Crear Empresa de Trasnporte
+          Crear Empresa de Transporte
         </v-card-title>
 
         <v-card-text>

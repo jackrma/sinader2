@@ -15,6 +15,7 @@ class CreateLerWasteTable extends Migration
     {
         Schema::create('ler_waste', function (Blueprint $table) {
             $table->integer('id');
+            $table->integer('chapter_id')->references('id')->on('ler_chapter');
             $table->integer('subchapter_id')->references('id')->on('ler_subchapter');
             $table->string('name');
             $table->string('waste_code');

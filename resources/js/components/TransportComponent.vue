@@ -57,7 +57,7 @@
                             <v-select
                                 :items="transports"
                                 v-model="transport"
-                                label="Empresa de Trasnportes"
+                                label="Empresa de Transportes"
                             ></v-select> 
                         </v-flex>    
                         <v-flex xs2 class="px-1">
@@ -102,7 +102,7 @@
                             <v-select
                                 :items="others"
                                 v-model="other"
-                                label="Trasnportes ingresados por el declarante"
+                                label="Transportes ingresados por el declarante"
                             ></v-select> 
                         </v-flex>
                     </v-layout>                     
@@ -151,7 +151,7 @@
         type:'',
         plate:'',
 
-        texto: 'Atención: Si el trasnporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
+        texto: 'Atención: Si el transporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
 
         headers: [
             { text: 'Rut', value: '' },            

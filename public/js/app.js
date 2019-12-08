@@ -4269,7 +4269,7 @@ __webpack_require__.r(__webpack_exports__);
       trasnport: '',
       type: '',
       plate: '',
-      texto: 'Atención: Si el trasnporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
+      texto: 'Atención: Si el transporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
       headers: [{
         text: 'Rut',
         value: ''
@@ -8989,7 +8989,7 @@ var render = function() {
                   staticClass: "headline grey lighten-2",
                   attrs: { "primary-title": "" }
                 },
-                [_vm._v("\n          Crear Empresa de Trasnporte\n        ")]
+                [_vm._v("\n          Crear Empresa de Transporte\n        ")]
               ),
               _vm._v(" "),
               _c(
@@ -9566,7 +9566,7 @@ var render = function() {
                   staticClass: "headline grey lighten-2",
                   attrs: { "primary-title": "" }
                 },
-                [_vm._v("\n           Buscar Empresa Trasnporte\n        ")]
+                [_vm._v("\n           Buscar Empresa Transporte\n        ")]
               ),
               _vm._v(" "),
               _c(
@@ -10116,7 +10116,7 @@ var render = function() {
                           _c("v-select", {
                             attrs: {
                               items: _vm.transports,
-                              label: "Empresa de Trasnportes"
+                              label: "Empresa de Transportes"
                             },
                             model: {
                               value: _vm.transport,
@@ -10250,7 +10250,7 @@ var render = function() {
                           _c("v-select", {
                             attrs: {
                               items: _vm.others,
-                              label: "Trasnportes ingresados por el declarante"
+                              label: "Transportes ingresados por el declarante"
                             },
                             model: {
                               value: _vm.other,
