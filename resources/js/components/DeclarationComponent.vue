@@ -189,6 +189,9 @@
   import TransportComponent  from './../components/TransportComponent';
 
   export default {
+    props: {
+        declaration_edit: Object,
+    },
     data () {
       return {
         dialog: true,
@@ -247,16 +250,31 @@
             this.region         = this.$store.getters.establishment.commune.name;
             
             var app = this;
-            axios.post('/api/declaration/create')
-                .then(function (resp) {    
-                    app.declaration = resp.data;
-                    app.correlative    = app.declaration.correlative + '-' + app.declaration.correlative_dv; 
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Error declaration/create :" + resp);
-                });
 
+            if(this.declaration_edit){
+                app.declaration = app.declaration_edit;
+                app.correlative = app.declaration_edit.correlative + '-' + app.declaration_edit.correlative_dv;     
+
+                axios.get('/api/waste_details/'+app.declaration.id)
+                    .then(function (resp) {    
+                        app.residues = resp.data;
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Error waste_details :" + resp);
+                    }); 
+
+            } else {
+                axios.post('/api/declaration/create')
+                    .then(function (resp) {    
+                        app.declaration = resp.data;
+                        app.correlative    = app.declaration.correlative + '-' + app.declaration.correlative_dv; 
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Error declaration/create :" + resp);
+                    });                
+            }
         },  
 
         createdeclaration(){

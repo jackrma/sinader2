@@ -21,4 +21,6 @@ class WasteController extends Controller
 
         return redirect('/')->with('success', 'Archivo importado correctamente!');
     }
+
+    
 }

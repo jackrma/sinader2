@@ -49,6 +49,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/declarations', 'DeclarationController@index');
     Route::post('/declaration/create', 'DeclarationController@create');
 	Route::post('/declaration/store', 'DeclarationController@store');
+	Route::post('/declaration/delete/{}', 'DeclarationController@delete');
 
+    Route::get('/waste_details/{declaration_id}', 'WasteDetailController@index');
 
 });

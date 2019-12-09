@@ -168,9 +168,18 @@ class DeclarationController extends Controller
      */
     public function destroy(Declaration $declaration)
     {
-        //
+        
     }
     
+    public function delete($declaration_id)
+    {
+        Declaration::where('id',$declaration_id)->delete();
+        WasteDetail::where('declaration_id',$declaration_id)->delete();
+        
+        return response()->json($declaration_id);
+    }
+
+
     public function pdf()
     {        
 

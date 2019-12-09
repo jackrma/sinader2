@@ -19,39 +19,12 @@
         </v-flex>
     </v-layout> 
 
-<!--     <v-toolbar  color="secondary_green" dark>
-        <v-toolbar-title >Declaraciones de Residuos Entrantes</v-toolbar-title>
 
-    </v-toolbar>
-    <v-data-table
-      :headers="headers"
-      :items="declarations"
-      class="elevation-1"
-     
-    >
-      <template v-slot:items="props">
-        <td class="text-xs-right">{{ props.item.correlative }} - {{ props.item.correlative_dv }}</td>
-        <td class="text-xs-right">{{ props.item.period }}</td>
-        <td class="text-xs-right">{{ props.item.rut }}</td>
-        <td class="text-xs-right">{{ props.item.establecimiento }}</td>
-        <td class="text-xs-right">{{ props.item.created_at }}</td>
-        <td class="text-xs-right">{{ props.item.status }}</td>
-        <td class="text-xs-right">{{ props.item.certificate }}</td>
-
-      </template>
-    </v-data-table>
-
-    <v-layout row>
-        <v-flex xs1>
-            <p></p>
-        </v-flex>
-    </v-layout> 
- -->
 
     <v-toolbar color="secondary_green" dark>
         <v-toolbar-title></v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn @click='toNewDeclaration' color="main_green">Registrar nueva declaración</v-btn>
+        <v-btn @click='toNewDeclaration("")' color="main_green">Registrar nueva declaración</v-btn>
     </v-toolbar>
 
 
@@ -71,12 +44,10 @@
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
 
-
-
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toNewDeclaration" color="ds_138" dark>Editar</v-btn>
+            <v-btn  v-if="props.item.status=='CREADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Editar</v-btn>
  
-             <v-btn  v-if="props.item.status!='ENVIADO'" small @click="" color="main_green" dark>Eliminar</v-btn>
+             <v-btn  v-if="props.item.status=='CREADA'" small @click="toDelete(props.item)" color="main_green" dark>Eliminar</v-btn>
         </td>   
       </template>
     </v-data-table>
@@ -90,7 +61,7 @@
 
   import { mapState } from 'vuex';  
   import Vue from 'vue';  
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
 
  
   import DeclarationComponent  from './../components/DeclarationComponent';
@@ -114,17 +85,6 @@
             { text: 'Accion', value: '' },
         ],
         declarations: [
-            // {
-            //     correlative: 149882,
-            //     correlative_dv: 'K',
-            //     user:'René Maldonado',
-            //     period: '2019',
-            //     status: 'ENVIADO',
-            //     type: 'SALIDA',
-            //     created_at:'01/10/2019',
-            //     certificate: 'certificado.pdf',
-            // },
-
         ]
 
         }),
@@ -141,30 +101,6 @@
     methods: {
         initialize(){
             this.getdecalrations();
-            // if(this.$store.getters.type=='CentroAcopio') {
-            //     this.declarations=[
-            //     {
-            //         correlative: 149882,
-            //         correlative_dv: 'K',
-            //         user:'René Maldonado',
-            //         period: '2019',
-            //         status: 'ENVIADO',
-            //         type: 'SALIDA',
-            //         created_at:'01/10/2019',
-            //         certificate: 'certificado.pdf',
-            //     },
-            //     {
-            //         correlative: 149882,
-            //         correlative_dv: 'K',
-            //         user:'René Maldonado',
-            //         period: '2019',
-            //         status: 'ENVIADO',
-            //         type: 'TRAZABILIDAD',
-            //         created_at:'01/10/2019',
-            //         certificate: 'certificado.pdf',
-            //     }
-            //     ]
-            // }
         },  
 
         getdecalrations(){
@@ -177,19 +113,29 @@
                     console.log(resp);
                     alert("Error declarations/index :" + resp);
                 });
-
         },
 
 
-        toNewDeclaration (){
+        toNewDeclaration (declaration){
+
             var ComponentReserv = Vue.extend(DeclarationComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
-            source: '',
-             
-          }});
+            declaration_edit: declaration,
+            }});
             instance.$mount();
             this.$refs.container.appendChild(instance.$el);
         },
+
+        toDelete(declaration){
+            var app = this;
+            axios.post('/api/declaration/delete/'+declaration.id)
+                .then(function (resp) {    
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+        }
     }
     }
 </script>    

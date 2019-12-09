@@ -2175,6 +2175,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    declaration_edit: Object
+  },
   data: function data() {
     return {
       dialog: true,
@@ -2229,13 +2232,25 @@ __webpack_require__.r(__webpack_exports__);
       this.commune = this.$store.getters.establishment.region.name;
       this.region = this.$store.getters.establishment.commune.name;
       var app = this;
-      axios.post('/api/declaration/create').then(function (resp) {
-        app.declaration = resp.data;
-        app.correlative = app.declaration.correlative + '-' + app.declaration.correlative_dv;
-      })["catch"](function (resp) {
-        console.log(resp);
-        alert("Error declaration/create :" + resp);
-      });
+
+      if (this.declaration_edit) {
+        app.declaration = app.declaration_edit;
+        app.correlative = app.declaration_edit.correlative + '-' + app.declaration_edit.correlative_dv;
+        axios.get('/api/waste_details/' + app.declaration.id).then(function (resp) {
+          app.residues = resp.data;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error waste_details :" + resp);
+        });
+      } else {
+        axios.post('/api/declaration/create').then(function (resp) {
+          app.declaration = resp.data;
+          app.correlative = app.declaration.correlative + '-' + app.declaration.correlative_dv;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error declaration/create :" + resp);
+        });
+      }
     },
     createdeclaration: function createdeclaration() {
       var declaration = {
@@ -4354,36 +4369,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../components/DeclarationComponent */ "./resources/js/components/DeclarationComponent.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/DeclarationComponent */ "./resources/js/components/DeclarationComponent.vue");
 //
 //
 //
@@ -4444,7 +4431,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
- // import { EventBus } from './../eventbus.js';
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4478,52 +4465,19 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Accion',
         value: ''
       }],
-      declarations: [// {
-        //     correlative: 149882,
-        //     correlative_dv: 'K',
-        //     user:'René Maldonado',
-        //     period: '2019',
-        //     status: 'ENVIADO',
-        //     type: 'SALIDA',
-        //     created_at:'01/10/2019',
-        //     certificate: 'certificado.pdf',
-        // },
-      ]
+      declarations: []
     };
   },
   created: function created() {
     this.initialize();
     var app = this;
-    EventBus.$on('saveDeclaration', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveDeclaration', function () {
       app.getdecalrations();
     });
   },
   methods: {
     initialize: function initialize() {
-      this.getdecalrations(); // if(this.$store.getters.type=='CentroAcopio') {
-      //     this.declarations=[
-      //     {
-      //         correlative: 149882,
-      //         correlative_dv: 'K',
-      //         user:'René Maldonado',
-      //         period: '2019',
-      //         status: 'ENVIADO',
-      //         type: 'SALIDA',
-      //         created_at:'01/10/2019',
-      //         certificate: 'certificado.pdf',
-      //     },
-      //     {
-      //         correlative: 149882,
-      //         correlative_dv: 'K',
-      //         user:'René Maldonado',
-      //         period: '2019',
-      //         status: 'ENVIADO',
-      //         type: 'TRAZABILIDAD',
-      //         created_at:'01/10/2019',
-      //         certificate: 'certificado.pdf',
-      //     }
-      //     ]
-      // }
+      this.getdecalrations();
     },
     getdecalrations: function getdecalrations() {
       var app = this;
@@ -4534,16 +4488,23 @@ __webpack_require__.r(__webpack_exports__);
         alert("Error declarations/index :" + resp);
       });
     },
-    toNewDeclaration: function toNewDeclaration() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    toNewDeclaration: function toNewDeclaration(declaration) {
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
-          source: ''
+          declaration_edit: declaration
         }
       });
       instance.$mount();
       this.$refs.container.appendChild(instance.$el);
+    },
+    toDelete: function toDelete(declaration) {
+      var app = this;
+      axios.post('/api/declaration/delete/' + declaration.id).then(function (resp) {})["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
     }
   }
 });
@@ -10416,7 +10377,11 @@ var render = function() {
                 "v-btn",
                 {
                   attrs: { color: "main_green" },
-                  on: { click: _vm.toNewDeclaration }
+                  on: {
+                    click: function($event) {
+                      return _vm.toNewDeclaration("")
+                    }
+                  }
                 },
                 [_vm._v("Registrar nueva declaración")]
               )
@@ -10467,18 +10432,22 @@ var render = function() {
                     _c(
                       "td",
                       [
-                        props.item.status == "ENVIADO"
+                        props.item.status == "CREADA"
                           ? _c(
                               "v-btn",
                               {
                                 attrs: { small: "", color: "ds_138", dark: "" },
-                                on: { click: _vm.toNewDeclaration }
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toNewDeclaration(props.item)
+                                  }
+                                }
                               },
                               [_vm._v("Editar")]
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        props.item.status != "ENVIADO"
+                        props.item.status == "CREADA"
                           ? _c(
                               "v-btn",
                               {
@@ -10487,7 +10456,11 @@ var render = function() {
                                   color: "main_green",
                                   dark: ""
                                 },
-                                on: { click: function($event) {} }
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toDelete(props.item)
+                                  }
+                                }
                               },
                               [_vm._v("Eliminar")]
                             )
