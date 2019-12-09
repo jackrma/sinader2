@@ -3,9 +3,9 @@
 namespace App\Imports;
 
 use App\MonthWaste;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\{Importable, ToModel, WithHeadingRow, WithValidation};
 
-class MonthWasteImport implements ToModel
+class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
@@ -16,6 +16,23 @@ class MonthWasteImport implements ToModel
     {
         return new MonthWaste([
             //
+            'ler' => $row['LER'],
+            'rut' => $row['RUT'],
+            'entablishment' => $row['ESTABLECIMIENTO'],
+            'process' => $row['TRATAMIENTO'],
+            'quantity' => $row['CANTIDAD']
+            'carrier' => $row['RUT TRANSPORTISTA'];
+            'license_plate' => $row['PATENTE'];
+            'date' => $row['FECHA'];
         ]);
+    }
+
+    public function rules()
+    {
+        return [
+            'entablishment' => 'regex:/[0-9]{3}/',
+            'license_plate' => 'regex:/[A-Z]{3}-[0-9]{3}/',
+
+        ];
     }
 }
