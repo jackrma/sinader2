@@ -161,6 +161,15 @@
                         </v-flex>
 
                     </v-layout>
+                    <v-layout>
+                        <v-flex xs3 class= "px-2">                  
+                            <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
+                        </v-flex>
+                        <v-flex xs3>
+                            <p>Trasnporte: {{carriername}} {{vehicleplate}}</p>  
+                        </v-flex>
+                      
+                    </v-layout>
             </v-form>        
 
         </v-card-text>
@@ -188,6 +197,8 @@
   import { mapState } from 'vuex';  
   
   import { EventBus } from './../eventbus.js';
+
+  import TransportComponent  from './../components/TransportComponent';
 
 
   export default {
@@ -223,6 +234,10 @@
         contacto:'',
         email:'',
         
+        carrier:'',
+        carriername:'',
+        vehicleplate:'',
+
         tipos_recoleccion: '',
 
         destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA' ],
@@ -236,7 +251,12 @@
         }
     },
     created(){
+        var app = this;
         this.initialize();
+        EventBus.$on('saveCarrier', function(){  
+            alert("saveCarrier"); 
+            app.refreshCarrier();
+        });
     },
     methods: {
         initialize(){
@@ -361,11 +381,12 @@
                     // establishment_id: this.establishment_selected.id,
                     establishment_id: 1,
                     process_id: this.process_selected.id,
-                    gestion_id: this.gestion_selected.id,
+                    manage_id: this.gestion_selected.id,
                     quantity: this.cantidad,
                     waste_id: this.residue_selected.id,
                     unit_id: this.unit_selected.id,
-                    carrier_id: 1,
+                    carrier_id: this.carrier.carrier_id,
+                    carrier:this.carrier,
                 };
 
                 this.$store.commit('changeResidue', this.residue);
@@ -375,7 +396,22 @@
                 EventBus.$emit('saveResidues', 'someValue'); 
             }
             
-        }
+        },
+        toTransport (){
+            var ComponentReserv = Vue.extend(TransportComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            source: '', 
+            }});
+            instance.$mount();
+            this.$refs.container.appendChild(instance.$el);
+        },
+        refreshCarrier(){
+            this.carrier = this.$store.getters.carrier;
+            this.carriername = this.carrier.carriername;
+            this.vehicleplate = this.carrier.vehicleplate;
+
+            alert(JSON.stringify(this.carrier));
+        }, 
     }
 }
   

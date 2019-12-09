@@ -20,7 +20,10 @@ class DeclarationController extends Controller
      */
     public function index()
     {
-        $declarations = Declaration::all();
+        $user = Auth::user();
+        $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
+
+        $declarations = Declaration::where('establishment_id',$user_establishment->establishment_id)->get();
         return response()->json($declarations);
     }
 
@@ -84,7 +87,7 @@ class DeclarationController extends Controller
         $declarationNew->user_id           = $user->id;
 
         if ($declarationNew->save() ){
-            WasteDetail::where('declaration_id', $declarationNew->declaration_id)->delete();
+            WasteDetail::where('declaration_id', $declarationNew->id)->delete();
             $this->storeDetail($declaration['waste_detail'], $declarationNew->id);
         }
 
@@ -116,7 +119,7 @@ class DeclarationController extends Controller
             $waste_detail->waste_id         = $waste['waste_id'];
             $waste_detail->company_id       = $waste['company_id'];
             $waste_detail->establishment_id = $waste['establishment_id'];
-            $waste_detail->manage_id        = $waste['gestion_id'];
+            $waste_detail->manage_id        = $waste['manage_id'];
             $waste_detail->process_id       = $waste['process_id'];
             $waste_detail->unit_id          = $waste['unit_id'];
 
@@ -174,10 +177,52 @@ class DeclarationController extends Controller
     public function delete($declaration_id)
     {
         Declaration::where('id',$declaration_id)->delete();
+       
         WasteDetail::where('declaration_id',$declaration_id)->delete();
         
         return response()->json($declaration_id);
     }
+
+
+    public function changeStatusEnviada($declaration_id)
+    {
+        $declaration = Declaration::where('id',$declaration_id)->get()->first();
+        $declaration->status = 'ENVIADA';
+        $declaration->save();
+        
+        return response()->json($declaration);
+    }
+
+
+    public function sinMovimento(Request $request)
+    {
+        $user = Auth::user();
+        $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
+
+        $declaration = $request->Input('declaration');
+
+
+        $declarationNew = Declaration::where('correlative', $declaration["correlative"])->get()->first();
+
+        if(!$declarationNew){
+            $declarationNew = new Declaration();
+        }
+        
+        $declarationNew->correlative    = $declaration['correlative'];       
+        $declarationNew->correlative_dv = $declaration['correlative_dv']; 
+        $declarationNew->type           = $declaration['type'];
+        $declarationNew->period         = $declaration['period'];
+        $declarationNew->status            = 'SINMOVIMIENTO';
+        $declarationNew->establishment_id  = $user_establishment->establishment_id;
+        $declarationNew->user_id           = $user->id;
+
+        $declarationNew->save(); 
+
+        WasteDetail::where('declaration_id',$declarationNew->id)->delete();
+  
+        return response()->json($declarationNew);
+    }
+
 
 
     public function pdf()

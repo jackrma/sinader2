@@ -3,16 +3,19 @@
 <v-layout row>
     <v-card>
 
+    <v-layout row>
+        <v-flex xs12 class='px-4'>
 
-    <v-toolbar  color="main_green" dark>
+            <v-toolbar  color="main_green" dark>
 
-      <v-toolbar-title v-if="this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='GeneradorMunicipal'" >Reportes de Generación de Residuos no Peligrosos</v-toolbar-title>
+              <v-toolbar-title v-if="this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='GeneradorMunicipal'" >Reportes de Generación de Residuos no Peligrosos</v-toolbar-title>
 
-      <v-toolbar-title v-if="this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal'" >Reportes de Salida de Residuos no Peligrosos</v-toolbar-title>
+              <v-toolbar-title v-if="this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal'" >Reportes de Salida de Residuos no Peligrosos</v-toolbar-title>
 
 
-    </v-toolbar>
-
+            </v-toolbar>
+        </v-flex>
+    </v-layout>
     <v-layout row>
         <v-flex xs1>
             <p></p>
@@ -20,38 +23,47 @@
     </v-layout> 
 
 
-
-    <v-toolbar color="secondary_green" dark>
-        <v-toolbar-title></v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn @click='toNewDeclaration("")' color="main_green">Registrar nueva declaración</v-btn>
-    </v-toolbar>
-
-
-    <v-data-table
-      :headers="headers"
-      :items="declarations"
-      class="elevation-1"
-      
-    >
-      <template v-slot:items="props">
-        <td class="text-xs-right">{{ props.item.correlative }} - {{ props.item.correlative_dv }}</td>
-        <td class="text-xs-right">{{ props.item.period }}</td>
-        <td class="text-xs-right">{{ props.item.user }}</td>
-        <td class="text-xs-right">{{ props.item.created_at }}</td>
-        <td class="text-xs-right">{{ props.item.type }}</td>
-        <td class="text-xs-right">{{ props.item.status }}</td>
-        <td class="text-xs-right">{{ props.item.certificate }}</td>
+    <v-layout row>
+        <v-flex xs12 class='px-4'>
+            <v-toolbar color="secondary_green" dark>
+                <v-toolbar-title></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn @click='toNewDeclaration("")' color="main_green">Registrar nueva declaración</v-btn>
+            </v-toolbar>
+        </v-flex>
+    </v-layout>
 
 
-        <td> 
-            <v-btn  v-if="props.item.status=='CREADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Editar</v-btn>
- 
-             <v-btn  v-if="props.item.status=='CREADA'" small @click="toDelete(props.item)" color="main_green" dark>Eliminar</v-btn>
-        </td>   
-      </template>
-    </v-data-table>
+   <v-layout row>
+        <v-flex xs12 class='px-4'>
+            <v-data-table
+              :headers="headers"
+              :items="declarations"
+              class="elevation-1"
+              
+            >
+              <template v-slot:items="props">
+                <td class="text-xs-right">{{ props.item.correlative }} - {{ props.item.correlative_dv }}</td>
+                <td class="text-xs-right">{{ props.item.period }}</td>
+                <td class="text-xs-right">{{ props.item.user }}</td>
+                <td class="text-xs-right">{{ props.item.created_at }}</td>
+                <td class="text-xs-right">{{ props.item.type }}</td>
+                <td class="text-xs-right">{{ props.item.status }}</td>
+                <td class="text-xs-right">{{ props.item.certificate }}</td>
 
+
+                <td> 
+                    <v-btn  v-if="props.item.status=='CREADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Editar</v-btn>
+         
+                     <v-btn  v-if="props.item.status=='CREADA'" small @click="toDelete(props.item)" color="main_green" dark>Eliminar</v-btn>
+                </td>  
+                <td> 
+                    <v-btn  v-if="props.item.status=='CREADA'" small @click="enviar(props.item)" color="ds_138" dark>Enviar</v-btn>
+                </td>   
+              </template>
+            </v-data-table>
+        </v-flex>
+    </v-layout>
 
     </v-card>
 </v-layout>    
@@ -129,7 +141,20 @@
         toDelete(declaration){
             var app = this;
             axios.post('/api/declaration/delete/'+declaration.id)
-                .then(function (resp) {    
+                .then(function (resp) {  
+                    app.getdecalrations();  
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+        },
+        
+        enviar(declaration){
+            var app = this;
+            axios.post('/api/declaration/enviar/'+declaration.id)
+                .then(function (resp) {  
+                    app.getdecalrations();  
                 })
                 .catch(function (resp) {
                     console.log(resp);

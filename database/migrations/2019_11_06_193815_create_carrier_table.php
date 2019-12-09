@@ -15,6 +15,8 @@ class CreateCarrierTable extends Migration
     {
         Schema::create('carriers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string("rut")->nullable();
+            $table->string("dv")->nullable();
             $table->string("name");
             $table->timestamps();
 

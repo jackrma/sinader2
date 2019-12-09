@@ -15,6 +15,7 @@ export default new Vuex.Store(
 	    user: '',
 	    company: '',
 	    residue:'',
+	    carrier:'',
 
 	},
 	mutations: {
@@ -37,6 +38,9 @@ export default new Vuex.Store(
 		changeResidue(state, residue) {
 		   	state.residue = residue;
 		},
+		changeCarrier(state, carrier) {
+		   	state.carrier = carrier;
+		},
 	},
 	getters: {
 		type: state => state.type,
@@ -45,6 +49,7 @@ export default new Vuex.Store(
 		user: state => state.user,
 		company: state => state.company,
 		residue: state => state.residue,
+		carrier: state => state.carrier,
 	},
     plugins: [
     	createPersistedState()

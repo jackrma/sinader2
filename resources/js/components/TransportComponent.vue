@@ -55,9 +55,14 @@
                     <v-layout>
                         <v-flex xs10 class="px-1">
                             <v-select
-                                :items="transports"
+                                :items="carriers"
                                 v-model="transport"
                                 label="Empresa de Transportes"
+                                item-text="name"  
+                                :rules = "generalRule"
+                                v-on:change="changeCarrier"
+                                return-object
+
                             ></v-select> 
                         </v-flex>    
                         <v-flex xs2 class="px-1">
@@ -69,18 +74,26 @@
                     <v-layout>
                         <v-flex xs12 class="px-1">
                             <v-select
-                                :items="types"
+                                :items="vehicle_types"
                                 v-model="type"
                                 label="Tipo de Vehículo"
+                                item-text="name"  
+                                :rules = "generalRule"
+                                v-on:change="changeVehicleType"
+                                return-object
                             ></v-select> 
                         </v-flex>
                     </v-layout>
                     <v-layout>
                         <v-flex xs12 class="px-1">
                             <v-select
-                                :items="plates"
-                                v-model="plate"
+                                :items="vehicles"
+                                v-model="vehicle"
                                 label="Patente"
+                                item-text="plate"  
+                                :rules = "generalRule"
+                                v-on:change="changeVehicle"
+                                return-object
                             ></v-select> 
                         </v-flex>
                     </v-layout>                
@@ -116,7 +129,7 @@
           <v-btn
             color="main_green"
             class='white--text'
-            @click="dialog = false"
+            @click="saveCarrier()"
           >
             Guardar
           </v-btn>
@@ -133,7 +146,7 @@
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex';  
   
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
 
   import NewTransportComponent  from './../components/NewTransportComponent';
   import SearchTransportComponent  from './../components/SearchTransportComponent';
@@ -147,41 +160,77 @@
         dialog: true,
         menu1: false,
 
-        trasnport:'',
-        type:'',
-        plate:'',
+        carrier:'',
+        vehicle_type:'',
+        vahicle:'',
 
         texto: 'Atención: Si el transporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
 
-        headers: [
-            { text: 'Rut', value: '' },            
-            { text: 'Razón Social', value: '' },
-        ],
-
-        transports: [
-            
-                'Transportes René Maldonado Spa 1',
-                'Transportes René Maldonado Spa 2',
-                'Transportes René Maldonado Spa 3',
-                'Transportes René Maldonado Spa 4',
-            ],
-        types: ['Tipo 1', 'Tipo2', 'Tipo 3'],
-        plates: ['RD TR 56', 'RD TR 98' ,'RD TR 43', 'RD TR 87'],    
+        carriers: [],
+        vehicle_types: [],
+        vehicles: [],    
 
         }
       },
-      methods:{
-          toNewTransport (){
 
-              var ComponentReserv = Vue.extend(NewTransportComponent)
-              var instance = new ComponentReserv({store: this.$store, propsData: {
-              source: '', 
-              }});
-              instance.$mount();
-              this.$refs.container.appendChild(instance.$el);
-          },
+    created(){
+        this.initialize();
+    },
+    methods:{
+        initialize(){
+            var app = this;
+            axios.get('/api/carrier')
+                .then(function (resp) {    
+                    app.carriers = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error carrier :" + resp);
+                });
 
-          toSearch(){
+            axios.get('/api/vehicletype')
+                .then(function (resp) {    
+                    app.vehicle_types = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error Vehicle Type :" + resp);
+                });
+        },
+
+        changeCarrier(carrier_selected){
+
+            
+            this.carrier_selected = carrier_selected;
+            var app = this;
+
+            axios.get('/api/vehicle/'+this.carrier_selected.id)
+                .then(function (resp) {    
+                    app.vehicles = resp.data;
+                alert(JSON.stringify(resp.data));
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error Vehicle :" + resp);
+                });
+
+        },
+
+        changeVehicle(vehicle_selected){
+            this.vehicle_selected = vehicle_selected;
+        },
+
+        toNewTransport (){
+
+            var ComponentReserv = Vue.extend(NewTransportComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            source: '', 
+            }});
+            instance.$mount();
+            this.$refs.container.appendChild(instance.$el);
+        },
+
+        toSearch(){
                 var ComponentReserv = Vue.extend(SearchTransportComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
                 source: '', 
@@ -189,14 +238,28 @@
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
        
-          },
+        },
 
 
         val_move_date(){
-            this.menu1 = false;
-           
-            
+            this.menu1 = false;            
         },
+
+        saveCarrier(){
+            var transport={
+                transport_date: this.move_date,
+                carriername: this.carrier_selected.name,
+                carrier_id: this.carrier_selected.id,
+                vehicleplate: this.vehicle_selected.plate,
+                vehicle_id: this.vehicle_selected.id,
+            }
+
+            this.$store.commit('changeCarrier', transport);
+
+            this.dialog = false;
+
+            EventBus.$emit('saveCarrier', 'someValue'); 
+        }
 
       }
     }

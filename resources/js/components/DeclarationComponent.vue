@@ -10,7 +10,7 @@
           <v-toolbar-title>Nueva Declaración</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn flat class='white--text'  @click="dialog = false">Declarar Sin Movimiento</v-btn>
+            <v-btn flat class='white--text'  @click="sinMovimiento()">Declarar Sin Movimiento</v-btn>
             <v-btn flat class='white--text'  @click="createdeclaration()">Guardar</v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -74,7 +74,8 @@
                             ></v-select>
                         </v-flex>
                     </v-layout>
-                     <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
+
+
 
                 </v-card>
         
@@ -159,11 +160,9 @@
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
 
-    <!--         <td class="justify-center layout px-0">
-                <v-btn  v-if="props.item.state=='ACTIVO'" small @click="consumptionClick(props.item)" color="ds_138" dark>Registrar Consumo</v-btn>
-     
-                 <v-btn  v-if="props.item.state!='ACTIVO'" small @click="consumptionClick(props.item)" color="main_green" dark>Ver Registro</v-btn>
-            </td>    -->
+            <td class="justify-center layout px-0">
+                <v-btn small @click="delete_item(props.item)" color="ds_138" dark>Eliminar</v-btn>
+            </td>   
 
           </template>
         </v-data-table>
@@ -186,7 +185,7 @@
  
   import NewResidueIndComponent  from './../components/NewResidueIndComponent';
   import NewResidueMunComponent  from './../components/NewResidueMunComponent';
-  import TransportComponent  from './../components/TransportComponent';
+  
 
   export default {
     props: {
@@ -210,6 +209,7 @@
         address:'',
         commune:'',
         region:'',
+
 
         headers: [
             { text: 'Descripción del Residuo', value: '' },            
@@ -236,6 +236,7 @@
         EventBus.$on('saveResidues', function(){   
             app.refreshList();
         });
+
     },
 
     methods: {
@@ -305,13 +306,28 @@
 
         },
 
-        toTransport (){
-            var ComponentReserv = Vue.extend(TransportComponent)
-            var instance = new ComponentReserv({store: this.$store, propsData: {
-            source: '', 
-            }});
-            instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+        sinMovimiento(){
+
+            var declaration = {
+                correlative: this.declaration.correlative,
+                correlative_dv: this.declaration.correlative_dv,
+                
+                type: this.type,
+                period: this.period,
+                carrier: 0,
+            }
+
+            axios.post('/api/declaration/sinmovimiento', {declaration: declaration})
+                .then(function (resp) {    
+                    EventBus.$emit('saveDeclaration', 'someValue');
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declaration/sinmovieminto :" + resp);
+                });
+            this.dialog = false;
+
+
         },
 
 
@@ -341,6 +357,12 @@
             this.residues.push(this.$store.getters.residue);
         },   
 
+ 
+
+        delete_item(item){
+
+            this.residues.pop(item);
+        },   
 
 
     }

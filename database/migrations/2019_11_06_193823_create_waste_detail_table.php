@@ -24,6 +24,7 @@ class CreateWasteDetailTable extends Migration
             $table->string('establishment');
             $table->string('processing');
             $table->string('gestion');
+            $table->string('recolection');
             
             $table->string('pais')->nullable();
             $table->string('empresa')->nullable();
@@ -39,6 +40,8 @@ class CreateWasteDetailTable extends Migration
             $table->integer('manage_id')->references('id')->on('manage_types');
             $table->integer('process_id')->references('id')->on('process_types');
             $table->integer('unit_id')->references('id')->on('units');
+            $table->integer('recolection_id')->references('id')->on('recolection_types');
+
 
             $table->integer('carrier_id')->references('id')->on('carriers');
 

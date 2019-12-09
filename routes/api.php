@@ -42,14 +42,21 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/lerwaste/{lersubchapter_id}', 'LerWasteController@data');
 	Route::get('/managetype', 'ManageTypeController@data');
 	Route::get('/processtype', 'ProcessTypeController@data');
-	Route::get('/recolectionype', 'RecolectionTypeController@data');
+	Route::get('/recolectiontype', 'RecolectionTypeController@data');
 	Route::get('/unit', 'UnitController@data');
+
+	Route::get('/carrier', 'CarrierController@data');
+	Route::get('/vehicletype', 'VehicleTypeController@data');
+	Route::get('/vehicle/{carrier_id}', 'VehicleController@data');
 
 
     Route::get('/declarations', 'DeclarationController@index');
     Route::post('/declaration/create', 'DeclarationController@create');
 	Route::post('/declaration/store', 'DeclarationController@store');
-	Route::post('/declaration/delete/{}', 'DeclarationController@delete');
+	Route::post('/declaration/sinmovimiento', 'DeclarationController@sinMovimento');
+	Route::post('/declaration/delete/{declaration_id}', 'DeclarationController@delete');
+
+	Route::post('/declaration/enviar/{declaration_id}', 'DeclarationController@changeStatusEnviada');
 
     Route::get('/waste_details/{declaration_id}', 'WasteDetailController@index');
 

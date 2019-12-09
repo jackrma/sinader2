@@ -53,7 +53,16 @@ class DatabaseSeeder extends Seeder
     App\UserEstablishment::create(["user_id"=>4, "establishment_id"=>4, "retc_id" => 119010]);
 
 
+// ************************
 
+	  App\Carrier::truncate();
+	  App\Carrier::create(['rut' => '1', 'dv' => '9', 'name' => 'Trasnporte de prueba']);
+// ************************
+	  App\VehicleType::truncate();
+	  App\VehicleType::create([ 'name' => 'Camión']);
+// ************************
+	  App\Vehicle::truncate();
+	  App\Vehicle::create(['name' => 'Camión 1', 'plate' => 'WR JC 32', 'vehicle_type_id'=>1, "carrier_id"=>1]);
 // ************************
 
 	  App\Region::truncate();  
@@ -1392,6 +1401,7 @@ class DatabaseSeeder extends Seeder
 		App\LerWaste::create(['id'=> 7,'chapter_id'=>  20,'subchapter_id'=>  3,'name'=>'Residuos voluminosos','waste_code'=> '20 03 07','type'=> 'No Peligroso','pp'=> 'NO','active'=> 'SI']);
 		App\LerWaste::create(['id'=> 99,'chapter_id'=>  20,'subchapter_id'=>  3,'name'=>'Residuos municipales no especificados en otra categoría','waste_code'=> '20 03 99','type'=> 'No Peligroso','pp'=> 'NO','active'=> 'SI']);
 		
+
 
 		  }
 		}
