@@ -14,14 +14,13 @@ class CreateLerWasteTable extends Migration
     public function up()
     {
         Schema::create('ler_waste', function (Blueprint $table) {
-            $table->integer('id');
-            $table->integer('chapter_id')->references('id')->on('ler_chapter');
+            $table->bigIncrements('id');
+            $table->integer('waste_number');
             $table->integer('subchapter_id')->references('id')->on('ler_subchapter');
-            $table->string('name');
+            $table->text('name');
             $table->string('waste_code');
-            $table->string('type');
-            $table->string('pp');
-            $table->string('active');
+            $table->string('type_id')->references('id')->on('waste_types');;
+            $table->integer('active');
             $table->timestamps();
         });
     }

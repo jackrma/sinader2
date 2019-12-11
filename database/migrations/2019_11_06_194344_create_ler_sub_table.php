@@ -14,9 +14,11 @@ class CreateLerSubTable extends Migration
     public function up()
     {
         Schema::create('ler_subchapter', function (Blueprint $table) {
-            $table->integer('id');
+            $table->bigIncrements('id');
+            $table->integer('subchapter_number');
+            $table->text('name');
             $table->integer('chapter_id')->references('id')->on('ler_chapter');
-            $table->string('name');
+            $table->integer("active");
             $table->timestamps();
         });
     }

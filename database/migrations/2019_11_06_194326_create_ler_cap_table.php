@@ -14,8 +14,10 @@ class CreateLerCapTable extends Migration
     public function up()
     {
         Schema::create('ler_chapter', function (Blueprint $table) {
-            $table->integer('id');
-            $table->string("name");
+            $table->bigIncrements('id');
+            $table->integer('chapter_number');
+            $table->text("name");
+            $table->integer("active");
             $table->timestamps();
         });
     }

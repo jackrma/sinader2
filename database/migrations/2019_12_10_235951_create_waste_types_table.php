@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarrierTable extends Migration
+class CreateWasteTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateCarrierTable extends Migration
      */
     public function up()
     {
-        Schema::create('carriers', function (Blueprint $table) {
+        Schema::create('waste_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("rut")->nullable();
-            $table->string("dv")->nullable();
             $table->string("name");
-            $table->string("address");
             $table->timestamps();
-
         });
     }
 
@@ -31,6 +27,6 @@ class CreateCarrierTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carriers');
+        Schema::dropIfExists('waste_types');
     }
 }

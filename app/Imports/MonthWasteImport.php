@@ -22,7 +22,7 @@ class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation
             'process' => $row['TRATAMIENTO'],
             'quantity' => $row['CANTIDAD']
             'carrier' => $row['RUT TRANSPORTISTA'];
-            'license_plate' => $row['PATENTE'];
+            'plate' => $row['PATENTE'];
             'date' => $row['FECHA'];
         ]);
     }

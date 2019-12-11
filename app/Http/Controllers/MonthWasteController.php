@@ -22,4 +22,9 @@ class MonthWasteController extends Controller
 
         return redirect('/')->with('success', 'Archivo importado correctamente!');
     }
+
+    public function saveDeclaration()
+    {
+        
+    }
 }

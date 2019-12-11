@@ -21,7 +21,7 @@ class CreateMonthWastesTable extends Migration
             $table->integer("process");
             $table->integer("quantity");
             $table->string("carrier");
-            $table->string("license_plate");
+            $table->string("plate");
             $table->integer("date");
             $table->timestamps();
         });

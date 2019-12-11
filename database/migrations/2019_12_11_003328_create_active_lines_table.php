@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWastesTable extends Migration
+class CreateActiveLinesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateWastesTable extends Migration
      */
     public function up()
     {
-        Schema::create('wastes', function (Blueprint $table) {
+        Schema::create('active_lines', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("ler");
-            $table->string("rut");
-            $table->integer("entablishment");
-            $table->integer("process");
-            $table->integer("quantity");
+            $table->string("name");
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateWastesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wastes');
+        Schema::dropIfExists('active_lines');
     }
 }
