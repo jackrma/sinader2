@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/company', 'CompanyController@data');
     Route::get('/companies', 'CompanyController@index');
+    Route::get('/companies/search', 'CompanyController@search');
 
 
 	Route::get('/lerchapter', 'LerChapterController@data');
@@ -51,7 +52,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/recolectiontype', 'RecolectionTypeController@data');
 	Route::get('/unit', 'UnitController@data');
 
-	Route::get('/carrier', 'CarrierController@data');
+	Route::get('/carriers', 'CarrierController@data');
+	Route::get('/carriers/search', 'CarrierController@search');
 	Route::get('/vehicletype', 'VehicleTypeController@data');
 	Route::get('/vehicle/{carrier_id}', 'VehicleController@data');
 

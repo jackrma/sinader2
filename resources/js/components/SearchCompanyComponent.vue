@@ -19,7 +19,7 @@
           class="headline grey lighten-2"
           primary-title
         >
-           Buscar Empresa Transporte
+           Buscar Destinatario
         </v-card-title>
 
         <v-card-text>
@@ -129,7 +129,7 @@
     methods: {
         initialize(){
             var app = this;
-            axios.get('/api/carriers')
+            axios.get('/api/companies')
                 .then(function (resp) {    
                     app.carriers = resp.data;
                 })
@@ -142,7 +142,7 @@
         toSearch(){
             var app = this;
   
-            axios.get('/api/carriers/search?rut='+this.rut+'&name='+this.name)
+            axios.get('/api/companies/search?rut='+this.rut+'&name='+this.name)
                 .then(function (resp) {    
                     app.carriers = resp.data;
                 })
@@ -153,9 +153,9 @@
         },
 
         selected_item(item){
-            this.$store.commit('changeCarrier', item);
+            this.$store.commit('changeReceiver', item);
 
-            EventBus.$emit('selectCarrier', 'someValue'); 
+            EventBus.$emit('selectReceiver', 'someValue'); 
             this.dialog = false;
              
         }

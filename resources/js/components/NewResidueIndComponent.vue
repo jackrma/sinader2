@@ -27,7 +27,8 @@
                     <v-layout>
                         <v-flex  xs3 class="px-1">
 
-                            <v-select
+                            <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
+                           <!--  <v-select
                                 :items="companies"
                                 v-model="company"
                                 item-text="name"  
@@ -35,13 +36,17 @@
                                 :rules = "generalRule"
                                 v-on:change="changeCompany"
                                 return-object
-                            ></v-select> 
+                            ></v-select>  -->
 
 
                         </v-flex>
+                        <v-flex xs1 class="px-1">
+                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
+                                <v-icon>search</v-icon>
+                            </v-btn>
+                        </v-flex>
+
                         <v-flex  xs3 class="px-1">
-
-
                             <v-select
                                 :items="establishments"
                                 v-model="establishment"
@@ -203,6 +208,7 @@
   import { EventBus } from './../eventbus.js';
 
   import TransportComponent  from './../components/TransportComponent';
+  import SearchReceiverComponent  from './../components/SearchCompanyComponent';
 
 
   export default {
@@ -212,7 +218,7 @@
         generalRule: [v => !!v || 'Campo requerido'],
         numberRule: [v => !!v || 'Campo requerido', v => v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico',],
 
-
+        receiver_name:'',
 
         checkbox:false,
         dialog: true,
@@ -259,9 +265,12 @@
         var app = this;
         this.initialize();
         EventBus.$on('saveCarrier', function(){  
-            alert("saveCarrier"); 
             app.refreshCarrier();
         });
+        EventBus.$on('selectReceiver', function(){ 
+            app.selectCompany();
+        });
+
     },
     methods: {
         initialize(){
@@ -310,14 +319,14 @@
                     alert("Error chapter :" + resp);
                 });
 
-            axios.get('/api/companies')
-                .then(function (resp) {    
-                    app.companies = resp.data;
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Error chapter :" + resp);
-                });
+            // axios.get('/api/companies')
+            //     .then(function (resp) {    
+            //         app.companies = resp.data;
+            //     })
+            //     .catch(function (resp) {
+            //         console.log(resp);
+            //         alert("Error chapter :" + resp);
+            //     });
 
 
         },
@@ -335,6 +344,9 @@
                     alert("Error chapter :" + resp);
                 });
         },
+
+
+
 
         changeSupChapter(subchapter_selected){
             var app = this;
@@ -354,7 +366,17 @@
             this.residuetext = residue_selected.waste_code +' | '+ residue_selected.name;
         },
 
+        selectCompany(){
+            alert(JSON.stringify(this.$store.getters.receiver));
+
+            this.receiver_name= this.$store.getters.receiver.name;
+            this.changeCompany(this.$store.getters.receiver);
+            
+        },
+
         changeCompany(company_selected){
+
+            alert('receiver');
             var app = this;
             this.company_selected = company_selected;
 
@@ -433,13 +455,25 @@
             instance.$mount();
             this.$refs.container.appendChild(instance.$el);
         },
+
         refreshCarrier(){
             this.carrier = this.$store.getters.carrier;
             this.carriername = this.carrier.carriername;
             this.vehicleplate = this.carrier.vehicleplate;
 
             alert(JSON.stringify(this.carrier));
-        }, 
+        },
+        toSearch(){
+                var ComponentReserv = Vue.extend(SearchReceiverComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+       
+        },
+
+
     }
 }
   

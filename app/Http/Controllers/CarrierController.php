@@ -8,7 +8,27 @@ use Illuminate\Http\Request;
 class CarrierController extends Controller
 {
 	public function data(Request $request){
-		$carrier = Carrier::all();
-		return response()->json($carrier);
+		$carriers = Carrier::orderBy('name')->get();
+		return response()->json($carriers);
 	}
+
+	public function search(Request $request){
+
+		$rut = $request->input('rut');
+		$name = $request->input('name');
+
+		$carriers = Carrier::orderBy('name')->get();
+
+		if($name){
+        	$carriers = Carrier::where('name', 'ILIKE', '%'.$name.'%')->get()->toArray();
+    	}
+        if($rut){
+        	$rut = substr ($rut, 0, -2);
+			$carriers = Carrier::where('rut', $rut)->get()->toArray();        	
+        }
+
+		return response()->json($carriers);
+	}
+
+
 }
