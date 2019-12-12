@@ -247,8 +247,8 @@
             this.rut            = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
             this.establishment  = this.$store.getters.establishment.name;
             this.address        = this.$store.getters.establishment.street + this.$store.getters.establishment.number;
-            this.commune        = this.$store.getters.establishment.region.name;
-            this.region         = this.$store.getters.establishment.commune.name;
+            this.commune        = this.$store.getters.establishment.commune.name;
+            this.region         = this.$store.getters.establishment.region.name;
             
             var app = this;
 
@@ -283,7 +283,12 @@
             var declaration = {
                 correlative: this.declaration.correlative,
                 correlative_dv: this.declaration.correlative_dv,
-                
+                rut: this.rut,
+                company: this.company,
+                establishment: this.establishment,
+                direccion: this.address,
+                comuna: this.commune,
+                region: this.region,
                 type: this.type,
                 period: this.period,
                 carrier: 0,

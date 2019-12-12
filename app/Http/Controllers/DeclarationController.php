@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DeclarationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function index()
     {
         $user = Auth::user();
@@ -27,11 +23,18 @@ class DeclarationController extends Controller
         return response()->json($declarations);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function forreceiver($receiver_id){
+        $declarations = Declaration::join('waste_details','declarations.id',"=",'waste_details.declaration_id')->where('waste_details.establishment_id',$receiver_id)->get();
+        return response()->json($declarations);   
+    }
+
+
+    public function declaration($declaration_id){
+        $declaration = Declaration::where('id', $declaration_id)->get()->first();
+        return response()->json($declaration);   
+    }
+
     public function create()
     {
 
@@ -66,6 +69,10 @@ class DeclarationController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        Info($request);
+
         $user = Auth::user();
         $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
 
@@ -82,6 +89,14 @@ class DeclarationController extends Controller
         $declarationNew->correlative_dv = $declaration['correlative_dv']; 
         $declarationNew->type           = $declaration['type'];
         $declarationNew->period         = $declaration['period'];
+
+        $declarationNew->rut            = $declaration['rut'];
+        $declarationNew->company        = $declaration['company'];
+        $declarationNew->establishment  = $declaration['establishment'];
+        $declarationNew->direccion      = $declaration['direccion'];
+        $declarationNew->comuna         = $declaration['comuna'];
+        $declarationNew->region         = $declaration['region'];
+ 
         $declarationNew->status            = 'CREADA';
         $declarationNew->establishment_id  = $user_establishment->establishment_id;
         $declarationNew->user_id           = $user->id;
@@ -96,6 +111,9 @@ class DeclarationController extends Controller
 
 
     public function storeDetail($residues, $declaration_id){
+
+        Info("**************************");
+        Info($residues);
 
         foreach ($residues as $waste ) {
             
@@ -122,8 +140,13 @@ class DeclarationController extends Controller
             $waste_detail->manage_id        = $waste['manage_id'];
             $waste_detail->process_id       = $waste['process_id'];
             $waste_detail->unit_id          = $waste['unit_id'];
+            $waste_detail->status           = 'ENVIADO';
 
-            $waste_detail->carrier_id       = $waste['carrier_id'];
+            if(array_key_exists('carrier_id',$waste)){
+                $waste_detail->carrier_id = $waste['carrier_id'];
+            } else {
+                $waste_detail->carrier_id = 1;
+            }
 
             $waste_detail->save();
         }

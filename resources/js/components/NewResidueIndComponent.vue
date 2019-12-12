@@ -28,10 +28,12 @@
                         <v-flex  xs3 class="px-1">
 
                             <v-select
-                                :items="destinatarios"
-                                v-model="destiny"
+                                :items="companies"
+                                v-model="company"
+                                item-text="name"  
                                 label="Destinatario"
                                 :rules = "generalRule"
+                                v-on:change="changeCompany"
                                 return-object
                             ></v-select> 
 
@@ -43,8 +45,10 @@
                             <v-select
                                 :items="establishments"
                                 v-model="establishment"
+                                item-text="name"  
                                 label="Establecimiento"
                                 :rules = "generalRule"
+                                v-on:change="changeEstablishment"
                                 return-object
                             ></v-select> 
 
@@ -161,9 +165,9 @@
                         </v-flex>
 
                     </v-layout>
-                    <v-layout>
+                    <v-layout v-if="this.$store.getters.type=='CentroAcopio'">
                         <v-flex xs3 class= "px-2">                  
-                            <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
+                            <v-btn @click='toTransport' class='white--text' color="main_green">Agregar Transporte</v-btn>
                         </v-flex>
                         <v-flex xs3>
                             <p>Trasnporte: {{carriername}} {{vehicleplate}}</p>  
@@ -222,8 +226,8 @@
         subcapitulos: '',
         residues: '',
 
-        company_selected:1,
-        establishment_selected:1,
+        company_selected:'',
+        establishment_selected:'',
         residue_selected:'',
         process_selected:'',
         gestion_selected:'',
@@ -239,9 +243,10 @@
         vehicleplate:'',
 
         tipos_recoleccion: '',
+        
+        companies: [],
+        establishments: [],
 
-        destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA' ],
-        establishments: ['12345 | Gerdau Aza Colina','12345 | Gerdau Aza Colina'],
 
         procesing:'',
         processings:'',
@@ -305,6 +310,16 @@
                     alert("Error chapter :" + resp);
                 });
 
+            axios.get('/api/companies')
+                .then(function (resp) {    
+                    app.companies = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+
+
         },
 
         changeChapter(chapter_selected){
@@ -340,11 +355,21 @@
         },
 
         changeCompany(company_selected){
-
+            var app = this;
             this.company_selected = company_selected;
+
+            axios.get('/api/establishments/'+this.company_selected.id)
+                .then(function (resp) {    
+                    app.establishments = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
         },
 
         changeEstablishment(establishment_selected){
+            alert(JSON.stringify(establishment_selected));
             this.establishment_selected = establishment_selected;
         },
 
@@ -360,14 +385,19 @@
             this.unit_selected = unit_selected;
         },
 
+
+
         saveResidue(){
+
+
+            alert(JSON.stringify(this.establishment_selected));
 
             if (this.$refs.form.validate()){
 
                 this.residue = {
                     waste: this.residuetext,
                     sum: this.cantidad + ' ' + this.unidad.name,
-                    company: '92176000-0 | Gerdau Aza SA',
+                    company: this.company_selected.rut + ' | ' + this.company_selected.name,
                     establishment: '12345 | Gerdau Aza Colina',
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
@@ -376,10 +406,8 @@
                     contacto: this.contacto,
                     email: this.email,
 
-                    // company_id: this.company_selected.id,
-                    company_id: 1,
-                    // establishment_id: this.establishment_selected.id,
-                    establishment_id: 1,
+                    company_id: this.company_selected.id,
+                    establishment_id: this.establishment_selected.id,
                     process_id: this.process_selected.id,
                     manage_id: this.gestion_selected.id,
                     quantity: this.cantidad,
