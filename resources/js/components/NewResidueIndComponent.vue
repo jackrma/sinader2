@@ -28,16 +28,6 @@
                         <v-flex  xs3 class="px-1">
 
                             <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
-                           <!--  <v-select
-                                :items="companies"
-                                v-model="company"
-                                item-text="name"  
-                                label="Destinatario"
-                                :rules = "generalRule"
-                                v-on:change="changeCompany"
-                                return-object
-                            ></v-select>  -->
-
 
                         </v-flex>
                         <v-flex xs1 class="px-1">
@@ -412,15 +402,13 @@
         saveResidue(){
 
 
-            alert(JSON.stringify(this.establishment_selected));
-
             if (this.$refs.form.validate()){
 
                 this.residue = {
                     waste: this.residuetext,
                     sum: this.cantidad + ' ' + this.unidad.name,
                     company: this.company_selected.rut + ' | ' + this.company_selected.name,
-                    establishment: '12345 | Gerdau Aza Colina',
+                    establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
                     pais: this.pais,

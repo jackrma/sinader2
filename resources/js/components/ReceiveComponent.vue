@@ -80,7 +80,7 @@
 
             <td class="justify-center layout px-0">
                 <v-btn small @click="toNewResidue(props.item)" color="ds_138" dark>Discrepancia</v-btn>
-                <v-btn small @click="toNewTraceability" color="ds_138" dark>Trazabilidad</v-btn>
+                <v-btn small @click="toNewTraceability(props.item)" color="ds_138" dark>Trazabilidad</v-btn>
             </td>   
 
 
@@ -196,11 +196,11 @@
         },
 
 
-        toNewTraceability (){
+        toNewTraceability (item){
 
                 var ComponentReserv = Vue.extend(TraceabilityComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
-                source: '', 
+                waste_detail: item, 
                 }});
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
