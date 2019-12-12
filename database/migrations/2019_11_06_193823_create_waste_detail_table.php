@@ -24,12 +24,18 @@ class CreateWasteDetailTable extends Migration
             $table->string('establishment');
             $table->string('processing');
             $table->string('gestion');
-            $table->string('recolection');
+            $table->string('recolection')->nullable();
             
             $table->string('pais')->nullable();
             $table->string('empresa')->nullable();
             $table->string('contacto')->nullable();
             $table->string('email')->nullable();
+            
+            $table->string('status');
+            $table->integer('disc_quantity')->nullable();
+            $table->string('disc_unit')->nullable();
+            $table->string('disc_comment')->nullable();
+
 
             
             $table->integer('quantity');
@@ -40,10 +46,10 @@ class CreateWasteDetailTable extends Migration
             $table->integer('manage_id')->references('id')->on('manage_types');
             $table->integer('process_id')->references('id')->on('process_types');
             $table->integer('unit_id')->references('id')->on('units');
-            $table->integer('recolection_id')->references('id')->on('recolection_types');
+            $table->integer('recolection_id')->nullable()->references('id')->on('recolection_types');
 
 
-            $table->integer('carrier_id')->references('id')->on('carriers');
+            $table->integer('carrier_id')->nullable()->references('id')->on('carriers');
 
             $table->timestamps();
         });

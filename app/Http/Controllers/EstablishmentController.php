@@ -12,6 +12,11 @@ class EstablishmentController extends Controller
 {
 
 
+	public function index($company_id){
+		$establishment = Establishment::where('company_id', $company_id)->get();
+		return response()->json($establishment);
+	}
+
 	public function data(Request $request){
 		$user = Auth::user();
 		$ue = UserEstablishment::where('user_id', $user->id)->get()->first();  

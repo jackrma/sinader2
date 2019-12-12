@@ -24,4 +24,11 @@ class CompanyController extends Controller
 
 		return response()->json($company);
 	}
+
+	public function index(){
+		$company = Company::all();
+		return response()->json($company);
+	}
+	
+
 }

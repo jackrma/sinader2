@@ -2226,8 +2226,8 @@ __webpack_require__.r(__webpack_exports__);
       this.rut = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
       this.establishment = this.$store.getters.establishment.name;
       this.address = this.$store.getters.establishment.street + this.$store.getters.establishment.number;
-      this.commune = this.$store.getters.establishment.region.name;
-      this.region = this.$store.getters.establishment.commune.name;
+      this.commune = this.$store.getters.establishment.commune.name;
+      this.region = this.$store.getters.establishment.region.name;
       var app = this;
 
       if (this.declaration_edit) {
@@ -2253,6 +2253,12 @@ __webpack_require__.r(__webpack_exports__);
       var declaration = {
         correlative: this.declaration.correlative,
         correlative_dv: this.declaration.correlative_dv,
+        rut: this.rut,
+        company: this.company,
+        establishment: this.establishment,
+        direccion: this.address,
+        comuna: this.commune,
+        region: this.region,
         type: this.type,
         period: this.period,
         carrier: 0,
@@ -2335,6 +2341,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 //
 //
 //
@@ -2408,24 +2418,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    residue: Object
+  },
   data: function data() {
     return {
+      generalRule: [function (v) {
+        return !!v || 'Campo requerido';
+      }],
+      numberRule: [function (v) {
+        return !!v || 'Campo requerido';
+      }, function (v) {
+        return v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico';
+      }],
       checkbox: false,
       dialog: true,
-      unidad: 'Ton',
-      cantidad: '23',
-      reciduo: '200101 | Metales',
-      capitulos: ['capitulo prueba 1', 'capitulo prueba 2', 'capitulo prueba 3', 'capitulo prueba 4'],
-      subcapitulos: ['subcapitulo prueba 1', 'subcapitulo prueba 2', 'subcapitulo prueba 3', 'subcapitulo prueba 4'],
-      residues: ['Papel y cartón', 'residuo 2', 'residuo 3'],
-      tipos_recolecciom: ['Punto Verde', 'Tipo Recolección 2', 'Tipo Recolección 3'],
-      destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2'],
-      establishments: ['4989 | Planta Colina', '4990 | Planta 2'],
-      processings: ['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-      gestion: ['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-      units: ['Kg', 'Ton']
+      unidad: '',
+      cantidad: 0,
+      residue_name: '',
+      comment: '',
+      units: []
     };
+  },
+  created: function created() {
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {
+      this.residue_name = this.residue.waste;
+      this.unidad = 'Toneladas';
+      var app = this;
+      axios.get('/api/unit').then(function (resp) {
+        app.units = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error unit :" + resp);
+      });
+    },
+    changeUnit: function changeUnit() {},
+    saveDiscrepancy: function saveDiscrepancy() {
+      var discrepancy = {
+        waste_detail_id: this.residue.id,
+        disc_quantity: this.cantidad,
+        disc_unit: this.unidad,
+        disc_comment: this.comment
+      };
+      axios.post('/api/waste_detail/updatediscrepancy', discrepancy).then(function (resp) {
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDiscrepancy', 'someValue');
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error  waste_detail/updatediscrepancy:" + resp);
+      });
+      this.dialog = false;
+    }
   }
 });
 
@@ -2890,6 +2946,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2916,8 +2976,8 @@ __webpack_require__.r(__webpack_exports__);
       capitulos: '',
       subcapitulos: '',
       residues: '',
-      company_selected: 1,
-      establishment_selected: 1,
+      company_selected: '',
+      establishment_selected: '',
       residue_selected: '',
       process_selected: '',
       gestion_selected: '',
@@ -2930,8 +2990,8 @@ __webpack_require__.r(__webpack_exports__);
       carriername: '',
       vehicleplate: '',
       tipos_recoleccion: '',
-      destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA'],
-      establishments: ['12345 | Gerdau Aza Colina', '12345 | Gerdau Aza Colina'],
+      companies: [],
+      establishments: [],
       procesing: '',
       processings: '',
       gestion: '',
@@ -2980,6 +3040,12 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
         alert("Error chapter :" + resp);
       });
+      axios.get('/api/companies').then(function (resp) {
+        app.companies = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
     },
     changeChapter: function changeChapter(chapter_selected) {
       var app = this;
@@ -3005,9 +3071,17 @@ __webpack_require__.r(__webpack_exports__);
       this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
     },
     changeCompany: function changeCompany(company_selected) {
+      var app = this;
       this.company_selected = company_selected;
+      axios.get('/api/establishments/' + this.company_selected.id).then(function (resp) {
+        app.establishments = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
+      alert(JSON.stringify(establishment_selected));
       this.establishment_selected = establishment_selected;
     },
     changeProcess: function changeProcess(process_selected) {
@@ -3020,11 +3094,13 @@ __webpack_require__.r(__webpack_exports__);
       this.unit_selected = unit_selected;
     },
     saveResidue: function saveResidue() {
+      alert(JSON.stringify(this.establishment_selected));
+
       if (this.$refs.form.validate()) {
         this.residue = {
           waste: this.residuetext,
           sum: this.cantidad + ' ' + this.unidad.name,
-          company: '92176000-0 | Gerdau Aza SA',
+          company: this.company_selected.rut + ' | ' + this.company_selected.name,
           establishment: '12345 | Gerdau Aza Colina',
           processing: this.procesing.name,
           gestion: this.gestion.name,
@@ -3032,10 +3108,8 @@ __webpack_require__.r(__webpack_exports__);
           empresa: this.empresa,
           contacto: this.contacto,
           email: this.email,
-          // company_id: this.company_selected.id,
-          company_id: 1,
-          // establishment_id: this.establishment_selected.id,
-          establishment_id: 1,
+          company_id: this.company_selected.id,
+          establishment_id: this.establishment_selected.id,
           process_id: this.process_selected.id,
           manage_id: this.gestion_selected.id,
           quantity: this.cantidad,
@@ -3814,22 +3888,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _components_DiscrepancyComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../components/DiscrepancyComponent */ "./resources/js/components/DiscrepancyComponent.vue");
-/* harmony import */ var _components_TraceabilityComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/TraceabilityComponent */ "./resources/js/components/TraceabilityComponent.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _components_DiscrepancyComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/DiscrepancyComponent */ "./resources/js/components/DiscrepancyComponent.vue");
+/* harmony import */ var _components_TraceabilityComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/TraceabilityComponent */ "./resources/js/components/TraceabilityComponent.vue");
 //
 //
 //
@@ -3926,20 +3987,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
- // import { EventBus } from './../eventbus.js';
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    declaration_edit: Object
+  },
   data: function data() {
     return {
       dialog: true,
       notifications: false,
       headers: [{
         text: 'Descripción del Residuo',
-        value: ''
-      }, {
-        text: 'Nombre Establecimiento',
         value: ''
       }, {
         text: 'Tipo de Tratamiento',
@@ -3954,54 +4015,60 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Recepcionado',
         value: ''
       }],
-      residues: [{
-        residue: '200101 | Metales',
-        sum: '23 Ton',
-        to: '92176000-0 | Gerdau Aza SA',
-        establishment: '12345 | Gerdau Aza Colina',
-        processing: 'Reciclaje de Metales',
-        gestion: 'Recolección'
-      }, {
-        residue: '200101 | Metales',
-        sum: '23 Ton',
-        to: '92176000-0 | Gerdau Aza SA',
-        establishment: '12345 | Gerdau Aza Colina',
-        processing: 'Reciclaje de Metales',
-        gestion: 'Recolección'
-      }],
-      declaration: {
-        folio: '12345',
-        id_vu: '7802',
-        company: 'Municipalidad de Santiago',
-        rut: '11111111-1',
-        establishment: 'Municipalidad de Santiago',
-        address: 'Plaza de Armas S/N',
-        commune: 'Santiago',
-        region: 'Metropolitana',
-        user: 'Maritza Barrera',
-        report_type: 'D.S.N°1/2013 MMA (Anual)',
-        period: '2018'
-      }
+      correlative: '',
+      company: '',
+      rut: '',
+      establishment: '',
+      address: '',
+      commune: '',
+      region: '',
+      residues: []
     };
   },
-  computed: function computed() {
+  created: function created() {
     this.initialize();
+    var app = this;
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveDiscrepancy', function () {
+      app.refreshList();
+    });
   },
   methods: {
-    initialize: function initialize() {},
-    toNewResidue: function toNewResidue() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_DiscrepancyComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    initialize: function initialize() {
+      this.correlative = this.declaration_edit.correlative;
+      this.company = this.declaration_edit.company;
+      this.rut = this.declaration_edit.rut;
+      this.establishment = this.declaration_edit.establishment;
+      this.address = this.declaration_edit.direccion;
+      this.commune = this.declaration_edit.comuna;
+      this.region = this.declaration_edit.region;
+      this.refreshList();
+    },
+    refreshList: function refreshList() {
+      var app = this;
+      var params = {
+        declaration_id: this.declaration_edit.id,
+        establishment_id: this.$store.getters.establishment.id
+      };
+      axios.post('/api/waste_details/forreceiver', params).then(function (resp) {
+        app.residues = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error waste_details :" + resp);
+      });
+    },
+    toNewResidue: function toNewResidue(residue) {
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_DiscrepancyComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
-          source: ''
+          residue: residue
         }
       });
       instance.$mount();
       this.$refs.container.appendChild(instance.$el);
     },
     toNewTraceability: function toNewTraceability() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TraceabilityComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TraceabilityComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -4908,7 +4975,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
  // import { EventBus } from './../eventbus.js';
 
@@ -4942,37 +5008,31 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Accion',
         value: ''
       }],
-      declarations: [{
-        correlative: 149882,
-        correlative_dv: 'K',
-        establishment: 'Municipalidad Prueba',
-        period: '2019',
-        status: 'Por Recepcionar',
-        created_at: '01/10/2019',
-        certificate: 'certificado.pdf'
-      }],
-      receivenn: [{
-        correlative: 149882,
-        correlative_dv: 'K',
-        establishment: 'Fredy Remirez',
-        period: '2019',
-        status: 'Recibido',
-        created_at: '01/10/2019',
-        certificate: 'certificado.pdf'
-      }]
+      declarations: []
     };
   },
   created: function created() {
     this.initialize();
   },
   methods: {
-    initialize: function initialize() {},
-    toReceive: function toReceive() {
+    initialize: function initialize() {
+      this.getdecalrations();
+    },
+    getdecalrations: function getdecalrations() {
+      var app = this;
+      axios.get('/api/declarations/forreceiver/' + this.$store.getters.establishment.id).then(function (resp) {
+        app.declarations = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toReceive: function toReceive($declaration) {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_ReceiveComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
-          source: ''
+          declaration_edit: $declaration
         }
       });
       instance.$mount();
@@ -7477,16 +7537,16 @@ var render = function() {
                     [
                       _c(
                         "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
+                        { staticClass: "px-1", attrs: { xs6: "" } },
                         [
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Reciduo" },
                             model: {
-                              value: _vm.reciduo,
+                              value: this.residue_name,
                               callback: function($$v) {
-                                _vm.reciduo = $$v
+                                _vm.$set(this, "residue_name", $$v)
                               },
-                              expression: "reciduo"
+                              expression: "this.residue_name"
                             }
                           })
                         ],
@@ -7498,7 +7558,11 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { type: "number", label: "Cantidad" },
+                            attrs: {
+                              rules: _vm.numberRule,
+                              type: "number",
+                              label: "Cantidad Recepcionada"
+                            },
                             model: {
                               value: _vm.cantidad,
                               callback: function($$v) {
@@ -7518,14 +7582,18 @@ var render = function() {
                           _c("v-select", {
                             attrs: {
                               items: _vm.units,
-                              label: "Unidad de Medida"
+                              label: "Unidad de Medida",
+                              "item-text": "name",
+                              rules: _vm.generalRule,
+                              "return-object": ""
                             },
+                            on: { change: _vm.changeUnit },
                             model: {
-                              value: _vm.unidad,
+                              value: this.unidad,
                               callback: function($$v) {
-                                _vm.unidad = $$v
+                                _vm.$set(this, "unidad", $$v)
                               },
-                              expression: "unidad"
+                              expression: "this.unidad"
                             }
                           })
                         ],
@@ -7542,7 +7610,16 @@ var render = function() {
                         "v-flex",
                         { staticClass: "px-1", attrs: { xs8: "" } },
                         [
-                          _c("v-text-field", { attrs: { label: "Comentario" } })
+                          _c("v-text-field", {
+                            attrs: { label: "Comentario" },
+                            model: {
+                              value: _vm.comment,
+                              callback: function($$v) {
+                                _vm.comment = $$v
+                              },
+                              expression: "comment"
+                            }
+                          })
                         ],
                         1
                       )
@@ -7567,7 +7644,7 @@ var render = function() {
                       attrs: { color: "main_green" },
                       on: {
                         click: function($event) {
-                          _vm.dialog = false
+                          return _vm.saveDiscrepancy()
                         }
                       }
                     },
@@ -8030,17 +8107,19 @@ var render = function() {
                             [
                               _c("v-select", {
                                 attrs: {
-                                  items: _vm.destinatarios,
+                                  items: _vm.companies,
+                                  "item-text": "name",
                                   label: "Destinatario",
                                   rules: _vm.generalRule,
                                   "return-object": ""
                                 },
+                                on: { change: _vm.changeCompany },
                                 model: {
-                                  value: _vm.destiny,
+                                  value: _vm.company,
                                   callback: function($$v) {
-                                    _vm.destiny = $$v
+                                    _vm.company = $$v
                                   },
-                                  expression: "destiny"
+                                  expression: "company"
                                 }
                               })
                             ],
@@ -8054,10 +8133,12 @@ var render = function() {
                               _c("v-select", {
                                 attrs: {
                                   items: _vm.establishments,
+                                  "item-text": "name",
                                   label: "Establecimiento",
                                   rules: _vm.generalRule,
                                   "return-object": ""
                                 },
+                                on: { change: _vm.changeEstablishment },
                                 model: {
                                   value: _vm.establishment,
                                   callback: function($$v) {
@@ -8354,15 +8435,15 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "v-layout",
-                        [
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-2", attrs: { xs3: "" } },
+                      this.$store.getters.type == "CentroAcopio"
+                        ? _c(
+                            "v-layout",
                             [
-                              this.$store.getters.type == "CentroAcopio"
-                                ? _c(
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-2", attrs: { xs3: "" } },
+                                [
+                                  _c(
                                     "v-btn",
                                     {
                                       staticClass: "white--text",
@@ -8371,24 +8452,24 @@ var render = function() {
                                     },
                                     [_vm._v("Agregar Transporte")]
                                   )
-                                : _vm._e()
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("v-flex", { attrs: { xs3: "" } }, [
+                                _c("p", [
+                                  _vm._v(
+                                    "Trasnporte: " +
+                                      _vm._s(_vm.carriername) +
+                                      " " +
+                                      _vm._s(_vm.vehicleplate)
+                                  )
+                                ])
+                              ])
                             ],
                             1
-                          ),
-                          _vm._v(" "),
-                          _c("v-flex", { attrs: { xs3: "" } }, [
-                            _c("p", [
-                              _vm._v(
-                                "Trasnporte: " +
-                                  _vm._s(_vm.carriername) +
-                                  " " +
-                                  _vm._s(_vm.vehicleplate)
-                              )
-                            ])
-                          ])
-                        ],
-                        1
-                      )
+                          )
+                        : _vm._e()
                     ],
                     1
                   )
@@ -9583,11 +9664,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Folio" },
                             model: {
-                              value: this.declaration.folio,
+                              value: this.correlative,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "folio", $$v)
+                                _vm.$set(this, "correlative", $$v)
                               },
-                              expression: "this.declaration.folio"
+                              expression: "this.correlative"
                             }
                           })
                         ],
@@ -9601,11 +9682,15 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Id VU" },
                             model: {
-                              value: this.declaration.id_vu,
+                              value: this.$store.getters.establishment.id,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "id_vu", $$v)
+                                _vm.$set(
+                                  this.$store.getters.establishment,
+                                  "id",
+                                  $$v
+                                )
                               },
-                              expression: "this.declaration.id_vu"
+                              expression: "this.$store.getters.establishment.id"
                             }
                           })
                         ],
@@ -9619,11 +9704,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Empresa" },
                             model: {
-                              value: this.declaration.company,
+                              value: this.company,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "company", $$v)
+                                _vm.$set(this, "company", $$v)
                               },
-                              expression: "this.declaration.company"
+                              expression: "this.company"
                             }
                           })
                         ],
@@ -9637,11 +9722,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Rut" },
                             model: {
-                              value: this.declaration.rut,
+                              value: this.rut,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "rut", $$v)
+                                _vm.$set(this, "rut", $$v)
                               },
-                              expression: "this.declaration.rut"
+                              expression: "this.rut"
                             }
                           })
                         ],
@@ -9664,11 +9749,11 @@ var render = function() {
                               label: "Establecimiento"
                             },
                             model: {
-                              value: this.declaration.establishment,
+                              value: this.establishment,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "establishment", $$v)
+                                _vm.$set(this, "establishment", $$v)
                               },
-                              expression: "this.declaration.establishment"
+                              expression: "this.establishment"
                             }
                           })
                         ],
@@ -9682,11 +9767,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Dirección" },
                             model: {
-                              value: this.declaration.address,
+                              value: this.address,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "address", $$v)
+                                _vm.$set(this, "address", $$v)
                               },
-                              expression: "this.declaration.address"
+                              expression: "this.address"
                             }
                           })
                         ],
@@ -9700,11 +9785,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Comuna" },
                             model: {
-                              value: this.declaration.commune,
+                              value: this.commune,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "commune", $$v)
+                                _vm.$set(this, "commune", $$v)
                               },
-                              expression: "this.declaration.commune"
+                              expression: "this.commune"
                             }
                           })
                         ],
@@ -9718,71 +9803,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Región" },
                             model: {
-                              value: this.declaration.region,
+                              value: this.region,
                               callback: function($$v) {
-                                _vm.$set(this.declaration, "region", $$v)
+                                _vm.$set(this, "region", $$v)
                               },
-                              expression: "this.declaration.region"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    [
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Declarado Por" },
-                            model: {
-                              value: this.declaration.user,
-                              callback: function($$v) {
-                                _vm.$set(this.declaration, "user", $$v)
-                              },
-                              expression: "this.declaration.user"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Tipo Reporte" },
-                            model: {
-                              value: this.declaration.report_type,
-                              callback: function($$v) {
-                                _vm.$set(this.declaration, "report_type", $$v)
-                              },
-                              expression: "this.declaration.report_type"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs3: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { readonly: "true", label: "Período" },
-                            model: {
-                              value: this.declaration.period,
-                              callback: function($$v) {
-                                _vm.$set(this.declaration, "period", $$v)
-                              },
-                              expression: "this.declaration.period"
+                              expression: "this.region"
                             }
                           })
                         ],
@@ -9811,11 +9836,7 @@ var render = function() {
                     fn: function(props) {
                       return [
                         _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.residue))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.establishment))
+                          _vm._v(_vm._s(props.item.waste))
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
@@ -9827,11 +9848,11 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.sum))
+                          _vm._v(_vm._s(props.item.quantity))
                         ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.sum))
+                          _vm._v(_vm._s(props.item.disc_quantity))
                         ]),
                         _vm._v(" "),
                         _c(
@@ -9842,7 +9863,11 @@ var render = function() {
                               "v-btn",
                               {
                                 attrs: { small: "", color: "ds_138", dark: "" },
-                                on: { click: _vm.toNewResidue }
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toNewResidue(props.item)
+                                  }
+                                }
                               },
                               [_vm._v("Discrepancia")]
                             ),
@@ -11034,11 +11059,11 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.establishment))
+                              _vm._v(_vm._s(props.item.created_at))
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.created_at))
+                              _vm._v(_vm._s(props.item.establishment))
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
@@ -11061,22 +11086,11 @@ var render = function() {
                                           color: "ds_138",
                                           dark: ""
                                         },
-                                        on: { click: _vm.toReceive }
-                                      },
-                                      [_vm._v("Recepcionar")]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                props.item.status != "ENVIADO"
-                                  ? _c(
-                                      "v-btn",
-                                      {
-                                        attrs: {
-                                          small: "",
-                                          color: "ds_138",
-                                          dark: ""
-                                        },
-                                        on: { click: _vm.toReceive }
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.toReceive(props.item)
+                                          }
+                                        }
                                       },
                                       [_vm._v("Recepcionar")]
                                     )
@@ -11158,11 +11172,11 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.establishment))
+                              _vm._v(_vm._s(props.item.created_at))
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.created_at))
+                              _vm._v(_vm._s(props.item.establishment))
                             ]),
                             _vm._v(" "),
                             _c("td", { staticClass: "text-xs-right" }, [
@@ -53765,24 +53779,10 @@ axios.defaults.headers.common = {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = window.axios;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    main_green: '#242351',
-    secondary_green: '#45449E',
-    highlight_green: '#446E9E',
-    side_bar_gray: '#242351',
-    seconday_gray: '#EEEEEE',
-    ds_138: '#079992',
-    readings: '#4388A5',
-    covs: '#00596D',
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107' // main_green: '#079992',
-    // secondary_green: '#38ACA9',
-    // highlight_green: '#6BEC87',
-    // side_bar_gray: '#595959',
+    // main_green: '#242351',
+    // secondary_green: '#45449E',
+    // highlight_green: '#446E9E',
+    // side_bar_gray: '#242351',
     // seconday_gray: '#EEEEEE',
     // ds_138: '#079992',
     // readings: '#4388A5',
@@ -53794,7 +53794,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-
+    main_green: '#079992',
+    secondary_green: '#38ACA9',
+    highlight_green: '#6BEC87',
+    side_bar_gray: '#595959',
+    seconday_gray: '#EEEEEE',
+    ds_138: '#079992',
+    readings: '#4388A5',
+    covs: '#00596D',
+    primary: '#1976D2',
+    secondary: '#424242',
+    accent: '#82B1FF',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107'
   }
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({

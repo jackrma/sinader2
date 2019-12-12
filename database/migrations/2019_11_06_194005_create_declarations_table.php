@@ -17,6 +17,13 @@ class CreateDeclarationsTable extends Migration
             $table->bigIncrements('id');
             $table->integer("correlative");
             $table->string("correlative_dv");
+            $table->string("rut")->nullable();
+            $table->string("company")->nullable();
+            $table->string("establishment")->nullable();
+            $table->string("direccion")->nullable();
+            $table->string("comuna")->nullable();
+            $table->string("region")->nullable();
+
             $table->integer("establishment_id")->references('id')->on('establishment');
             $table->integer("user_id")->references('id')->on('user');
             $table->string("type");

@@ -21,15 +21,14 @@
       <template v-slot:items="props">
         <td class="text-xs-right">{{ props.item.correlative }} - {{ props.item.correlative_dv }}</td>
         <td class="text-xs-right">{{ props.item.period }}</td>
-        <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.created_at }}</td>
+        <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive" color="ds_138" dark>Recepcionar</v-btn>
- 
-             <v-btn  v-if="props.item.status!='ENVIADO'" small @click="toReceive" color="ds_138" dark>Recepcionar</v-btn>
+            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive(props.item)" color="ds_138" dark>Recepcionar</v-btn>
+
         </td>   
       </template>
     </v-data-table>
@@ -67,8 +66,8 @@
       <template v-slot:items="props">
         <td class="text-xs-right">{{ props.item.correlative }} - {{ props.item.correlative_dv }}</td>
         <td class="text-xs-right">{{ props.item.period }}</td>
-        <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.created_at }}</td>
+        <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
@@ -116,28 +115,9 @@
             { text: 'Accion', value: '' },
         ],
         declarations: [
-            {
-                correlative: 149882,
-                correlative_dv: 'K',
-                establishment:'Municipalidad Prueba',
-                period: '2019',
-                status: 'Por Recepcionar',
-                created_at:'01/10/2019',
-                certificate: 'certificado.pdf',
-            }
+ 
         ],
 
-        receivenn: [
-            {
-                correlative: 149882,
-                correlative_dv: 'K',
-                establishment:'Fredy Remirez',
-                period: '2019',
-                status: 'Recibido',
-                created_at:'01/10/2019',
-                certificate: 'certificado.pdf',
-            }
-        ]
         }),
     
 
@@ -147,19 +127,34 @@
     
     methods: {
         initialize(){
-
+            this.getdecalrations();
         },  
 
+        getdecalrations(){
+            var app = this;
 
-        toReceive (){
+            axios.get('/api/declarations/forreceiver/' + this.$store.getters.establishment.id)
+                .then(function (resp) {    
+                    app.declarations = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+        },
+
+
+        toReceive ($declaration){
             var ComponentReserv = Vue.extend(DeclarationComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
-            source: '',
+            declaration_edit: $declaration,
              
           }});
             instance.$mount();
             this.$refs.container.appendChild(instance.$el);
         },
+
+
         toNewReceive (){
             var ComponentReserv = Vue.extend(NewReceiveComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
