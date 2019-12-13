@@ -32,7 +32,7 @@ class CreateWasteDetailTable extends Migration
             $table->string('email')->nullable();
 
             
-            $table->integer('quantity');
+            $table->double('quantity', 12 , 4)->nullable();
             $table->integer('waste_id')->references('id')->on('ler_waste');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
@@ -44,6 +44,9 @@ class CreateWasteDetailTable extends Migration
 
 
             $table->integer('carrier_id')->references('id')->on('carriers');
+            $table->string('carrier_name');
+            $table->integer('plate')->references('plate')->on('vehicle');
+
 
             $table->timestamps();
         });

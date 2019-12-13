@@ -14,12 +14,12 @@ class CreateMonthWastesTable extends Migration
     public function up()
     {
         Schema::create('month_wastes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->integer('id');
             $table->string("ler");
             $table->string("rut");
             $table->integer("entablishment");
             $table->integer("process");
-            $table->integer("quantity");
+            $table->double("quantity", 12, 4);
             $table->string("carrier");
             $table->string("plate");
             $table->integer("date");
