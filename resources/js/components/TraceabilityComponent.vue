@@ -159,7 +159,7 @@
         var app = this;
         this.initialize();
         EventBus.$on('saveResidues', function(){  
-            alert('residues');
+            //alert('residues');
             app.refreshList();
         });
   
@@ -169,7 +169,7 @@
         initialize(){
             var app = this;
 
-            alert(JSON.stringify(this.waste_detail));
+            //alert(JSON.stringify(this.waste_detail));
             this.residue= this.waste_detail.waste;
             this.cantidad= this.waste_detail.quantity;
             this.unidad= 'Toneladas';

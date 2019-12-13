@@ -171,10 +171,10 @@
                 establishment_id: this.$store.getters.establishment.id,
             }
 
-            alert(JSON.stringify(params));    
+            //alert(JSON.stringify(params));    
             axios.post('/api/waste_details/forreceiver', params)
                     .then(function (resp) {    
-                        alert(JSON.stringify(resp.data));               
+                        //alert(JSON.stringify(resp.data));               
                         app.residues = resp.data;
                     })
                     .catch(function (resp) {

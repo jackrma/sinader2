@@ -325,7 +325,7 @@
             this.carriername = this.carrier.carriername;
             this.vehicleplate = this.carrier.vehicleplate;
 
-            alert(JSON.stringify(this.carrier));
+            //alert(JSON.stringify(this.carrier));
         },
         toSearch(){
                 var ComponentReserv = Vue.extend(SearchReceiverComponent)
