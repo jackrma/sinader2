@@ -10,6 +10,7 @@ return array(
     'App\\Commune' => $baseDir . '/app/Commune.php',
     'App\\Company' => $baseDir . '/app/Company.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Country' => $baseDir . '/app/Country.php',
     'App\\Declaration' => $baseDir . '/app/Declaration.php',
     'App\\DeclarationType' => $baseDir . '/app/DeclarationType.php',
     'App\\Establishment' => $baseDir . '/app/Establishment.php',
