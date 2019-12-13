@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      width="800"
+      width="1000"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -23,24 +23,29 @@
         </v-card-title>
 
         <v-card-text>
-                    <v-layout>
+            <v-form ref="form"  lazy-validation>
+
+                 <v-layout>
                         <v-flex  xs3 class="px-1">
 
-                            <v-select
-                                :items="destinatarios"
-                                v-model="capitulo"
-                                label="Destinatario"
-                            ></v-select> 
-
+                            <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
 
                         </v-flex>
+                        <v-flex xs1 class="px-1">
+                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
+                                <v-icon>search</v-icon>
+                            </v-btn>
+                        </v-flex>
+
                         <v-flex  xs3 class="px-1">
-
-
                             <v-select
                                 :items="establishments"
-                                v-model="Establecimientos"
+                                v-model="establishment"
+                                item-text="name"  
                                 label="Establecimiento"
+                                :rules = "generalRule"
+                                v-on:change="changeEstablishment"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
@@ -48,47 +53,57 @@
                             
                             <v-select
                                 :items="processings"
-                                v-model="residue"
+                                v-model="procesing"
                                 label="Tipo de Tratamiento"
+                                item-text="name"  
+                                :rules = "generalRule"
+                                v-on:change="changeProcess"
+                                return-object
                             ></v-select> 
                         </v-flex>
                         <v-flex xs3 class="px-1">
                             
                             <v-select
-                                :items="gestion"
-                                v-model="residue"
+                                :items="gestions"
+                                v-model="gestion"
                                 label="Tipo de Gestión"
+                                item-text="name" 
+                                :rules = "generalRule"
+                                v-on:change="changeGestion"
+                                return-object
                             ></v-select> 
 
                         </v-flex>
 
                     </v-layout>
-     
-                    <v-layout>
-                        <v-flex xs3 class="px-1">
-                 
-                            <v-select
-                                :items="residues"
-                                v-model="residue"
-                                label="Residuo"
-                            ></v-select> 
 
+
+                    <v-layout>
+                        <v-flex xs10 class="px-1">
+                            <v-text-field v-model='residue' readonly  label="Residuo"></v-text-field>
                         </v-flex>
+                    </v-layout>    
+                    <v-layout>
                         
-                        <v-flex xs3 class="px-1">
-                            <v-text-field type='number' v-model="cantidad" label="Cantidad Restante"></v-text-field>
+                        <v-flex xs2 class="px-1">
+                            <v-text-field v-model='cantidad' type='number' label="Cantidad"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
                             <v-select
                                 :items="units"
                                 v-model="unidad"
-                                readonly="true"
                                 label="Unidad de Medida"
+                                item-text="name" 
+                                :rules = "generalRule"
+                                v-on:change="changeUnit"
+                                return-object
                             ></v-select> 
                         </v-flex>
 
                     </v-layout>
+
+
                     <v-layout>
                         <v-checkbox
                           v-model="checkbox"
@@ -115,7 +130,7 @@
 
                     </v-layout>
 
-
+           </v-form>         
         </v-card-text>
 
         <v-divider></v-divider>
@@ -125,7 +140,7 @@
           <v-btn
             color="main_green"
             class='white--text'
-            @click="dialog = false"
+            @click="saveResidue()"
           >
             Guardar
           </v-btn>
@@ -137,32 +152,185 @@
 
 <script>
 
+  import Vue from 'vue';  
+  import Vuex from 'vuex'; 
+  import { mapState } from 'vuex';  
+  
+  import { EventBus } from './../eventbus.js';
 
+  import TransportComponent  from './../components/TransportComponent';
+  import SearchReceiverComponent  from './../components/SearchCompanyComponent';
 
   export default {
+    props:{
+       waste_detail: Object,
+    },
     data () {
       return {
         checkbox:false,
         dialog: true,
 
-        residue: '200101 | Metales',
-        cantidad: 14,
-        unidad: 'Ton',
+        residue: '',
+        cantidad: '',
+        unidad: '',
 
-        capitulos: ['capitulo prueba 1','capitulo prueba 2', 'capitulo prueba 3','capitulo prueba 4'],
-        subcapitulos: ['subcapitulo prueba 1','subcapitulo prueba 2', 'subcapitulo prueba 3','subcapitulo prueba 4'],
-        residues: ['200101 | Metales','Papel y cartón', 'residuo 2', 'residuo 3'],
-        
-        tipos_recolecciom: ['Punto Verde','Tipo Recolección 2','Tipo Recolección 3'],
-
-        destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2' ],
-        establishments: ['4989 | Planta Colina','4990 | Planta 2'],
-
-        processings:['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-        gestion:['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-        units:['Kg','Ton'],
         }
-      }
+    },
+    
+    
+    created(){
+        var app = this;
+        this.initialize();
+        // EventBus.$on('saveCarrier', function(){  
+        //     app.refreshCarrier();
+        // });
+        EventBus.$on('selectReceiver', function(){ 
+            app.selectCompany();
+        });
+
+    },
+    methods: {
+        initialize(){
+
+            this.residue  = this.waste_detail.waste;
+            this.cantidad = this.waste_detail.quantity;
+            this.unidad   = 'Toneladas';
+
+
+            var app = this;
+            axios.get('/api/unit')
+                .then(function (resp) {    
+                    app.units = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+
+            axios.get('/api/managetype')
+                .then(function (resp) {    
+                    app.gestions = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error ManageType :" + resp);
+                });
+
+            axios.get('/api/processtype')
+                .then(function (resp) {    
+                    app.processings = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error ProcessType :" + resp);
+                });
+
+            axios.get('/api/recolectiontype')
+                .then(function (resp) {    
+                    app.tipos_recoleccion = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error RecolectionType :" + resp);
+                });
+            axios.get('/api/lerchapter')
+                .then(function (resp) {    
+                    app.capitulos = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+
+        },
+
+        selectCompany(){
+            alert(JSON.stringify(this.$store.getters.receiver));
+
+            this.receiver_name= this.$store.getters.receiver.name;
+            this.changeCompany(this.$store.getters.receiver);
+            
+        },
+
+        changeCompany(company_selected){
+
+            alert('receiver');
+            var app = this;
+            this.company_selected = company_selected;
+
+            axios.get('/api/establishments/'+this.company_selected.id)
+                .then(function (resp) {    
+                    app.establishments = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
+        },
+        toTransport (){
+            var ComponentReserv = Vue.extend(TransportComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            source: '', 
+            }});
+            instance.$mount();
+            this.$refs.container.appendChild(instance.$el);
+        },
+
+        refreshCarrier(){
+            this.carrier = this.$store.getters.carrier;
+            this.carriername = this.carrier.carriername;
+            this.vehicleplate = this.carrier.vehicleplate;
+
+            alert(JSON.stringify(this.carrier));
+        },
+        toSearch(){
+                var ComponentReserv = Vue.extend(SearchReceiverComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+       
+        },
+        saveResidue(){
+
+
+            if (this.$refs.form.validate()){
+
+                this.residue = {
+                    waste: this.waste_detail.waste,
+                    sum: this.cantidad + ' ' + this.unidad.name,
+                    company: this.company_selected.rut + ' | ' + this.company_selected.name,
+                    // establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
+                    establishment: '4365 | prueba ',
+                    processing: this.procesing.name,
+                    gestion: this.gestion.name,
+                    pais: this.pais,
+                    empresa: this.empresa,
+                    contacto: this.contacto,
+                    email: this.email,
+
+                    company_id: this.company_selected.id,
+                    establishment_id: this.establishment_selected.id,
+                    process_id: this.process_selected.id,
+                    manage_id: this.gestion_selected.id,
+                    quantity: this.cantidad,
+                    waste_id: this.waste_detail.id,
+                    unit_id: this.unit_selected.id,
+                    carrier_id: 0,
+                    carrier:'',
+                };
+
+                this.$store.commit('changeResidue', this.residue);
+
+                this.dialog = false;
+
+                EventBus.$emit('saveResidues', 'someValue'); 
+            }
+            
+        },
+
     }
+}
   
 </script>

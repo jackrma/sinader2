@@ -27,24 +27,23 @@
                     <v-layout>
                         <v-flex  xs3 class="px-1">
 
-                            <v-select
-                                :items="destinatarios"
-                                v-model="destiny"
-                                label="Destinatario"
-                                :rules = "generalRule"
-                                return-object
-                            ></v-select> 
-
+                            <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
 
                         </v-flex>
+                        <v-flex xs1 class="px-1">
+                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
+                                <v-icon>search</v-icon>
+                            </v-btn>
+                        </v-flex>
+
                         <v-flex  xs3 class="px-1">
-
-
                             <v-select
                                 :items="establishments"
                                 v-model="establishment"
+                                item-text="name"  
                                 label="Establecimiento"
                                 :rules = "generalRule"
+                                v-on:change="changeEstablishment"
                                 return-object
                             ></v-select> 
 
@@ -161,9 +160,9 @@
                         </v-flex>
 
                     </v-layout>
-                    <v-layout>
+                    <v-layout v-if="this.$store.getters.type=='CentroAcopio'">
                         <v-flex xs3 class= "px-2">                  
-                            <v-btn @click='toTransport' v-if="this.$store.getters.type=='CentroAcopio'" class='white--text' color="main_green">Agregar Transporte</v-btn>
+                            <v-btn @click='toTransport' class='white--text' color="main_green">Agregar Transporte</v-btn>
                         </v-flex>
                         <v-flex xs3>
                             <p>Trasnporte: {{carriername}} {{vehicleplate}}</p>  
@@ -199,6 +198,7 @@
   import { EventBus } from './../eventbus.js';
 
   import TransportComponent  from './../components/TransportComponent';
+  import SearchReceiverComponent  from './../components/SearchCompanyComponent';
 
 
   export default {
@@ -208,7 +208,7 @@
         generalRule: [v => !!v || 'Campo requerido'],
         numberRule: [v => !!v || 'Campo requerido', v => v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico',],
 
-
+        receiver_name:'',
 
         checkbox:false,
         dialog: true,
@@ -222,8 +222,8 @@
         subcapitulos: '',
         residues: '',
 
-        company_selected:1,
-        establishment_selected:1,
+        company_selected:'',
+        establishment_selected:'',
         residue_selected:'',
         process_selected:'',
         gestion_selected:'',
@@ -239,9 +239,10 @@
         vehicleplate:'',
 
         tipos_recoleccion: '',
+        
+        companies: [],
+        establishments: [],
 
-        destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA' ],
-        establishments: ['12345 | Gerdau Aza Colina','12345 | Gerdau Aza Colina'],
 
         procesing:'',
         processings:'',
@@ -254,9 +255,12 @@
         var app = this;
         this.initialize();
         EventBus.$on('saveCarrier', function(){  
-            alert("saveCarrier"); 
             app.refreshCarrier();
         });
+        EventBus.$on('selectReceiver', function(){ 
+            app.selectCompany();
+        });
+
     },
     methods: {
         initialize(){
@@ -305,6 +309,16 @@
                     alert("Error chapter :" + resp);
                 });
 
+            // axios.get('/api/companies')
+            //     .then(function (resp) {    
+            //         app.companies = resp.data;
+            //     })
+            //     .catch(function (resp) {
+            //         console.log(resp);
+            //         alert("Error chapter :" + resp);
+            //     });
+
+
         },
 
         changeChapter(chapter_selected){
@@ -320,6 +334,9 @@
                     alert("Error chapter :" + resp);
                 });
         },
+
+
+
 
         changeSupChapter(subchapter_selected){
             var app = this;
@@ -339,12 +356,32 @@
             this.residuetext = residue_selected.waste_code +' | '+ residue_selected.name;
         },
 
+        selectCompany(){
+            alert(JSON.stringify(this.$store.getters.receiver));
+
+            this.receiver_name= this.$store.getters.receiver.name;
+            this.changeCompany(this.$store.getters.receiver);
+            
+        },
+
         changeCompany(company_selected){
 
+            alert('receiver');
+            var app = this;
             this.company_selected = company_selected;
+
+            axios.get('/api/establishments/'+this.company_selected.id)
+                .then(function (resp) {    
+                    app.establishments = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
         },
 
         changeEstablishment(establishment_selected){
+            alert(JSON.stringify(establishment_selected));
             this.establishment_selected = establishment_selected;
         },
 
@@ -360,15 +397,18 @@
             this.unit_selected = unit_selected;
         },
 
+
+
         saveResidue(){
+
 
             if (this.$refs.form.validate()){
 
                 this.residue = {
                     waste: this.residuetext,
                     sum: this.cantidad + ' ' + this.unidad.name,
-                    company: '92176000-0 | Gerdau Aza SA',
-                    establishment: '12345 | Gerdau Aza Colina',
+                    company: this.company_selected.rut + ' | ' + this.company_selected.name,
+                    establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
                     pais: this.pais,
@@ -376,10 +416,8 @@
                     contacto: this.contacto,
                     email: this.email,
 
-                    // company_id: this.company_selected.id,
-                    company_id: 1,
-                    // establishment_id: this.establishment_selected.id,
-                    establishment_id: 1,
+                    company_id: this.company_selected.id,
+                    establishment_id: this.establishment_selected.id,
                     process_id: this.process_selected.id,
                     manage_id: this.gestion_selected.id,
                     quantity: this.cantidad,
@@ -405,13 +443,25 @@
             instance.$mount();
             this.$refs.container.appendChild(instance.$el);
         },
+
         refreshCarrier(){
             this.carrier = this.$store.getters.carrier;
             this.carriername = this.carrier.carriername;
             this.vehicleplate = this.carrier.vehicleplate;
 
             alert(JSON.stringify(this.carrier));
-        }, 
+        },
+        toSearch(){
+                var ComponentReserv = Vue.extend(SearchReceiverComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                source: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+       
+        },
+
+
     }
 }
   

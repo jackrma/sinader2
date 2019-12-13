@@ -14,6 +14,7 @@ export default new Vuex.Store(
 	    establishment: '',
 	    user: '',
 	    company: '',
+	    receiver: '',
 	    residue:'',
 	    carrier:'',
 
@@ -32,6 +33,9 @@ export default new Vuex.Store(
 		changeUser(state, user) {
 		   	state.user = user
 		},
+		changeReceiver(state, receiver) {
+		   	state.receiver = receiver;
+		},
 		changeCompany(state, company) {
 		   	state.company = company;
 		},
@@ -47,6 +51,7 @@ export default new Vuex.Store(
 		token: state => state.token,
 		establishment: state => state.establishment, 
 		user: state => state.user,
+		receiver: state => state.receiver,
 		company: state => state.company,
 		residue: state => state.residue,
 		carrier: state => state.carrier,

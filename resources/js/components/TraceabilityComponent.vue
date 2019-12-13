@@ -25,18 +25,13 @@
         <v-card-text>
      
                     <v-layout>
-                        <v-flex xs3 class="px-1">
-                            
-
-                            <v-select
-                                :items="residues"
-                                v-model="residue"
-                                label="Residuo"
-                            ></v-select> 
-
+                        <v-flex xs10 class="px-1">
+                            <v-text-field v-model='residue' readonly  label="Residuo"></v-text-field>
                         </v-flex>
+                    </v-layout>    
+                    <v-layout>
                         
-                        <v-flex xs3 class="px-1">
+                        <v-flex xs2 class="px-1">
                             <v-text-field v-model='cantidad' type='number' label="Cantidad"></v-text-field>
                         </v-flex>
 
@@ -45,6 +40,10 @@
                                 :items="units"
                                 v-model="unidad"
                                 label="Unidad de Medida"
+                                item-text="name" 
+                                :rules = "generalRule"
+                                v-on:change="changeUnit"
+                                return-object
                             ></v-select> 
                         </v-flex>
 
@@ -122,36 +121,26 @@
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex';  
   
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
 
   import NewTraceabilityComponent  from './../components/NewTraceabilityComponent';
 
   export default {
+    props:{
+       waste_detail: Object,
+    },
 
     data () {
       return {
         checkbox:false,
         dialog: true,
 
-        residue: '200101 | Metales',
-        cantidad: 23,
-        unidad: 'Ton',
+        residue: '',
+        cantidad: '',
+        unidad: '',
 
-        total: 9,
+        total: '',
 
-
-        capitulos: ['capitulo prueba 1','capitulo prueba 2', 'capitulo prueba 3','capitulo prueba 4'],
-        subcapitulos: ['subcapitulo prueba 1','subcapitulo prueba 2', 'subcapitulo prueba 3','subcapitulo prueba 4'],
-        residues: ['200101 | Metales','Papel y cartón', 'residuo 2', 'residuo 3'],
-        
-        tipos_recolecciom: ['Punto Verde','Tipo Recolección 2','Tipo Recolección 3'],
-
-        destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2' ],
-        establishments: ['4989 | Planta Colina','4990 | Planta 2'],
-
-        processings:['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-        gestion:['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-        units:['Kg','Ton'],
 
         headers: [
             { text: 'Descripción del Residuo', value: '' },            
@@ -161,38 +150,57 @@
             { text: 'Cantidad', value: '' },
         ],
 
-        residues: [
-            {
-                residue: '200101 | Metales',
-                sum: '7 Ton',
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: 'Reciclaje de Metales',
-                gestion:'Recolección',
-            },
-            {
-                residue: '200101 | Metales',
-                sum: '2 Ton',
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: 'Reciclaje de Metales',
-                gestion:'Recolección',
-            }
-        ],
+        residues: [],
+        units: [],
 
 
         }
       },
+    created(){
+        var app = this;
+        this.initialize();
+        EventBus.$on('saveResidues', function(){  
+            alert('residues');
+            app.refreshList();
+        });
+  
+
+    },
       methods:{
+        initialize(){
+            var app = this;
+
+            alert(JSON.stringify(this.waste_detail));
+            this.residue= this.waste_detail.waste;
+            this.cantidad= this.waste_detail.quantity;
+            this.unidad= 'Toneladas';
+
+            this.total=0;
+
+            axios.get('/api/unit')
+                .then(function (resp) {    
+                    app.units = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+
+          
+        },
           NewDestiny (){
 
                   var ComponentReserv = Vue.extend(NewTraceabilityComponent)
                   var instance = new ComponentReserv({store: this.$store, propsData: {
-                  source: '', 
+                  waste_detail: this.waste_detail, 
                   }});
                   instance.$mount();
                   this.$refs.container.appendChild(instance.$el);
           },
+
+        refreshList(){
+            this.residues.push(this.$store.getters.residue);
+        },   
       }
     }
   

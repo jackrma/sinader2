@@ -54,6 +54,9 @@
                     </v-layout>
                     <v-layout>
                         <v-flex xs10 class="px-1">
+
+                            <v-text-field v-model="transport" readonly label="Empresa de Transporte"></v-text-field>
+<!-- 
                             <v-select
                                 :items="carriers"
                                 v-model="transport"
@@ -63,7 +66,7 @@
                                 v-on:change="changeCarrier"
                                 return-object
 
-                            ></v-select> 
+                            ></v-select>  -->
                         </v-flex>    
                         <v-flex xs2 class="px-1">
                             <v-btn text icon color="grey lighten-2" @click='toSearch' >
@@ -163,6 +166,7 @@
         carrier:'',
         vehicle_type:'',
         vahicle:'',
+        trasnport:'',
 
         texto: 'Atención: Si el transporte no se encuentra en el listado, incorporelo a su declaración. Este listado será informado a los servicios fiscalizadores',
 
@@ -174,19 +178,23 @@
       },
 
     created(){
+        var app = this;
         this.initialize();
+        EventBus.$on('selectCarrier', function(){  
+            app.refreshCarrier();
+        });
     },
     methods:{
         initialize(){
-            var app = this;
-            axios.get('/api/carrier')
-                .then(function (resp) {    
-                    app.carriers = resp.data;
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Error carrier :" + resp);
-                });
+             var app = this;
+            // axios.get('/api/carrier')
+            //     .then(function (resp) {    
+            //         app.carriers = resp.data;
+            //     })
+            //     .catch(function (resp) {
+            //         console.log(resp);
+            //         alert("Error carrier :" + resp);
+            //     });
 
             axios.get('/api/vehicletype')
                 .then(function (resp) {    
@@ -198,10 +206,15 @@
                 });
         },
 
-        changeCarrier(carrier_selected){
+        refreshCarrier(){
+            alert(JSON.stringify(this.$store.getters.carrier));
 
-            
-            this.carrier_selected = carrier_selected;
+            this.transport = this.$store.getters.carrier.name;
+            this.changeCarrier(this.$store.getters.carrier);
+        },
+
+        changeCarrier(carrier_selected){
+          this.carrier_selected = carrier_selected;
             var app = this;
 
             axios.get('/api/vehicle/'+this.carrier_selected.id)

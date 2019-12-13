@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      width="500"
+      width="700"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -31,21 +31,32 @@
                     <v-card class="py-4 px-2">
                         <v-card-title>
                             <v-text-field
-                                v-model="search"
-                                append-icon="search"
-                                label="Search"
+                                v-model="rut"
+                                label="Rut"
                                 single-line
                                 hide-details
                             ></v-text-field>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="name"
+                                label="Razon Social"
+                                single-line
+                                hide-details
+                            ></v-text-field>  
+                            <v-spacer></v-spacer>
+                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
+                                <v-icon>search</v-icon>
+                            </v-btn>
+
                         </v-card-title>
                       <v-data-table
                         :headers="headers"
-                        :items="transports"
+                        :items="carriers"
                         v-model="selected"
                       >
                         <template v-slot:items="props">
-                          <tr @click="showAlert(props.item)">
-                            <td class="text-xs-right">{{ props.item.rut }}</td>
+                          <tr @click="selected_item(props.item)">
+                            <td class="text-xs-right">{{ props.item.rut }}-{{props.item.dv}}</td>
                             <td class="text-xs-right">{{ props.item.name }}</td>
                         </tr>
                         </template>
@@ -86,9 +97,7 @@
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex';  
   
-  // import { EventBus } from './../eventbus.js';
-
-  import NewTraceabilityComponent  from './../components/NewTraceabilityComponent';
+  import { EventBus } from './../eventbus.js';
 
   export default {
 
@@ -97,34 +106,64 @@
         checkbox:false,
         dialog: true,
 
-
+        rut:'',
+        name:'',
 
         headers: [
             { text: 'Rut', value: '' },            
             { text: 'Razón Social', value: '' },
         ],
 
-        transports: [
-            {
-                rut: '92176000-0',
-                name: 'Tranportes René',
-
-            },
-            {
-                rut: '92176000-0',
-                name: 'Empresa Maldonado Spa',
-
-            },
-            {
-                rut: '92176000-0',
-                name: 'Empresa Spa',
-
-            },
-        ],
-
-
+        carriers: [],
         }
       },
+
+    created(){
+        var app = this;
+        this.initialize();
+        // EventBus.$on('saveCarrier', function(){  
+        //     alert("saveCarrier"); 
+        //     app.refreshCarrier();
+        // });
+    },
+    methods: {
+        initialize(){
+            var app = this;
+            axios.get('/api/carriers')
+                .then(function (resp) {    
+                    app.carriers = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+        },
+
+        toSearch(){
+            var app = this;
+  
+            axios.get('/api/carriers/search?rut='+this.rut+'&name='+this.name)
+                .then(function (resp) {    
+                    app.carriers = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });            
+        },
+
+        selected_item(item){
+            this.$store.commit('changeCarrier', item);
+
+            EventBus.$emit('selectCarrier', 'someValue'); 
+            this.dialog = false;
+             
+        }
+    }
+
+
+
+
     }
   
 </script>

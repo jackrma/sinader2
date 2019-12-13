@@ -18,53 +18,43 @@
                 <v-card class="px-5">
                     <br>
 
-                    <v-layout>
+                        <v-layout>
                         <v-flex  xs3 class="pr-1">
-                            <v-text-field v-model="this.declaration.folio"  readonly='true' label="Folio"></v-text-field>
+                            <v-text-field v-model="this.correlative"  readonly='true' label="Folio"></v-text-field>
                         </v-flex>
 
                         <v-flex  xs3 class="px-1">
-                            <v-text-field  v-model="this.declaration.id_vu" readonly='true' label="Id VU"></v-text-field>
+                            <v-text-field  v-model="this.$store.getters.establishment.id" readonly='true' label="Id VU"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.company" readonly='true' label="Empresa"></v-text-field>
+                            <v-text-field v-model="this.company" readonly='true' label="Empresa"></v-text-field>
                         </v-flex>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.rut" readonly='true' label="Rut"></v-text-field>
+                            <v-text-field v-model="this.rut" readonly='true' label="Rut"></v-text-field>
                         </v-flex>
                     </v-layout>
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.establishment" readonly='true'  label="Establecimiento"></v-text-field>
+                            <v-text-field v-model="this.establishment" readonly='true'  label="Establecimiento"></v-text-field>
                         </v-flex>
  
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.address" readonly='true'  label="Dirección"></v-text-field>
+                            <v-text-field v-model="this.address" readonly='true'  label="Dirección"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.commune"  label="Comuna"></v-text-field>
+                            <v-text-field v-model="this.commune"  label="Comuna"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.region" readonly='true' label="Región"></v-text-field>
+                            <v-text-field v-model="this.region" readonly='true' label="Región"></v-text-field>
                         </v-flex>
                     </v-layout>
-                    <v-layout>
-                        <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.user" readonly='true' label="Declarado Por"></v-text-field>
-                        </v-flex>
+ 
 
-                        <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.report_type" readonly='true' label="Tipo Reporte"></v-text-field>
-                        </v-flex>
 
-                        <v-flex xs3 class="px-1">
-                            <v-text-field v-model="this.declaration.period" readonly='true'  label="Período"></v-text-field>
-                        </v-flex>
-                    </v-layout>
 
                 </v-card>
         
@@ -74,6 +64,7 @@
         <v-toolbar  color="secondary_green" dark>
             <v-toolbar-title >Residuos</v-toolbar-title>
         </v-toolbar>
+
         <v-data-table
           :headers="headers"
           :items="residues"
@@ -81,25 +72,20 @@
          
         >
           <template v-slot:items="props">
-            <td class="text-xs-right">{{ props.item.residue }}</td>
-            <td class="text-xs-right">{{ props.item.establishment }}</td>
+            <td class="text-xs-right">{{ props.item.waste }}</td>
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
-            <td class="text-xs-right">{{ props.item.sum }}</td>
-            <td class="text-xs-right">{{ props.item.sum }}</td>
+            <td class="text-xs-right">{{ props.item.quantity }}</td>
+            <td class="text-xs-right">{{ props.item.disc_quantity }}</td>
 
             <td class="justify-center layout px-0">
-                <v-btn small @click="toNewResidue" color="ds_138" dark>Discrepancia</v-btn>
-                <v-btn small @click="toNewTraceability" color="ds_138" dark>Trazabilidad</v-btn>
+                <v-btn small @click="toNewResidue(props.item)" color="ds_138" dark>Discrepancia</v-btn>
+                <v-btn small @click="toNewTraceability(props.item)" color="ds_138" dark>Trazabilidad</v-btn>
             </td>   
+
 
           </template>
         </v-data-table>
-
-
-
-
-
 
       </v-card>
     </v-dialog>
@@ -113,7 +99,7 @@
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex';  
   
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
 
  
   import DiscrepancyComponent  from './../components/DiscrepancyComponent';
@@ -121,14 +107,16 @@
 
 
   export default {
+    props: {
+        declaration_edit: Object,
+    },
     data () {
       return {
         dialog: true,
         notifications: false,
 
         headers: [
-            { text: 'Descripción del Residuo', value: '' },            
-            { text: 'Nombre Establecimiento', value: '' },
+            { text: 'Descripción del Residuo', value: '' },
             { text: 'Tipo de Tratamiento', value: '' },
             { text: 'Tipo de Gestión', value: '' },
             { text: 'Cantidad', value: '' },
@@ -136,58 +124,68 @@
 
         ],
 
-       
-        residues: [
-            {
-                residue: '200101 | Metales',
-                sum: '23 Ton',
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: 'Reciclaje de Metales',
-                gestion:'Recolección',
-            },
-            {
-                residue: '200101 | Metales',
-                sum: '23 Ton',
-                to: '92176000-0 | Gerdau Aza SA',
-                establishment: '12345 | Gerdau Aza Colina',
-                processing: 'Reciclaje de Metales',
-                gestion:'Recolección',
-            }
-        ],
 
-        declaration:  {
-            folio: '12345',   
-            id_vu:  '7802',    
-            company:  'Municipalidad de Santiago',   
-            rut: '11111111-1',  
-            establishment:  'Municipalidad de Santiago',   
-            address:   'Plaza de Armas S/N',  
-            commune:  'Santiago',    
-            region:  'Metropolitana',   
-            user:   'Maritza Barrera', 
-            report_type: 'D.S.N°1/2013 MMA (Anual)',    
-            period: '2018'    
-            }
+        correlative:'',
+        company:'',
+        rut:'',
+        establishment:'',
+        address:'',
+        commune:'',
+        region:'',
+       
+        residues: [],
         
       }
     },
     
-    computed () {
+    created () {
         this.initialize();
+        var app = this;
+        EventBus.$on('saveDiscrepancy', function(){   
+            app.refreshList();
+        });
     },
 
     methods: {
         initialize(){
+
+        
+        
+            this.correlative    = this.declaration_edit.correlative; 
+            this.company        = this.declaration_edit.company;
+            this.rut            = this.declaration_edit.rut ;
+            this.establishment  = this.declaration_edit.establishment;
+            this.address        = this.declaration_edit.direccion;
+            this.commune        = this.declaration_edit.comuna;
+            this.region         = this.declaration_edit.region;
+
+            this.refreshList();
             
         },  
 
+        refreshList(){
+            var app = this;
+            var params = {
+                declaration_id: this.declaration_edit.id,
+                establishment_id: this.$store.getters.establishment.id,
+            }
 
-        toNewResidue (){
+            axios.post('/api/waste_details/forreceiver', params)
+                    .then(function (resp) {                    
+                        app.residues = resp.data;
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Error waste_details :" + resp);
+                    }); 
+        },
+
+
+        toNewResidue (residue){
 
                 var ComponentReserv = Vue.extend(DiscrepancyComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
-                source: '', 
+                residue: residue, 
                 }});
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
@@ -198,11 +196,11 @@
         },
 
 
-        toNewTraceability (){
+        toNewTraceability (item){
 
                 var ComponentReserv = Vue.extend(TraceabilityComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
-                source: '', 
+                waste_detail: item, 
                 }});
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);

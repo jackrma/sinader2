@@ -33,9 +33,16 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/requisition/approve', 'RequisitionController@approve');
     Route::post('/requisition/reject', 'RequisitionController@reject');
 
-    Route::get('/establishment', 'EstablishmentController@data');
     Route::get('/user', 'UserController@data');
+    
+    Route::get('/establishment', 'EstablishmentController@data');
+    Route::get('/establishments/{company_id}', 'EstablishmentController@index');
+    
+
     Route::get('/company', 'CompanyController@data');
+    Route::get('/companies', 'CompanyController@index');
+    Route::get('/companies/search', 'CompanyController@search');
+
 
 	Route::get('/lerchapter', 'LerChapterController@data');
 	Route::get('/lersubchapter/{lerchapter_id}', 'LerSubChapterController@data');
@@ -45,12 +52,15 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/recolectiontype', 'RecolectionTypeController@data');
 	Route::get('/unit', 'UnitController@data');
 
-	Route::get('/carrier', 'CarrierController@data');
+	Route::get('/carriers', 'CarrierController@data');
+	Route::get('/carriers/search', 'CarrierController@search');
 	Route::get('/vehicletype', 'VehicleTypeController@data');
 	Route::get('/vehicle/{carrier_id}', 'VehicleController@data');
 
 
     Route::get('/declarations', 'DeclarationController@index');
+    Route::get('/declarations/forreceiver/{receiver_id}', 'DeclarationController@forreceiver');
+    Route::get('/declaration/{declaration_id}', 'DeclarationController@declaration');
     Route::post('/declaration/create', 'DeclarationController@create');
 	Route::post('/declaration/store', 'DeclarationController@store');
 	Route::post('/declaration/sinmovimiento', 'DeclarationController@sinMovimento');
@@ -59,5 +69,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/declaration/enviar/{declaration_id}', 'DeclarationController@changeStatusEnviada');
 
     Route::get('/waste_details/{declaration_id}', 'WasteDetailController@index');
+    Route::post('/waste_details/forreceiver', 'WasteDetailController@forreceiver');
+    Route::post('/waste_detail/updatediscrepancy','WasteDetailController@updateDiscrepancy');
 
 });

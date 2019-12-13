@@ -25,19 +25,25 @@
         <v-card-text>
 
                     <v-layout>
-                        <v-flex xs3 class="px-1">
-                            <v-text-field v-model="reciduo" readonly=true label="Reciduo"></v-text-field>
+                        <v-flex xs6 class="px-1">
+                            <v-text-field v-model="this.residue_name" readonly=true label="Reciduo"></v-text-field>
                         </v-flex>
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="cantidad" type='number' label="Cantidad"></v-text-field>
+                            <v-text-field v-model="cantidad" :rules = "numberRule" type='number' label="Cantidad Recepcionada"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
+
                             <v-select
                                 :items="units"
-                                v-model="unidad"
+                                v-model="this.unidad"
                                 label="Unidad de Medida"
+                                item-text="name" 
+                                :rules = "generalRule"
+                                v-on:change="changeUnit"
+                                return-object
                             ></v-select> 
+
                         </v-flex>
 
                     </v-layout>
@@ -46,7 +52,7 @@
 
                     <v-layout>
                         <v-flex xs8 class="px-1">
-                            <v-text-field  label="Comentario"></v-text-field>
+                            <v-text-field v-model='comment'  label="Comentario"></v-text-field>
                         </v-flex>
 
                     </v-layout>
@@ -61,7 +67,7 @@
           <v-btn
             color="main_green"
             class='white--text'
-            @click="dialog = false"
+            @click="saveDiscrepancy()"
           >
             Guardar
           </v-btn>
@@ -72,33 +78,75 @@
 </template>
 
 <script>
-
+  import Vue from 'vue';  
+  import Vuex from 'vuex'; 
+  import { mapState } from 'vuex';  
+  
+  import { EventBus } from './../eventbus.js';
 
 
   export default {
+    props: {
+        residue: Object,
+    },
     data () {
       return {
+        generalRule: [v => !!v || 'Campo requerido'],
+        numberRule: [v => !!v || 'Campo requerido', v => v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico',],
+
         checkbox:false,
         dialog: true,
 
-        unidad:'Ton',
-        cantidad:'23',
-        reciduo:'200101 | Metales',
-
-        capitulos: ['capitulo prueba 1','capitulo prueba 2', 'capitulo prueba 3','capitulo prueba 4'],
-        subcapitulos: ['subcapitulo prueba 1','subcapitulo prueba 2', 'subcapitulo prueba 3','subcapitulo prueba 4'],
-        residues: ['Papel y cartón', 'residuo 2', 'residuo 3'],
-        
-        tipos_recolecciom: ['Punto Verde','Tipo Recolección 2','Tipo Recolección 3'],
-
-        destinatarios: ['11111111-1 | SOREPA', '11111111-1 | SOREPA 2' ],
-        establishments: ['4989 | Planta Colina','4990 | Planta 2'],
-
-        processings:['Pretratamiento de papel y cartón', 'tipo 2', 'tipo3'],
-        gestion:['Centro Acopio', 'Gestion 2', 'Gestion 3'],
-        units:['Kg','Ton'],
+        unidad:'',
+        cantidad:0,
+        residue_name:'',
+        comment:'',
+        units:[],
         }
-      }
+      },
+    created () {
+        this.initialize();
+    },
+
+    methods: {
+        initialize(){   
+
+        this.residue_name = this.residue.waste;
+        this.unidad = 'Toneladas';
+          
+        var app = this;
+
+            axios.get('/api/unit')
+                .then(function (resp) {    
+                    app.units = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+        },
+        changeUnit(){
+        }, 
+
+        saveDiscrepancy(){
+            var discrepancy = {
+            waste_detail_id: this.residue.id,  
+            disc_quantity : this.cantidad, 
+            disc_unit     : this.unidad, 
+            disc_comment  : this.comment,
+            }
+
+            axios.post('/api/waste_detail/updatediscrepancy', discrepancy)
+                .then(function (resp) {    
+                    EventBus.$emit('saveDiscrepancy', 'someValue');
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error  waste_detail/updatediscrepancy:" + resp);
+                });
+            this.dialog = false;
+        }
+      },  
     }
   
 </script>

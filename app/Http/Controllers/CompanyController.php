@@ -24,4 +24,32 @@ class CompanyController extends Controller
 
 		return response()->json($company);
 	}
+
+	public function index(){
+		$company = Company::all();
+		return response()->json($company);
+	}
+	
+
+
+	public function search(Request $request){
+
+		$rut = $request->input('rut');
+		$name = $request->input('name');
+
+		$companies = Company::orderBy('name')->get();
+
+		if($name){
+        	$companies = Company::where('name', 'ILIKE', '%'.$name.'%')->get()->toArray();
+    	}
+        if($rut){
+        	$rut = substr ($rut, 0, -2);
+			$companies = Company::where('rut', $rut)->get()->toArray();        	
+        }
+
+		return response()->json($companies);
+	}
+
+
+
 }
