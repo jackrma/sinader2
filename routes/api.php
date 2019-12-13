@@ -51,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/processtype', 'ProcessTypeController@data');
 	Route::get('/recolectiontype', 'RecolectionTypeController@data');
 	Route::get('/unit', 'UnitController@data');
+	Route::get('/unit/forid/{id}', 'UnitController@forid');
 
 	Route::get('/carriers', 'CarrierController@data');
 	Route::get('/carriers/search', 'CarrierController@search');

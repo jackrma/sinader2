@@ -15,6 +15,7 @@ class CreateDeclarationsTable extends Migration
     {
         Schema::create('declarations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('declaration_origin_id')->nullable();
             $table->integer("correlative");
             $table->string("correlative_dv");
             $table->string("rut")->nullable();

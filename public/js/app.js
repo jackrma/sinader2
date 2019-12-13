@@ -3653,6 +3653,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 /* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
 /* harmony import */ var _components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/SearchCompanyComponent */ "./resources/js/components/SearchCompanyComponent.vue");
+var _methods;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3821,7 +3825,15 @@ __webpack_require__.r(__webpack_exports__);
       dialog: true,
       residue: '',
       cantidad: '',
-      unidad: ''
+      unidad: '',
+      receiver_name: '',
+      establishments: '',
+      procesing: '',
+      gestion: '',
+      establishment_selected: '',
+      process_selected: '',
+      gestion_selected: '',
+      unit_selected: ''
     };
   },
   created: function created() {
@@ -3834,12 +3846,18 @@ __webpack_require__.r(__webpack_exports__);
       app.selectCompany();
     });
   },
-  methods: {
+  methods: (_methods = {
     initialize: function initialize() {
       this.residue = this.waste_detail.waste;
       this.cantidad = this.waste_detail.quantity;
-      this.unidad = 'Toneladas';
       var app = this;
+      axios.get('/api/unit/forid/' + this.waste_detail.unit_id).then(function (resp) {
+        app.unit_selected = resp.data;
+        app.unidad = app.unit_selected.name;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error unit :" + resp);
+      });
       axios.get('/api/unit').then(function (resp) {
         app.units = resp.data;
       })["catch"](function (resp) {
@@ -3872,12 +3890,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     selectCompany: function selectCompany() {
-      alert(JSON.stringify(this.$store.getters.receiver));
       this.receiver_name = this.$store.getters.receiver.name;
       this.changeCompany(this.$store.getters.receiver);
     },
     changeCompany: function changeCompany(company_selected) {
-      alert('receiver');
       var app = this;
       this.company_selected = company_selected;
       axios.get('/api/establishments/' + this.company_selected.id).then(function (resp) {
@@ -3887,64 +3903,72 @@ __webpack_require__.r(__webpack_exports__);
         alert("Error chapter :" + resp);
       });
     },
-    toTransport: function toTransport() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
-      var instance = new ComponentReserv({
-        store: this.$store,
-        propsData: {
-          source: ''
-        }
-      });
-      instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+    changeEstablishment: function changeEstablishment(establishment_selected) {
+      this.establishment_selected = establishment_selected;
     },
-    refreshCarrier: function refreshCarrier() {
-      this.carrier = this.$store.getters.carrier;
-      this.carriername = this.carrier.carriername;
-      this.vehicleplate = this.carrier.vehicleplate;
-      alert(JSON.stringify(this.carrier));
+    changeProcess: function changeProcess(process_selected) {
+      this.process_selected = process_selected;
     },
-    toSearch: function toSearch() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
-      var instance = new ComponentReserv({
-        store: this.$store,
-        propsData: {
-          source: ''
-        }
-      });
-      instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
-    },
-    saveResidue: function saveResidue() {
-      if (this.$refs.form.validate()) {
-        this.residue = {
-          waste: this.waste_detail.waste,
-          sum: this.cantidad + ' ' + this.unidad.name,
-          company: this.company_selected.rut + ' | ' + this.company_selected.name,
-          // establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
-          establishment: '4365 | prueba ',
-          processing: this.procesing.name,
-          gestion: this.gestion.name,
-          pais: this.pais,
-          empresa: this.empresa,
-          contacto: this.contacto,
-          email: this.email,
-          company_id: this.company_selected.id,
-          establishment_id: this.establishment_selected.id,
-          process_id: this.process_selected.id,
-          manage_id: this.gestion_selected.id,
-          quantity: this.cantidad,
-          waste_id: this.waste_detail.id,
-          unit_id: this.unit_selected.id,
-          carrier_id: 0,
-          carrier: ''
-        };
-        this.$store.commit('changeResidue', this.residue);
-        this.dialog = false;
-        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
-      }
+    changeGestion: function changeGestion(gestion_selected) {
+      this.gestion_selected = gestion_selected;
     }
-  }
+  }, _defineProperty(_methods, "changeEstablishment", function changeEstablishment(establishment_selected) {
+    this.establishment_selected = establishment_selected;
+  }), _defineProperty(_methods, "changeUnit", function changeUnit(unit_selected) {
+    this.unit_selected = unit_selected;
+  }), _defineProperty(_methods, "toTransport", function toTransport() {
+    var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    var instance = new ComponentReserv({
+      store: this.$store,
+      propsData: {
+        source: ''
+      }
+    });
+    instance.$mount();
+    this.$refs.container.appendChild(instance.$el);
+  }), _defineProperty(_methods, "refreshCarrier", function refreshCarrier() {
+    this.carrier = this.$store.getters.carrier;
+    this.carriername = this.carrier.carriername;
+    this.vehicleplate = this.carrier.vehicleplate;
+    alert(JSON.stringify(this.carrier));
+  }), _defineProperty(_methods, "toSearch", function toSearch() {
+    var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+    var instance = new ComponentReserv({
+      store: this.$store,
+      propsData: {
+        source: ''
+      }
+    });
+    instance.$mount();
+    this.$refs.container.appendChild(instance.$el);
+  }), _defineProperty(_methods, "saveResidue", function saveResidue() {
+    if (this.$refs.form.validate()) {
+      this.residue = {
+        waste: this.waste_detail.waste,
+        sum: this.cantidad + ' ' + this.unit_selected.name,
+        company: this.company_selected.rut + ' | ' + this.company_selected.name,
+        establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
+        processing: this.procesing.name,
+        gestion: this.gestion.name,
+        pais: this.pais,
+        empresa: this.empresa,
+        contacto: this.contacto,
+        email: this.email,
+        company_id: this.company_selected.id,
+        establishment_id: this.establishment_selected.id,
+        process_id: this.process_selected.id,
+        manage_id: this.gestion_selected.id,
+        quantity: this.cantidad,
+        waste_id: this.waste_detail.id,
+        unit_id: this.unit_selected.id,
+        carrier_id: 0,
+        carrier: ''
+      };
+      this.$store.commit('changeResidue', this.residue);
+      this.dialog = false;
+      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
+    }
+  }), _methods)
 });
 
 /***/ }),
@@ -4694,7 +4718,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -4711,12 +4734,9 @@ __webpack_require__.r(__webpack_exports__);
       residue: '',
       cantidad: '',
       unidad: '',
-      total: '',
+      total: 0,
       headers: [{
-        text: 'Descripción del Residuo',
-        value: ''
-      }, {
-        text: 'Nombre Establecimiento',
+        text: 'Destinatario',
         value: ''
       }, {
         text: 'Tipo de Tratamiento',
@@ -4760,7 +4780,8 @@ __webpack_require__.r(__webpack_exports__);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
-          waste_detail: this.waste_detail
+          waste_detail: this.waste_detail,
+          remainder: this.waste_detail - this.total
         }
       });
       instance.$mount();
@@ -4768,6 +4789,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     refreshList: function refreshList() {
       this.residues.push(this.$store.getters.residue);
+      this.total = this.total + parseFloat(this.$store.getters.residue.quantity);
     }
   }
 });
@@ -10971,10 +10993,6 @@ var render = function() {
                                 key: "items",
                                 fn: function(props) {
                                   return [
-                                    _c("td", { staticClass: "text-xs-right" }, [
-                                      _vm._v(_vm._s(props.item.residue))
-                                    ]),
-                                    _vm._v(" "),
                                     _c("td", { staticClass: "text-xs-right" }, [
                                       _vm._v(_vm._s(props.item.establishment))
                                     ]),

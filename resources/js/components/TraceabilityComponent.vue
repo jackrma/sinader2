@@ -72,7 +72,6 @@
                          
                         >
                           <template v-slot:items="props">
-                            <td class="text-xs-right">{{ props.item.residue }}</td>
                             <td class="text-xs-right">{{ props.item.establishment }}</td>
                             <td class="text-xs-right">{{ props.item.processing }}</td>
                             <td class="text-xs-right">{{ props.item.gestion }}</td>
@@ -139,12 +138,11 @@
         cantidad: '',
         unidad: '',
 
-        total: '',
+        total: 0,
 
 
-        headers: [
-            { text: 'Descripción del Residuo', value: '' },            
-            { text: 'Nombre Establecimiento', value: '' },
+        headers: [           
+            { text: 'Destinatario', value: '' },
             { text: 'Tipo de Tratamiento', value: '' },
             { text: 'Tipo de Gestión', value: '' },
             { text: 'Cantidad', value: '' },
@@ -192,7 +190,8 @@
 
                   var ComponentReserv = Vue.extend(NewTraceabilityComponent)
                   var instance = new ComponentReserv({store: this.$store, propsData: {
-                  waste_detail: this.waste_detail, 
+                  waste_detail: this.waste_detail, remainder: this.waste_detail - this.total 
+ 
                   }});
                   instance.$mount();
                   this.$refs.container.appendChild(instance.$el);
@@ -200,6 +199,7 @@
 
         refreshList(){
             this.residues.push(this.$store.getters.residue);
+            this.total = this.total + parseFloat(this.$store.getters.residue.quantity);
         },   
       }
     }

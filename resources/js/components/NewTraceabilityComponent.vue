@@ -174,6 +174,16 @@
         cantidad: '',
         unidad: '',
 
+
+        receiver_name:'',
+        establishments:'',
+        procesing:'',
+        gestion:'',
+
+        establishment_selected:'',
+        process_selected:'',
+        gestion_selected:'',
+        unit_selected:'',
         }
     },
     
@@ -194,10 +204,21 @@
 
             this.residue  = this.waste_detail.waste;
             this.cantidad = this.waste_detail.quantity;
-            this.unidad   = 'Toneladas';
+            
 
 
             var app = this;
+
+            axios.get('/api/unit/forid/'+this.waste_detail.unit_id)
+                .then(function (resp) {    
+                    app.unit_selected = resp.data;
+                    app.unidad   = app.unit_selected.name;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error unit :" + resp);
+                });
+
             axios.get('/api/unit')
                 .then(function (resp) {    
                     app.units = resp.data;
@@ -245,16 +266,12 @@
         },
 
         selectCompany(){
-            alert(JSON.stringify(this.$store.getters.receiver));
-
             this.receiver_name= this.$store.getters.receiver.name;
             this.changeCompany(this.$store.getters.receiver);
             
         },
 
         changeCompany(company_selected){
-
-            alert('receiver');
             var app = this;
             this.company_selected = company_selected;
 
@@ -267,6 +284,27 @@
                     alert("Error chapter :" + resp);
                 });
         },
+
+        changeEstablishment(establishment_selected){
+            this.establishment_selected = establishment_selected;
+        },
+
+        changeProcess(process_selected){
+            this.process_selected = process_selected;
+        },
+
+        changeGestion(gestion_selected){
+            this.gestion_selected = gestion_selected;
+        },
+
+        changeEstablishment(establishment_selected){
+            this.establishment_selected = establishment_selected;
+        },
+
+        changeUnit(unit_selected){
+            this.unit_selected = unit_selected;
+        },
+
         toTransport (){
             var ComponentReserv = Vue.extend(TransportComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
@@ -299,10 +337,9 @@
 
                 this.residue = {
                     waste: this.waste_detail.waste,
-                    sum: this.cantidad + ' ' + this.unidad.name,
+                    sum: this.cantidad + ' ' + this.unit_selected.name,
                     company: this.company_selected.rut + ' | ' + this.company_selected.name,
-                    // establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
-                    establishment: '4365 | prueba ',
+                    establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
                     pais: this.pais,

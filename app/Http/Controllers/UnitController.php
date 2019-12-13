@@ -11,4 +11,9 @@ class UnitController extends Controller
 		$unit = Unit::all();
 		return response()->json($unit);
 	}
+	public function forid($id){
+		$unit = Unit::where('id',$id)->get()->first();
+		return response()->json($unit);
+	}
+
 }
