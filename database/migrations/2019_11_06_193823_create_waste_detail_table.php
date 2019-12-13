@@ -38,7 +38,7 @@ class CreateWasteDetailTable extends Migration
 
 
             
-            $table->integer('quantity');
+            $table->double('quantity', 12 , 4)->nullable();
             $table->integer('waste_id')->references('id')->on('ler_waste');
             $table->integer('company_id')->references('id')->on('companies');
             $table->integer('establishment_id')->references('id')->on('establishment');
@@ -48,8 +48,10 @@ class CreateWasteDetailTable extends Migration
             $table->integer('unit_id')->references('id')->on('units');
             $table->integer('recolection_id')->nullable()->references('id')->on('recolection_types');
 
-
             $table->integer('carrier_id')->nullable()->references('id')->on('carriers');
+            $table->string('carrier_name')->nullable();
+            $table->integer('plate')->nullable()->references('plate')->on('vehicle');
+
 
             $table->timestamps();
         });
