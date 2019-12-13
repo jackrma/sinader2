@@ -103,7 +103,7 @@
           <v-btn
             color="main_green"
             class='white--text'
-            @click="dialog = false"
+            @click="saveAll()"
           >
             Guardar
           </v-btn>
@@ -127,6 +127,7 @@
   export default {
     props:{
        waste_detail: Object,
+       declaration_origin: Object,
     },
 
     data () {
@@ -188,6 +189,8 @@
         },
           NewDestiny (){
 
+            if(this.total < this.waste_detail.quantity){ 
+
                   var ComponentReserv = Vue.extend(NewTraceabilityComponent)
                   var instance = new ComponentReserv({store: this.$store, propsData: {
                   waste_detail: this.waste_detail, remainder: this.waste_detail - this.total 
@@ -195,12 +198,35 @@
                   }});
                   instance.$mount();
                   this.$refs.container.appendChild(instance.$el);
+            } else {
+                alert('Candidad completa, no es posible agregar un nuevo destinatario')
+            }
           },
 
         refreshList(){
             this.residues.push(this.$store.getters.residue);
             this.total = this.total + parseFloat(this.$store.getters.residue.quantity);
-        },   
+        }, 
+
+        saveAll(){
+            alert("Se generarán declaraciones de salida a cada destinatario de la trazabilidad");
+            var params ={
+                declaration_origin: this.declaration_origin,
+                waste_detail: this.residues,
+            }
+
+            axios.post('/api/declaration/savetraceability', params)
+                .then(function (resp) {    
+                    // EventBus.$emit('saveDeclaration', 'someValue');
+                    alert('Se han creado declaraciones de trazabilidad')
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declaration/sinmovieminto :" + resp);
+                });
+
+            this.dialog = false;
+        }  
       }
     }
   

@@ -7,6 +7,7 @@ use App\User;
 use App\UserEstablishment;
 use App\Establishment;
 use App\WasteDetail;
+use App\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +42,6 @@ class DeclarationController extends Controller
         $user = Auth::user();
         $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
 
-        Info($user_establishment);
         $last_declaration = Declaration::where('establishment_id', $user_establishment->establishment_id)->get()->last();
 
         $declaration = new Declaration();
@@ -103,14 +103,14 @@ class DeclarationController extends Controller
 
         if ($declarationNew->save() ){
             WasteDetail::where('declaration_id', $declarationNew->id)->delete();
-            $this->storeDetail($declaration['waste_detail'], $declarationNew->id);
+            $this->storeDetail($declaration['waste_detail'], $declarationNew->id, 0);
         }
 
         return response()->json($declarationNew);
     }
 
 
-    public function storeDetail($residues, $declaration_id){
+    public function storeDetail($residues, $declaration_id, $declaration_origin_id){
 
         Info("**************************");
         Info($residues);
@@ -150,6 +150,56 @@ class DeclarationController extends Controller
 
             $waste_detail->save();
         }
+    }
+
+    public function savetraceability(Request $request){
+
+        // Info($request);
+
+        $declaration_origin = $request->input('declaration_origin');
+        $waste_detail       = $request->input('waste_detail');
+
+
+        $user = Auth::user();
+
+        $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
+        $establishment = Establishment::where('id', $user_establishment->establishment_id)->get()->first();
+        $company = Company::where('id',$establishment->company_id)->get()->first();
+
+
+        $last_declaration = Declaration::where('establishment_id', $user_establishment->establishment_id)->get()->last();
+
+        $declaration = new Declaration();
+        $declaration->correlative       = 1;
+        if($last_declaration){
+            $declaration->correlative   = $last_declaration->correlative + 1; 
+        }
+        
+        $declaration->declaration_origin_id = $declaration_origin['id'];
+        $declaration->correlative_dv    = $this->getMod11Dv($declaration->correlative);
+        $declaration->establishment_id  = $user_establishment->establishment_id;
+        $declaration->user_id           = $user->id;   
+        $declaration->status            = 'CREADA';
+
+        $declaration->rut            = $company->rut . '-' . $company->dv;
+        $declaration->company        = $company->name;
+        $declaration->establishment  = $establishment->name;
+        $declaration->direccion      = $establishment->street . ' ' . $establishment->number;
+        $declaration->comuna         = $establishment->commune->name;
+        $declaration->region         = $establishment->region->name;
+        $declaration->type           = ' ';
+        $declaration->period         = '2019';
+        
+ 
+        $declaration->establishment_id  = $user_establishment->establishment_id;
+        $declaration->user_id           = $user->id;
+
+        if ($declaration->save() ){
+            WasteDetail::where('declaration_id', $declaration->id)->delete();
+            $this->storeDetail($waste_detail, $declaration->id, $declaration_origin['id']);
+        }
+
+
     }
 
     /**

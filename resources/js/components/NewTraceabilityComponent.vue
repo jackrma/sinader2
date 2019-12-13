@@ -113,19 +113,19 @@
 
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="País"></v-text-field>
+                            <v-text-field v-model='pais' label="País"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Empresa"></v-text-field>
+                            <v-text-field v-model='empresa'  label="Empresa"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Contacto"></v-text-field>
+                            <v-text-field v-model='contacto' label="Contacto"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field  label="Email"></v-text-field>
+                            <v-text-field v-model='email' label="Email"></v-text-field>
                         </v-flex>
 
                     </v-layout>
@@ -164,6 +164,7 @@
   export default {
     props:{
        waste_detail: Object,
+       declaration_origin: Object,
     },
     data () {
       return {
@@ -173,6 +174,11 @@
         residue: '',
         cantidad: '',
         unidad: '',
+
+        pais:' ',
+        empresa:' ',
+        contacto:' ',
+        email:' ',
 
 
         receiver_name:'',

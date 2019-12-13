@@ -20,7 +20,7 @@
 
                         <v-layout>
                         <v-flex  xs3 class="pr-1">
-                            <v-text-field v-model="this.correlative"  readonly='true' label="Folio"></v-text-field>
+                            <v-text-field v-model="folio"  readonly='true' label="Folio"></v-text-field>
                         </v-flex>
 
                         <v-flex  xs3 class="px-1">
@@ -132,6 +132,7 @@
         address:'',
         commune:'',
         region:'',
+        folio:'',
        
         residues: [],
         
@@ -150,7 +151,7 @@
         initialize(){
 
         
-        
+            this.folio = this.declaration_edit.correlative + '-' + this.declaration_edit.correlative_dv;
             this.correlative    = this.declaration_edit.correlative; 
             this.company        = this.declaration_edit.company;
             this.rut            = this.declaration_edit.rut ;
@@ -166,12 +167,14 @@
         refreshList(){
             var app = this;
             var params = {
-                declaration_id: this.declaration_edit.id,
+                declaration_id: this.declaration_edit.declaration_id,
                 establishment_id: this.$store.getters.establishment.id,
             }
 
+            alert(JSON.stringify(params));    
             axios.post('/api/waste_details/forreceiver', params)
-                    .then(function (resp) {                    
+                    .then(function (resp) {    
+                        alert(JSON.stringify(resp.data));               
                         app.residues = resp.data;
                     })
                     .catch(function (resp) {
@@ -190,9 +193,6 @@
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
 
-
-
-
         },
 
 
@@ -200,7 +200,7 @@
 
                 var ComponentReserv = Vue.extend(TraceabilityComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
-                waste_detail: item, 
+                waste_detail: item, declaration_origin: this.declaration_edit 
                 }});
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);

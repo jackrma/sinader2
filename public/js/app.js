@@ -3817,7 +3817,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    waste_detail: Object
+    waste_detail: Object,
+    declaration_origin: Object
   },
   data: function data() {
     return {
@@ -3826,6 +3827,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       residue: '',
       cantidad: '',
       unidad: '',
+      pais: ' ',
+      empresa: ' ',
+      contacto: ' ',
+      email: ' ',
       receiver_name: '',
       establishments: '',
       procesing: '',
@@ -4204,6 +4209,7 @@ __webpack_require__.r(__webpack_exports__);
       address: '',
       commune: '',
       region: '',
+      folio: '',
       residues: []
     };
   },
@@ -4216,6 +4222,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {
+      this.folio = this.declaration_edit.correlative + '-' + this.declaration_edit.correlative_dv;
       this.correlative = this.declaration_edit.correlative;
       this.company = this.declaration_edit.company;
       this.rut = this.declaration_edit.rut;
@@ -4228,10 +4235,12 @@ __webpack_require__.r(__webpack_exports__);
     refreshList: function refreshList() {
       var app = this;
       var params = {
-        declaration_id: this.declaration_edit.id,
+        declaration_id: this.declaration_edit.declaration_id,
         establishment_id: this.$store.getters.establishment.id
       };
+      alert(JSON.stringify(params));
       axios.post('/api/waste_details/forreceiver', params).then(function (resp) {
+        alert(JSON.stringify(resp.data));
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -4254,7 +4263,8 @@ __webpack_require__.r(__webpack_exports__);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
-          waste_detail: item
+          waste_detail: item,
+          declaration_origin: this.declaration_edit
         }
       });
       instance.$mount();
@@ -4725,7 +4735,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    waste_detail: Object
+    waste_detail: Object,
+    declaration_origin: Object
   },
   data: function data() {
     return {
@@ -4776,20 +4787,39 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     NewDestiny: function NewDestiny() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewTraceabilityComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
-      var instance = new ComponentReserv({
-        store: this.$store,
-        propsData: {
-          waste_detail: this.waste_detail,
-          remainder: this.waste_detail - this.total
-        }
-      });
-      instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      if (this.total < this.waste_detail.quantity) {
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewTraceabilityComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+        var instance = new ComponentReserv({
+          store: this.$store,
+          propsData: {
+            waste_detail: this.waste_detail,
+            remainder: this.waste_detail - this.total
+          }
+        });
+        instance.$mount();
+        this.$refs.container.appendChild(instance.$el);
+      } else {
+        alert('Candidad completa, no es posible agregar un nuevo destinatario');
+      }
     },
     refreshList: function refreshList() {
       this.residues.push(this.$store.getters.residue);
       this.total = this.total + parseFloat(this.$store.getters.residue.quantity);
+    },
+    saveAll: function saveAll() {
+      alert("Se generarán declaraciones de salida a cada destinatario de la trazabilidad");
+      var params = {
+        declaration_origin: this.declaration_origin,
+        waste_detail: this.residues
+      };
+      axios.post('/api/declaration/savetraceability', params).then(function (resp) {
+        // EventBus.$emit('saveDeclaration', 'someValue');
+        alert('Se han creado declaraciones de trazabilidad');
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declaration/sinmovieminto :" + resp);
+      });
+      this.dialog = false;
     }
   }
 });
@@ -9757,7 +9787,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "País" }
+                                    attrs: { label: "País" },
+                                    model: {
+                                      value: _vm.pais,
+                                      callback: function($$v) {
+                                        _vm.pais = $$v
+                                      },
+                                      expression: "pais"
+                                    }
                                   })
                                 ],
                                 1
@@ -9768,7 +9805,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Empresa" }
+                                    attrs: { label: "Empresa" },
+                                    model: {
+                                      value: _vm.empresa,
+                                      callback: function($$v) {
+                                        _vm.empresa = $$v
+                                      },
+                                      expression: "empresa"
+                                    }
                                   })
                                 ],
                                 1
@@ -9779,7 +9823,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Contacto" }
+                                    attrs: { label: "Contacto" },
+                                    model: {
+                                      value: _vm.contacto,
+                                      callback: function($$v) {
+                                        _vm.contacto = $$v
+                                      },
+                                      expression: "contacto"
+                                    }
                                   })
                                 ],
                                 1
@@ -9790,7 +9841,14 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Email" }
+                                    attrs: { label: "Email" },
+                                    model: {
+                                      value: _vm.email,
+                                      callback: function($$v) {
+                                        _vm.email = $$v
+                                      },
+                                      expression: "email"
+                                    }
                                   })
                                 ],
                                 1
@@ -10126,11 +10184,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { readonly: "true", label: "Folio" },
                             model: {
-                              value: this.correlative,
+                              value: _vm.folio,
                               callback: function($$v) {
-                                _vm.$set(this, "correlative", $$v)
+                                _vm.folio = $$v
                               },
-                              expression: "this.correlative"
+                              expression: "folio"
                             }
                           })
                         ],
@@ -11060,7 +11118,7 @@ var render = function() {
                       attrs: { color: "main_green" },
                       on: {
                         click: function($event) {
-                          _vm.dialog = false
+                          return _vm.saveAll()
                         }
                       }
                     },
