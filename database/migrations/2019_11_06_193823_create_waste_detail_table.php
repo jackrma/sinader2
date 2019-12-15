@@ -19,6 +19,7 @@ class CreateWasteDetailTable extends Migration
             $table->integer('declaration_id')->references('id')->on('declaration');
 
             $table->string('waste');
+            
 
             $table->string('company')->nullable();;
             $table->string('establishment')->nullable();;
