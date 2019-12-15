@@ -42,7 +42,6 @@
                                 v-model="establishment"
                                 item-text="name"  
                                 label="Establecimiento"
-                                :rules = "generalRule"
                                 v-on:change="changeEstablishment"
                                 return-object
                             ></v-select> 
@@ -55,7 +54,6 @@
                                 v-model="procesing"
                                 label="Tipo de Tratamiento"
                                 item-text="name"  
-                                :rules = "generalRule"
                                 v-on:change="changeProcess"
                                 return-object
                             ></v-select> 
@@ -67,7 +65,6 @@
                                 v-model="gestion"
                                 label="Tipo de Gestión"
                                 item-text="name" 
-                                :rules = "generalRule"
                                 v-on:change="changeGestion"
                                 return-object
                             ></v-select> 
@@ -139,12 +136,24 @@
                         <v-checkbox
                           v-model="checkbox"
                           label="Residuo Exportado ?"
+                          @click = "selectExport()"
                         ></v-checkbox>
                     </v-layout>    
 
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="pais" label="País"></v-text-field>
+                            <!-- <v-text-field v-model="pais" label="País"></v-text-field> -->
+
+                            <v-select
+                                :items="countries"
+                                v-model="country"
+                                label="Pais"
+                                item-text="name" 
+                                v-on:change="changeCountry"
+                                return-object
+                            ></v-select> 
+
+
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -202,6 +211,9 @@
 
 
   export default {
+    props: {
+        residue_edit: Object,
+    },
     data () {
       return {
 
@@ -228,6 +240,7 @@
         process_selected:'',
         gestion_selected:'',
         unit_selected:'',
+        country_selected:'',
 
         pais:'',
         empresa:'',
@@ -241,6 +254,7 @@
         tipos_recoleccion: '',
         
         companies: [],
+        countries:[],
         establishments: [],
 
 
@@ -309,14 +323,14 @@
                     alert("Error chapter :" + resp);
                 });
 
-            // axios.get('/api/companies')
-            //     .then(function (resp) {    
-            //         app.companies = resp.data;
-            //     })
-            //     .catch(function (resp) {
-            //         console.log(resp);
-            //         alert("Error chapter :" + resp);
-            //     });
+            axios.get('/api/countries')
+                .then(function (resp) {    
+                    app.countries = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error chapter :" + resp);
+                });
 
 
         },
@@ -357,16 +371,16 @@
         },
 
         selectCompany(){
-            alert(JSON.stringify(this.$store.getters.receiver));
+            // alert(JSON.stringify(this.$store.getters.receiver));
 
-            this.receiver_name= this.$store.getters.receiver.name;
+            this.receiver_name= this.$store.getters.receiver.rut +'-'+ this.$store.getters.receiver.digit +' | '+ this.$store.getters.receiver.name;
             this.changeCompany(this.$store.getters.receiver);
             
         },
 
         changeCompany(company_selected){
 
-            alert('receiver');
+            // alert('receiver');
             var app = this;
             this.company_selected = company_selected;
 
@@ -381,7 +395,7 @@
         },
 
         changeEstablishment(establishment_selected){
-            alert(JSON.stringify(establishment_selected));
+            //alert(JSON.stringify(establishment_selected));
             this.establishment_selected = establishment_selected;
         },
 
@@ -393,8 +407,28 @@
             this.gestion_selected = gestion_selected;
         },
 
+        changeCountry(country_selected){
+            this.country_selected = country_selected;
+        },
+
         changeUnit(unit_selected){
             this.unit_selected = unit_selected;
+        },
+
+        selectExport(){
+            this.company_selected        = '';
+            this.establishment_selected  = '';
+            this.process_selected        = '';
+            this.gestion_selected        = '';  
+
+            this.receiver_name = ''; 
+            this.establishment = ''; 
+            this.processings   = ''; 
+            this.gestion       = ''; 
+
+            this.checkbox=true;
+
+
         },
 
 
@@ -404,14 +438,23 @@
 
             if (this.$refs.form.validate()){
 
+                var establishment_name = this.establishment_selected.id + ' | ' + this.establishment_selected.name;
+                var company_name = this.company_selected.rut + ' | ' + this.company_selected.name;
+
+                if(this.checkbox){
+                    establishment_name = '';
+                    company_name = this.country_selected.name + ' | ' + this.empresa;
+                }        
+
                 this.residue = {
                     waste: this.residuetext,
                     sum: this.cantidad + ' ' + this.unidad.name,
-                    company: this.company_selected.rut + ' | ' + this.company_selected.name,
-                    establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
+                    company: company_name,
+                    establishment: establishment_name,
+                    
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
-                    pais: this.pais,
+                    pais: this.country_selected.name,
                     empresa: this.empresa,
                     contacto: this.contacto,
                     email: this.email,
@@ -449,7 +492,7 @@
             this.carriername = this.carrier.carriername;
             this.vehicleplate = this.carrier.vehicleplate;
 
-            alert(JSON.stringify(this.carrier));
+            //alert(JSON.stringify(this.carrier));
         },
         toSearch(){
                 var ComponentReserv = Vue.extend(SearchReceiverComponent)

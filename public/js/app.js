@@ -2946,6 +2946,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2953,6 +2962,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    residue_edit: Object
+  },
   data: function data() {
     return {
       generalRule: [function (v) {
@@ -2980,6 +2992,7 @@ __webpack_require__.r(__webpack_exports__);
       process_selected: '',
       gestion_selected: '',
       unit_selected: '',
+      country_selected: '',
       pais: '',
       empresa: '',
       contacto: '',
@@ -2989,6 +3002,7 @@ __webpack_require__.r(__webpack_exports__);
       vehicleplate: '',
       tipos_recoleccion: '',
       companies: [],
+      countries: [],
       establishments: [],
       procesing: '',
       processings: '',
@@ -3039,14 +3053,13 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error chapter :" + resp);
-      }); // axios.get('/api/companies')
-      //     .then(function (resp) {    
-      //         app.companies = resp.data;
-      //     })
-      //     .catch(function (resp) {
-      //         console.log(resp);
-      //         alert("Error chapter :" + resp);
-      //     });
+      });
+      axios.get('/api/countries').then(function (resp) {
+        app.countries = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error chapter :" + resp);
+      });
     },
     changeChapter: function changeChapter(chapter_selected) {
       var app = this;
@@ -3072,12 +3085,12 @@ __webpack_require__.r(__webpack_exports__);
       this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
     },
     selectCompany: function selectCompany() {
-      alert(JSON.stringify(this.$store.getters.receiver));
-      this.receiver_name = this.$store.getters.receiver.name;
+      // alert(JSON.stringify(this.$store.getters.receiver));
+      this.receiver_name = this.$store.getters.receiver.rut + '-' + this.$store.getters.receiver.digit + ' | ' + this.$store.getters.receiver.name;
       this.changeCompany(this.$store.getters.receiver);
     },
     changeCompany: function changeCompany(company_selected) {
-      alert('receiver');
+      // alert('receiver');
       var app = this;
       this.company_selected = company_selected;
       axios.get('/api/establishments/' + this.company_selected.id).then(function (resp) {
@@ -3088,7 +3101,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
-      alert(JSON.stringify(establishment_selected));
+      //alert(JSON.stringify(establishment_selected));
       this.establishment_selected = establishment_selected;
     },
     changeProcess: function changeProcess(process_selected) {
@@ -3097,19 +3110,41 @@ __webpack_require__.r(__webpack_exports__);
     changeGestion: function changeGestion(gestion_selected) {
       this.gestion_selected = gestion_selected;
     },
+    changeCountry: function changeCountry(country_selected) {
+      this.country_selected = country_selected;
+    },
     changeUnit: function changeUnit(unit_selected) {
       this.unit_selected = unit_selected;
     },
+    selectExport: function selectExport() {
+      this.company_selected = '';
+      this.establishment_selected = '';
+      this.process_selected = '';
+      this.gestion_selected = '';
+      this.receiver_name = '';
+      this.establishment = '';
+      this.processings = '';
+      this.gestion = '';
+      this.checkbox = true;
+    },
     saveResidue: function saveResidue() {
       if (this.$refs.form.validate()) {
+        var establishment_name = this.establishment_selected.id + ' | ' + this.establishment_selected.name;
+        var company_name = this.company_selected.rut + ' | ' + this.company_selected.name;
+
+        if (this.checkbox) {
+          establishment_name = '';
+          company_name = this.country_selected.name + ' | ' + this.empresa;
+        }
+
         this.residue = {
           waste: this.residuetext,
           sum: this.cantidad + ' ' + this.unidad.name,
-          company: this.company_selected.rut + ' | ' + this.company_selected.name,
-          establishment: this.establishment_selected.id + ' | ' + this.establishment_selected.name,
+          company: company_name,
+          establishment: establishment_name,
           processing: this.procesing.name,
           gestion: this.gestion.name,
-          pais: this.pais,
+          pais: this.country_selected.name,
           empresa: this.empresa,
           contacto: this.contacto,
           email: this.email,
@@ -3142,8 +3177,7 @@ __webpack_require__.r(__webpack_exports__);
     refreshCarrier: function refreshCarrier() {
       this.carrier = this.$store.getters.carrier;
       this.carriername = this.carrier.carriername;
-      this.vehicleplate = this.carrier.vehicleplate;
-      alert(JSON.stringify(this.carrier));
+      this.vehicleplate = this.carrier.vehicleplate; //alert(JSON.stringify(this.carrier));
     },
     toSearch: function toSearch() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
@@ -3504,8 +3538,8 @@ __webpack_require__.r(__webpack_exports__);
           carrier_id: 1,
           recolection_type: this.recolection_selected.id
         };
-        this.$store.commit('changeResidue', this.residue);
-        alert(JSON.stringify(this.$store.getters.residue));
+        this.$store.commit('changeResidue', this.residue); // alert(JSON.stringify(this.$store.getters.residue));
+
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
         this.dialog = false;
       }
@@ -3934,8 +3968,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), _defineProperty(_methods, "refreshCarrier", function refreshCarrier() {
     this.carrier = this.$store.getters.carrier;
     this.carriername = this.carrier.carriername;
-    this.vehicleplate = this.carrier.vehicleplate;
-    alert(JSON.stringify(this.carrier));
+    this.vehicleplate = this.carrier.vehicleplate; //alert(JSON.stringify(this.carrier));
   }), _defineProperty(_methods, "toSearch", function toSearch() {
     var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
     var instance = new ComponentReserv({
@@ -4236,11 +4269,11 @@ __webpack_require__.r(__webpack_exports__);
       var app = this;
       var params = {
         declaration_id: this.declaration_edit.declaration_id,
-        establishment_id: this.$store.getters.establishment.id
+        establishment_id: this.$store.getters.establishment.id //alert(JSON.stringify(params));    
+
       };
-      alert(JSON.stringify(params));
       axios.post('/api/waste_details/forreceiver', params).then(function (resp) {
-        alert(JSON.stringify(resp.data));
+        //alert(JSON.stringify(resp.data));               
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -4767,14 +4800,14 @@ __webpack_require__.r(__webpack_exports__);
     var app = this;
     this.initialize();
     _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
-      alert('residues');
+      //alert('residues');
       app.refreshList();
     });
   },
   methods: {
     initialize: function initialize() {
-      var app = this;
-      alert(JSON.stringify(this.waste_detail));
+      var app = this; //alert(JSON.stringify(this.waste_detail));
+
       this.residue = this.waste_detail.waste;
       this.cantidad = this.waste_detail.quantity;
       this.unidad = 'Toneladas';
@@ -8576,7 +8609,6 @@ var render = function() {
                                   items: _vm.establishments,
                                   "item-text": "name",
                                   label: "Establecimiento",
-                                  rules: _vm.generalRule,
                                   "return-object": ""
                                 },
                                 on: { change: _vm.changeEstablishment },
@@ -8601,7 +8633,6 @@ var render = function() {
                                   items: _vm.processings,
                                   label: "Tipo de Tratamiento",
                                   "item-text": "name",
-                                  rules: _vm.generalRule,
                                   "return-object": ""
                                 },
                                 on: { change: _vm.changeProcess },
@@ -8626,7 +8657,6 @@ var render = function() {
                                   items: _vm.gestions,
                                   label: "Tipo de Gestión",
                                   "item-text": "name",
-                                  rules: _vm.generalRule,
                                   "return-object": ""
                                 },
                                 on: { change: _vm.changeGestion },
@@ -8784,6 +8814,11 @@ var render = function() {
                         [
                           _c("v-checkbox", {
                             attrs: { label: "Residuo Exportado ?" },
+                            on: {
+                              click: function($event) {
+                                return _vm.selectExport()
+                              }
+                            },
                             model: {
                               value: _vm.checkbox,
                               callback: function($$v) {
@@ -8804,14 +8839,20 @@ var render = function() {
                                 "v-flex",
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
-                                  _c("v-text-field", {
-                                    attrs: { label: "País" },
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.countries,
+                                      label: "Pais",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeCountry },
                                     model: {
-                                      value: _vm.pais,
+                                      value: _vm.country,
                                       callback: function($$v) {
-                                        _vm.pais = $$v
+                                        _vm.country = $$v
                                       },
-                                      expression: "pais"
+                                      expression: "country"
                                     }
                                   })
                                 ],
@@ -10574,7 +10615,7 @@ var render = function() {
                                                 _vm._v(
                                                   _vm._s(props.item.rut) +
                                                     "-" +
-                                                    _vm._s(props.item.dv)
+                                                    _vm._s(props.item.digit)
                                                 )
                                               ]
                                             ),
@@ -56114,8 +56155,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/osvaldo/sissina/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/osvaldo/sissina/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/rmaldonado/Proyectos/sinader/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/rmaldonado/Proyectos/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

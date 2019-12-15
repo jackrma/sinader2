@@ -56,7 +56,7 @@
                       >
                         <template v-slot:items="props">
                           <tr @click="selected_item(props.item)">
-                            <td class="text-xs-right">{{ props.item.rut }}-{{props.item.dv}}</td>
+                            <td class="text-xs-right">{{ props.item.rut }}-{{props.item.digit}}</td>
                             <td class="text-xs-right">{{ props.item.name }}</td>
                         </tr>
                         </template>
@@ -138,6 +138,7 @@
                     alert("Error unit :" + resp);
                 });
         },
+
 
         toSearch(){
             var app = this;

@@ -58,6 +58,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/vehicletype', 'VehicleTypeController@data');
 	Route::get('/vehicle/{carrier_id}', 'VehicleController@data');
 
+	Route::get('/countries', 'CountryController@index');
+
 
     Route::get('/declarations', 'DeclarationController@index');
     Route::get('/declarations/forreceiver/{receiver_id}', 'DeclarationController@forreceiver');

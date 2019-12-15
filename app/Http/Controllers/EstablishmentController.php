@@ -13,7 +13,7 @@ class EstablishmentController extends Controller
 
 
 	public function index($company_id){
-		$establishment = Establishment::where('company_id', $company_id)->get();
+		$establishment = Establishment::where('company_id', $company_id)->where('type', 'DestinatarioFinal')->orWhere('type', 'CentroAcopio')->get();
 		return response()->json($establishment);
 	}
 

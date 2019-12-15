@@ -20,10 +20,10 @@ class CreateWasteDetailTable extends Migration
 
             $table->string('waste');
 
-            $table->string('company');
-            $table->string('establishment');
-            $table->string('processing');
-            $table->string('gestion');
+            $table->string('company')->nullable();;
+            $table->string('establishment')->nullable();;
+            $table->string('processing')->nullable();;
+            $table->string('gestion')->nullable();;
             $table->string('recolection')->nullable();
             
             $table->string('pais')->nullable();
@@ -38,13 +38,13 @@ class CreateWasteDetailTable extends Migration
 
 
             
-            $table->double('quantity', 12 , 4)->nullable();
+            $table->double('quantity', 12 , 4);
             $table->integer('waste_id')->references('id')->on('ler_waste');
-            $table->integer('company_id')->references('id')->on('companies');
-            $table->integer('establishment_id')->references('id')->on('establishment');
+            $table->integer('company_id')->nullable()->references('id')->on('companies');
+            $table->integer('establishment_id')->nullable()->references('id')->on('establishment');
 
-            $table->integer('manage_id')->references('id')->on('manage_types');
-            $table->integer('process_id')->references('id')->on('process_types');
+            $table->integer('manage_id')->nullable()->references('id')->on('manage_types');
+            $table->integer('process_id')->nullable()->references('id')->on('process_types');
             $table->integer('unit_id')->references('id')->on('units');
             $table->integer('recolection_id')->nullable()->references('id')->on('recolection_types');
 
