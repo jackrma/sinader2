@@ -36,29 +36,44 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', 'UserController@data');
     
     Route::get('/establishment', 'EstablishmentController@data');
+
+    Route::get('/establishment/forid/{id}', 'EstablishmentController@forid');
     Route::get('/establishments/{company_id}', 'EstablishmentController@index');
     
 
     Route::get('/company', 'CompanyController@data');
     Route::get('/companies', 'CompanyController@index');
     Route::get('/companies/search', 'CompanyController@search');
+    Route::get('/company/forid/{id}', 'CompanyController@forid');
 
 
 	Route::get('/lerchapter', 'LerChapterController@data');
+	Route::get('/lerchapter/forid/{id}', 'LerChapterController@forid');
+	
+
 	Route::get('/lersubchapter/{lerchapter_id}', 'LerSubChapterController@data');
 	Route::get('/lerwaste/{lersubchapter_id}', 'LerWasteController@data');
+	Route::get('/lerwaste/forid/{id}', 'LerWasteController@forid');
+		
+	Route::get('/managetype/forid/{id}', 'ManageTypeController@forid');
+	Route::get('/processtype/forid/{id}', 'ProcessTypeController@forid');
+
+
 	Route::get('/managetype', 'ManageTypeController@data');
 	Route::get('/processtype', 'ProcessTypeController@data');
+
 	Route::get('/recolectiontype', 'RecolectionTypeController@data');
 	Route::get('/unit', 'UnitController@data');
 	Route::get('/unit/forid/{id}', 'UnitController@forid');
 
 	Route::get('/carriers', 'CarrierController@data');
+	Route::get('/carrier/forid/{id}', 'CarrierController@forid');
 	Route::get('/carriers/search', 'CarrierController@search');
 	Route::get('/vehicletype', 'VehicleTypeController@data');
 	Route::get('/vehicle/{carrier_id}', 'VehicleController@data');
 
 	Route::get('/countries', 'CountryController@index');
+	Route::get('/country/forid/{id}', 'CountryController@forid');
 
 
     Route::get('/declarations', 'DeclarationController@index');

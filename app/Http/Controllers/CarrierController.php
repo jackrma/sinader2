@@ -12,6 +12,11 @@ class CarrierController extends Controller
 		return response()->json($carriers);
 	}
 
+	public function forid($id){
+		$carrier = Carrier::where('id', $id)->get()->first();
+		return response()->json($carrier);
+	}
+
 	public function search(Request $request){
 
 		$rut = $request->input('rut');

@@ -161,7 +161,17 @@
             <td class="text-xs-right">{{ props.item.gestion }}</td>
 
             <td class="justify-center layout px-0">
-                <v-btn small @click="delete_item(props.item)" color="ds_138" dark>Eliminar</v-btn>
+
+                <v-btn icon  @click="edit_item(props.item)" >
+                    <v-icon>edit</v-icon>
+                </v-btn>
+
+                <v-btn icon @click="delete_item(props.item)" >
+                    <v-icon>delete</v-icon>
+                </v-btn>
+
+                <!-- <v-btn small @click="edit_item(props.item)" color="ds_138" dark>Eliminar</v-btn> -->
+                <!-- <v-btn small @click="delete_item(props.item)" color="ds_138" dark>Eliminar</v-btn> -->
             </td>   
 
           </template>
@@ -358,8 +368,43 @@
 
         },
 
+
+        edit_item(item){
+
+            //alert(JSON.stringify(item));
+
+            this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+
+            if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal' ) {
+                var ComponentReserv = Vue.extend(NewResidueIndComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                residue_edit: item, 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+            }else {
+                var ComponentReserv = Vue.extend(NewResidueMunComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                residue_edit: item, 
+                }});
+                instance.$mount();
+                this.$refs.container.appendChild(instance.$el);
+            }
+
+        },
+
         refreshList(){
-            this.residues.push(this.$store.getters.residue);
+            // alert(JSON.stringify(this.$store.getters.residue));
+
+            if(this.$store.getters.indexedit == -1){
+                this.residues.push(this.$store.getters.residue);
+            } else {
+                this.residues.splice(this.$store.getters.editindex, 1);
+                this.residues.push(this.$store.getters.residue);
+                this.$store.commit('changeIndexedit', -1);
+            }
+
+
         },   
 
  

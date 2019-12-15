@@ -13,4 +13,9 @@ class LerWasteController extends Controller
 		return response()->json($lerWaste);
 	}
 
+	public function forid($id){
+		$lerWaste = LerWaste::where('id', $id)->with('subchapter')->get()->first();
+		return response()->json($lerWaste);
+	}
+
 }

@@ -2165,6 +2165,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2321,8 +2331,41 @@ __webpack_require__.r(__webpack_exports__);
         this.$refs.container.appendChild(instance.$el);
       }
     },
+    edit_item: function edit_item(item) {
+      //alert(JSON.stringify(item));
+      this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+
+      if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+        var instance = new ComponentReserv({
+          store: this.$store,
+          propsData: {
+            residue_edit: item
+          }
+        });
+        instance.$mount();
+        this.$refs.container.appendChild(instance.$el);
+      } else {
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+        var instance = new ComponentReserv({
+          store: this.$store,
+          propsData: {
+            residue_edit: item
+          }
+        });
+        instance.$mount();
+        this.$refs.container.appendChild(instance.$el);
+      }
+    },
     refreshList: function refreshList() {
-      this.residues.push(this.$store.getters.residue);
+      // alert(JSON.stringify(this.$store.getters.residue));
+      if (this.$store.getters.indexedit == -1) {
+        this.residues.push(this.$store.getters.residue);
+      } else {
+        this.residues.splice(this.$store.getters.editindex, 1);
+        this.residues.push(this.$store.getters.residue);
+        this.$store.commit('changeIndexedit', -1);
+      }
     },
     delete_item: function delete_item(item) {
       this.residues.pop(item);
@@ -2984,10 +3027,13 @@ __webpack_require__.r(__webpack_exports__);
       residue: '',
       residuetext: '',
       capitulos: '',
+      capitulo: '',
       subcapitulos: '',
+      subcapitulo: '',
       residues: '',
       company_selected: '',
       establishment_selected: '',
+      establishment: '',
       residue_selected: '',
       process_selected: '',
       gestion_selected: '',
@@ -3060,6 +3106,106 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
         alert("Error chapter :" + resp);
       });
+
+      if (this.residue_edit) {
+        //alert(JSON.stringify(this.residue_edit));
+        this.setEdit();
+      }
+    },
+    setEdit: function setEdit() {
+      this.residuetext = this.residue_edit.waste;
+      this.cantidad = this.residue_edit.quantity;
+      this.empresa = this.residue_edit.empresa;
+      this.contacto = this.residue_edit.contacto;
+      this.email = this.residue_edit.email;
+      var app = this;
+      axios.get('/api/unit/forid/' + this.residue_edit.unit_id).then(function (resp) {
+        app.unidad = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error unit :" + resp);
+      });
+
+      if (this.residue_edit.company_id) {
+        axios.get('/api/company/forid/' + this.residue_edit.company_id).then(function (resp) {
+          app.$store.commit('changeReceiver', resp.data);
+          app.selectCompany();
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error company :" + resp);
+        });
+      }
+
+      if (this.residue_edit.establishment_id) {
+        axios.get('/api/establishment/forid/' + this.residue_edit.establishment_id).then(function (resp) {
+          app.establishment_selected = resp.data;
+          app.establishment = app.establishment_selected.name; // alert('establesimiento');
+          // alert(JSON.stringify(app.establishment_selected));
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error establisgment :" + resp);
+        });
+      }
+
+      if (this.residue_edit.country_id) {
+        axios.get('/api/country/forid/' + this.residue_edit.country_id).then(function (resp) {
+          app.country_selected = resp.data;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error country :" + resp);
+        });
+      }
+
+      if (this.residue_edit.process_id) {
+        axios.get('/api/processtype/forid/' + this.residue_edit.process_id).then(function (resp) {
+          app.process_selected = resp.data;
+          app.procesing = app.process_selected.name;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error process :" + resp);
+        });
+      }
+
+      if (this.residue_edit.manage_id) {
+        axios.get('/api/managetype/forid/' + this.residue_edit.manage_id).then(function (resp) {
+          app.gestion_selected = resp.data;
+          app.gestion = app.gestion_selected.name;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error gestion :" + resp);
+        });
+      }
+
+      if (this.residue_edit.waste_id) {
+        axios.get('/api/lerwaste/forid/' + this.residue_edit.waste_id).then(function (resp) {
+          app.residue_selected = resp.data;
+          app.subchapter_selected = app.residue_selected.subchapter;
+          axios.get('/api/lerchapter/forid/' + app.subchapter_selected.chapter_id).then(function (resp) {
+            app.chapter_selected = resp.data;
+            app.capitulo = app.chapter_selected.name;
+            app.changeChapter(app.chapter_selected);
+            app.changeSupChapter(app.subchapter_selected);
+            app.changeResidue(app.residue_selected);
+            app.residue = app.residue_selected.name;
+            app.subcapitulo = app.subchapter_selected.name;
+          })["catch"](function (resp) {
+            console.log(resp);
+            alert("Error lerwaste :" + resp);
+          });
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error lerwaste :" + resp);
+        });
+      }
+
+      if (this.residue_edit.carrier_id) {
+        axios.get('/api/carrier/forid/' + this.residue_edit.carrier_id).then(function (resp) {
+          app.carrier = resp.data;
+        })["catch"](function (resp) {
+          console.log(resp);
+          alert("Error carrier :" + resp);
+        });
+      }
     },
     changeChapter: function changeChapter(chapter_selected) {
       var app = this;
@@ -3124,8 +3270,11 @@ __webpack_require__.r(__webpack_exports__);
       this.receiver_name = '';
       this.establishment = '';
       this.processings = '';
-      this.gestion = '';
-      this.checkbox = true;
+      this.gestion = ''; // if(this.checkbox){
+      //     this.checkbox=false;
+      // }else {
+
+      this.checkbox = true; // }
     },
     saveResidue: function saveResidue() {
       if (this.$refs.form.validate()) {
@@ -7911,14 +8060,29 @@ var render = function() {
                             _c(
                               "v-btn",
                               {
-                                attrs: { small: "", color: "ds_138", dark: "" },
+                                attrs: { icon: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.edit_item(props.item)
+                                  }
+                                }
+                              },
+                              [_c("v-icon", [_vm._v("edit")])],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { icon: "" },
                                 on: {
                                   click: function($event) {
                                     return _vm.delete_item(props.item)
                                   }
                                 }
                               },
-                              [_vm._v("Eliminar")]
+                              [_c("v-icon", [_vm._v("delete")])],
+                              1
                             )
                           ],
                           1
@@ -55731,7 +55895,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     company: '',
     receiver: '',
     residue: '',
-    carrier: ''
+    carrier: '',
+    indexedit: -1
   },
   mutations: {
     changeType: function changeType(state, type) {
@@ -55757,6 +55922,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     changeCarrier: function changeCarrier(state, carrier) {
       state.carrier = carrier;
+    },
+    changeIndexedit: function changeIndexedit(state, indexedit) {
+      state.indexedit = indexedit;
     }
   },
   getters: {
@@ -55783,6 +55951,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     carrier: function carrier(state) {
       return state.carrier;
+    },
+    indexedit: function indexedit(state) {
+      return state.indexedit;
     }
   },
   plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__["default"])()]

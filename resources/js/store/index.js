@@ -17,6 +17,7 @@ export default new Vuex.Store(
 	    receiver: '',
 	    residue:'',
 	    carrier:'',
+	    indexedit:-1,
 
 	},
 	mutations: {
@@ -45,6 +46,9 @@ export default new Vuex.Store(
 		changeCarrier(state, carrier) {
 		   	state.carrier = carrier;
 		},
+		changeIndexedit(state, indexedit) {
+		   	state.indexedit = indexedit;
+		},
 	},
 	getters: {
 		type: state => state.type,
@@ -55,6 +59,7 @@ export default new Vuex.Store(
 		company: state => state.company,
 		residue: state => state.residue,
 		carrier: state => state.carrier,
+		indexedit: state => state.indexedit,
 	},
     plugins: [
     	createPersistedState()

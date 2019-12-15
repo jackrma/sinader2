@@ -231,11 +231,14 @@
         residue:'',
         residuetext:'',
         capitulos: '',
+        capitulo:'',
         subcapitulos: '',
+        subcapitulo: '',
         residues: '',
 
         company_selected:'',
         establishment_selected:'',
+        establishment:'',
         residue_selected:'',
         process_selected:'',
         gestion_selected:'',
@@ -278,6 +281,9 @@
     },
     methods: {
         initialize(){
+
+
+
             var app = this;
             axios.get('/api/unit')
                 .then(function (resp) {    
@@ -332,6 +338,142 @@
                     alert("Error chapter :" + resp);
                 });
 
+            if(this.residue_edit){
+                //alert(JSON.stringify(this.residue_edit));
+                this.setEdit();
+            } 
+        },
+
+        setEdit(){
+            
+                    this.residuetext = this.residue_edit.waste; 
+                    this.cantidad    = this.residue_edit.quantity;
+                     
+                    this.empresa     = this.residue_edit.empresa;
+                    this.contacto    = this.residue_edit.contacto;
+                    this.email       = this.residue_edit.email;
+                    
+                    var app = this;
+                    axios.get('/api/unit/forid/'+this.residue_edit.unit_id)
+                        .then(function (resp) {    
+                            app.unidad = resp.data;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error unit :" + resp);
+                        });
+
+                    if(this.residue_edit.company_id){
+                    axios.get('/api/company/forid/'+this.residue_edit.company_id)
+                        .then(function (resp) {    
+                            app.$store.commit('changeReceiver',  resp.data);
+                            app.selectCompany();
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error company :" + resp);
+                        });    
+                    }    
+
+                    if(this.residue_edit.establishment_id){
+                    axios.get('/api/establishment/forid/'+this.residue_edit.establishment_id)
+                        .then(function (resp) {    
+                            app.establishment_selected=resp.data;
+                            app.establishment = app.establishment_selected.name;
+
+                            // alert('establesimiento');
+
+                            // alert(JSON.stringify(app.establishment_selected));
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error establisgment :" + resp);
+                        }); 
+                    }    
+
+                    if(this.residue_edit.country_id){
+                    axios.get('/api/country/forid/'+this.residue_edit.country_id)
+                        .then(function (resp) {    
+                            app.country_selected=resp.data;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error country :" + resp);
+                        }); 
+                    }    
+
+                    if(this.residue_edit.process_id){
+                    axios.get('/api/processtype/forid/'+this.residue_edit.process_id)
+                        .then(function (resp) {    
+                            app.process_selected=resp.data;
+                            app.procesing= app.process_selected.name;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error process :" + resp);
+                        }); 
+                    }
+
+                    if(this.residue_edit.manage_id){
+                    axios.get('/api/managetype/forid/'+this.residue_edit.manage_id)
+                        .then(function (resp) {    
+                            app.gestion_selected=resp.data;
+                            app.gestion = app.gestion_selected.name;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error gestion :" + resp);
+                        });
+                    }
+
+                    if(this.residue_edit.waste_id){
+
+                    axios.get('/api/lerwaste/forid/'+this.residue_edit.waste_id)
+                        .then(function (resp) {    
+                            app.residue_selected=resp.data;
+                            app.subchapter_selected = app.residue_selected.subchapter;
+
+
+                            axios.get('/api/lerchapter/forid/'+app.subchapter_selected.chapter_id)
+                                .then(function (resp) {    
+                                    app.chapter_selected=resp.data;
+                                    app.capitulo = app.chapter_selected.name;
+
+                                    app.changeChapter(app.chapter_selected);
+                                    app.changeSupChapter(app.subchapter_selected);
+                                    app.changeResidue(app.residue_selected);
+
+                                    app.residue = app.residue_selected.name;
+                                    app.subcapitulo = app.subchapter_selected.name;
+
+
+                                })
+                                .catch(function (resp) {
+                                    console.log(resp);
+                                    alert("Error lerwaste :" + resp);
+                                });
+
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error lerwaste :" + resp);
+                        });
+                    
+
+                    }
+
+
+                    if(this.residue_edit.carrier_id){
+                    axios.get('/api/carrier/forid/'+this.residue_edit.carrier_id)
+                        .then(function (resp) {    
+                            app.carrier=resp.data;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error carrier :" + resp);
+                        });
+                    }                    
+        
 
         },
 
@@ -426,9 +568,12 @@
             this.processings   = ''; 
             this.gestion       = ''; 
 
-            this.checkbox=true;
-
-
+            // if(this.checkbox){
+            //     this.checkbox=false;
+            // }else {
+                this.checkbox=true;
+            // }
+            
         },
 
 
@@ -445,6 +590,7 @@
                     establishment_name = '';
                     company_name = this.country_selected.name + ' | ' + this.empresa;
                 }        
+
 
                 this.residue = {
                     waste: this.residuetext,
@@ -468,6 +614,8 @@
                     unit_id: this.unit_selected.id,
                     carrier_id: this.carrier.carrier_id,
                     carrier:this.carrier,
+
+
                 };
 
                 this.$store.commit('changeResidue', this.residue);

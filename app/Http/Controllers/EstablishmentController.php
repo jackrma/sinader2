@@ -27,6 +27,12 @@ class EstablishmentController extends Controller
 		return response()->json($establishment);
 	}
 
+	public function forid($id){
+		$establishment = Establishment::where('id', $id)->get()->first();
+		return response()->json($establishment);
+	}
+
+
 
     public function update(Request $request)
     {

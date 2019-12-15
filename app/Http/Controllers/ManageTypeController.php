@@ -11,4 +11,9 @@ class ManageTypeController extends Controller
 		$manageType = ManageType::all();
 		return response()->json($manageType);
 	}
+
+	public function forid($id){
+		$manageType = ManageType::where('id', $id)->get()->first();
+		return response()->json($manageType);
+	}
 }

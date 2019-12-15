@@ -11,4 +11,9 @@ class ProcessTypeController extends Controller
 		$processType = ProcessType::all();
 		return response()->json($processType);
 	}
+	public function forid($id){
+		$processType = ProcessType::where('id', $id)->get()->first();
+		return response()->json($processType);
+	}
+
 }

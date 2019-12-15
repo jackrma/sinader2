@@ -11,4 +11,9 @@ class LerChapterController extends Controller
 		$lerChapter = LerChapter::all();
 		return response()->json($lerChapter);
 	}
+	public function forid($id){
+		$lerChapter = LerChapter::where('id', $id)->get()->first();
+		return response()->json($lerChapter);
+	}
+
 }

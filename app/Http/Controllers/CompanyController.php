@@ -31,6 +31,10 @@ class CompanyController extends Controller
 	}
 	
 
+	public function forid($id){
+		$company = Company::where('id',$id)->get()->first();
+		return response()->json($company);
+	}
 
 	public function search(Request $request){
 
