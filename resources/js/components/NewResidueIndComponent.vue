@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="1000"
+      persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -15,13 +16,18 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Agregar Residuo
-        </v-card-title>
-
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Agregar Residuo</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn icon color="main_green"  @click="saveResidue()">
+                <v-icon>save</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
         <v-card-text>
             <v-form ref="form"  lazy-validation>
                     <v-layout>
@@ -181,19 +187,6 @@
             </v-form>        
 
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="saveResidue()"
-          >
-            Guardar
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -245,7 +238,7 @@
         unit_selected:'',
         country_selected:'',
 
-        pais:'',
+        pais:'Chile',
         empresa:'',
         contacto:'',
         email:'',
@@ -550,6 +543,7 @@
         },
 
         changeCountry(country_selected){
+            this.pais = country_selected.name;
             this.country_selected = country_selected;
         },
 
@@ -600,7 +594,7 @@
                     
                     processing: this.procesing.name,
                     gestion: this.gestion.name,
-                    pais: this.country_selected.name,
+                    pais: this.pais,
                     empresa: this.empresa,
                     contacto: this.contacto,
                     email: this.email,

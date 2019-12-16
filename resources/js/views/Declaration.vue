@@ -28,7 +28,11 @@
             <v-toolbar color="secondary_green" dark>
                 <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn @click='toNewDeclaration("")' color="main_green">Registrar nueva declaración</v-btn>
+                <v-btn  icon @click='toNewDeclaration("")' color="main_green">
+                    <v-icon>add</v-icon>
+                </v-btn>
+
+
             </v-toolbar>
         </v-flex>
     </v-layout>
@@ -53,9 +57,14 @@
 
 
                 <td> 
-                    <v-btn  v-if="props.item.status=='CREADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Editar</v-btn>
-         
-                     <v-btn  v-if="props.item.status=='CREADA'" small @click="toDelete(props.item)" color="main_green" dark>Eliminar</v-btn>
+                    <v-btn icon v-if="props.item.status=='CREADA'" @click="toNewDeclaration(props.item)" color="white">
+                        <v-icon>edit</v-icon>
+                    </v-btn>
+                </td>
+                <td>    
+                     <v-btn icon v-if="props.item.status=='CREADA'"  @click="toDelete(props.item)" color="white" >
+                         <v-icon>delete</v-icon>
+                     </v-btn>
                 </td>  
                 <td> 
                     <v-btn  v-if="props.item.status=='CREADA'" small @click="enviar(props.item)" color="ds_138" dark>Enviar</v-btn>
@@ -94,7 +103,7 @@
             { text: 'Estado', value: '' },
             { text: 'Tipo', value: '' },
             { text: 'Certificado', value: '' },
-            { text: 'Accion', value: '' },
+        
         ],
         declarations: [
         ]

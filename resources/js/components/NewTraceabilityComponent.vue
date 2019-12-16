@@ -15,12 +15,19 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Agregar Destinatario de Trazabilidad
-        </v-card-title>
+
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Agregar Destinatario de Trazabilidad</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn icon color="main_green"  @click="saveResidue()">
+                <v-icon>save</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
 
         <v-card-text>
             <v-form ref="form"  lazy-validation>
@@ -132,19 +139,6 @@
 
            </v-form>         
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="saveResidue()"
-          >
-            Guardar
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

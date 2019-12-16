@@ -155,7 +155,7 @@
                         app.items= [
                             { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
                             { icon: 'declaration', text: 'Reporte Generación de Residuos', link: '/declarations' },
-                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                               
                             { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
                             { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
                         ]
@@ -166,7 +166,7 @@
                             { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
                             { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '/receive' },
                             { icon: 'declaration', text: 'Reporte Salida de Residuos', link: '/declarations' },
-                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                                 
                             { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
                             { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
                         ]
@@ -175,8 +175,8 @@
                         app.items= [
                             { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
                             { icon: 'declaration', text: 'Reporte Recepción de Residuos', link: '/receive' },
-                            { icon: 'declaration', text: 'Reporte Salida de Residuos', link: '/declarations' },
-                            { icon: 'wrap_text', text: 'Administrar Solicitudes', link: '/requisition_list'},     
+                            
+                               
                             { icon: 'wrap_text', text: 'Preguntas Frecuentes', link: '/'},
                             { icon: 'wrap_text', text: 'Tutoriales', link: '/'},
                         ]

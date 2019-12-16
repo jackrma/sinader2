@@ -1897,10 +1897,6 @@ __webpack_require__.r(__webpack_exports__);
             link: '/declarations'
           }, {
             icon: 'wrap_text',
-            text: 'Administrar Solicitudes',
-            link: '/requisition_list'
-          }, {
-            icon: 'wrap_text',
             text: 'Preguntas Frecuentes',
             link: '/'
           }, {
@@ -1925,10 +1921,6 @@ __webpack_require__.r(__webpack_exports__);
             link: '/declarations'
           }, {
             icon: 'wrap_text',
-            text: 'Administrar Solicitudes',
-            link: '/requisition_list'
-          }, {
-            icon: 'wrap_text',
             text: 'Preguntas Frecuentes',
             link: '/'
           }, {
@@ -1947,14 +1939,6 @@ __webpack_require__.r(__webpack_exports__);
             icon: 'declaration',
             text: 'Reporte Recepción de Residuos',
             link: '/receive'
-          }, {
-            icon: 'declaration',
-            text: 'Reporte Salida de Residuos',
-            link: '/declarations'
-          }, {
-            icon: 'wrap_text',
-            text: 'Administrar Solicitudes',
-            link: '/requisition_list'
           }, {
             icon: 'wrap_text',
             text: 'Preguntas Frecuentes',
@@ -2175,6 +2159,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2189,10 +2177,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       dialog: true,
       notifications: false,
-      type: 'D.S.N°1/2013 MMA (Anual)',
-      types: ['D.S.N°1/2013 MMA (Anual)', 'D.S.N°1/2013 MMA (Mensual)'],
-      period: '2019',
-      periods: ['2018', '2019', '2020'],
+      type: 'D.S.N°1/2013 MMA (Mensual)',
+      types: ['D.S.N°1/2013 MMA (Mensual)'],
+      period: '2019/Enero',
+      periods: ['2019/Diciembre', '2020/Enero', '2020/Febrero', '2020/Marzo', '2020/Abril'],
       correlative: '',
       company: '',
       rut: '',
@@ -2388,10 +2376,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
-//
-//
-//
-//
 //
 //
 //
@@ -2991,13 +2975,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3039,7 +3016,7 @@ __webpack_require__.r(__webpack_exports__);
       gestion_selected: '',
       unit_selected: '',
       country_selected: '',
-      pais: '',
+      pais: 'Chile',
       empresa: '',
       contacto: '',
       email: '',
@@ -3257,6 +3234,7 @@ __webpack_require__.r(__webpack_exports__);
       this.gestion_selected = gestion_selected;
     },
     changeCountry: function changeCountry(country_selected) {
+      this.pais = country_selected.name;
       this.country_selected = country_selected;
     },
     changeUnit: function changeUnit(unit_selected) {
@@ -3293,7 +3271,7 @@ __webpack_require__.r(__webpack_exports__);
           establishment: establishment_name,
           processing: this.procesing.name,
           gestion: this.gestion.name,
-          pais: this.country_selected.name,
+          pais: this.pais,
           empresa: this.empresa,
           contacto: this.contacto,
           email: this.email,
@@ -3357,6 +3335,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+//
+//
 //
 //
 //
@@ -3840,12 +3820,6 @@ var _methods;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4551,17 +4525,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -4795,9 +4758,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 /* harmony import */ var _components_NewTraceabilityComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewTraceabilityComponent */ "./resources/js/components/NewTraceabilityComponent.vue");
-//
-//
-//
 //
 //
 //
@@ -5389,6 +5349,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5419,9 +5388,6 @@ __webpack_require__.r(__webpack_exports__);
         value: ''
       }, {
         text: 'Certificado',
-        value: ''
-      }, {
-        text: 'Accion',
         value: ''
       }],
       declarations: []
@@ -7566,15 +7532,15 @@ var render = function() {
                       _c(
                         "v-btn",
                         {
-                          staticClass: "white--text",
-                          attrs: { flat: "" },
+                          attrs: { icon: "", color: "main_green" },
                           on: {
                             click: function($event) {
                               return _vm.createdeclaration()
                             }
                           }
                         },
-                        [_vm._v("Guardar")]
+                        [_c("v-icon", [_vm._v("save")])],
+                        1
                       )
                     ],
                     1
@@ -8003,10 +7969,11 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "main_green" },
+                      attrs: { icon: "", color: "main_green" },
                       on: { click: _vm.toNewResidue }
                     },
-                    [_vm._v("Agregar Residuo")]
+                    [_c("v-icon", [_vm._v("add")])],
+                    1
                   ),
                   _vm._v(" "),
                   _c(
@@ -8131,7 +8098,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1000" },
+          attrs: { width: "1000", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -8145,12 +8112,48 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
-                [_vm._v("\n          Registrar Discrepancia\n        ")]
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [_vm._v("Registrar Discrepancia")]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar-items",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { icon: "", color: "main_green" },
+                          on: {
+                            click: function($event) {
+                              return _vm.saveDiscrepancy()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("save")])],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -8249,30 +8252,6 @@ var render = function() {
                       )
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: {
-                        click: function($event) {
-                          return _vm.saveDiscrepancy()
-                        }
-                      }
-                    },
-                    [_vm._v("\n            Guardar\n          ")]
                   )
                 ],
                 1
@@ -8693,7 +8672,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1000" },
+          attrs: { width: "1000", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -8707,12 +8686,48 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
-                [_vm._v("\n          Agregar Residuo\n        ")]
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [_vm._v("Agregar Residuo")]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar-items",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { icon: "", color: "main_green" },
+                          on: {
+                            click: function($event) {
+                              return _vm.saveResidue()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("save")])],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -9121,30 +9136,6 @@ var render = function() {
                   )
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: {
-                        click: function($event) {
-                          return _vm.saveResidue()
-                        }
-                      }
-                    },
-                    [_vm._v("\n            Guardar\n          ")]
-                  )
-                ],
-                1
               )
             ],
             1
@@ -9185,7 +9176,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1000" },
+          attrs: { width: "1000", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -9497,15 +9488,29 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
+                      attrs: { icon: "", color: "white" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", color: "white" },
                       on: {
                         click: function($event) {
                           return _vm.saveResidue()
                         }
                       }
                     },
-                    [_vm._v("\n            Guardar\n          ")]
+                    [_c("v-icon", [_vm._v("save")])],
+                    1
                   )
                 ],
                 1
@@ -9754,16 +9759,50 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
                 [
-                  _vm._v(
-                    "\n          Agregar Destinatario de Trazabilidad\n        "
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [
+                    _vm._v("Agregar Destinatario de Trazabilidad")
+                  ]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar-items",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { icon: "", color: "main_green" },
+                          on: {
+                            click: function($event) {
+                              return _vm.saveResidue()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("save")])],
+                        1
+                      )
+                    ],
+                    1
                   )
-                ]
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -10064,30 +10103,6 @@ var render = function() {
                         : _vm._e()
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: {
-                        click: function($event) {
-                          return _vm.saveResidue()
-                        }
-                      }
-                    },
-                    [_vm._v("\n            Guardar\n          ")]
                   )
                 ],
                 1
@@ -10656,7 +10671,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "700" },
+          attrs: { width: "700", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -10670,12 +10685,28 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
-                [_vm._v("\n           Buscar Destinatario\n        ")]
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [_vm._v("Buscar Empresa")]),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -10811,30 +10842,6 @@ var render = function() {
                       )
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
-                    [_vm._v("\n            Cerrar\n          ")]
                   )
                 ],
                 1
@@ -11100,7 +11107,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1100" },
+          attrs: { width: "1100", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -11114,12 +11121,48 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
-                [_vm._v("\n          Agregar Trazabilidad\n        ")]
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [_vm._v("Agregar Trazabilidad")]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar-items",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { icon: "", color: "main_green" },
+                          on: {
+                            click: function($event) {
+                              return _vm.saveAll()
+                            }
+                          }
+                        },
+                        [_c("v-icon", [_vm._v("save")])],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -11219,11 +11262,11 @@ var render = function() {
                                   _c(
                                     "v-btn",
                                     {
-                                      staticClass: "white--text",
-                                      attrs: { flat: "" },
+                                      attrs: { icon: "", color: "main_green" },
                                       on: { click: _vm.NewDestiny }
                                     },
-                                    [_vm._v("Agregar Destinatario")]
+                                    [_c("v-icon", [_vm._v("add")])],
+                                    1
                                   )
                                 ],
                                 1
@@ -11304,30 +11347,6 @@ var render = function() {
                       )
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text",
-                      attrs: { color: "main_green" },
-                      on: {
-                        click: function($event) {
-                          return _vm.saveAll()
-                        }
-                      }
-                    },
-                    [_vm._v("\n            Guardar\n          ")]
                   )
                 ],
                 1
@@ -11829,14 +11848,15 @@ var render = function() {
                       _c(
                         "v-btn",
                         {
-                          attrs: { color: "main_green" },
+                          attrs: { icon: "", color: "main_green" },
                           on: {
                             click: function($event) {
                               return _vm.toNewDeclaration("")
                             }
                           }
                         },
-                        [_vm._v("Registrar nueva declaración")]
+                        [_c("v-icon", [_vm._v("add")])],
+                        1
                       )
                     ],
                     1
@@ -11903,11 +11923,7 @@ var render = function() {
                                   ? _c(
                                       "v-btn",
                                       {
-                                        attrs: {
-                                          small: "",
-                                          color: "ds_138",
-                                          dark: ""
-                                        },
+                                        attrs: { icon: "", color: "white" },
                                         on: {
                                           click: function($event) {
                                             return _vm.toNewDeclaration(
@@ -11916,26 +11932,30 @@ var render = function() {
                                           }
                                         }
                                       },
-                                      [_vm._v("Editar")]
+                                      [_c("v-icon", [_vm._v("edit")])],
+                                      1
                                     )
-                                  : _vm._e(),
-                                _vm._v(" "),
+                                  : _vm._e()
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              [
                                 props.item.status == "CREADA"
                                   ? _c(
                                       "v-btn",
                                       {
-                                        attrs: {
-                                          small: "",
-                                          color: "main_green",
-                                          dark: ""
-                                        },
+                                        attrs: { icon: "", color: "white" },
                                         on: {
                                           click: function($event) {
                                             return _vm.toDelete(props.item)
                                           }
                                         }
                                       },
-                                      [_vm._v("Eliminar")]
+                                      [_c("v-icon", [_vm._v("delete")])],
+                                      1
                                     )
                                   : _vm._e()
                               ],

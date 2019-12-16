@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="1000"
+      persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -163,13 +164,14 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="saveResidue()"
-          >
-            Guardar
+          <v-btn icon color="white" @click="dialog=false">
+             <v-icon>close</v-icon>
           </v-btn>
+          <v-btn icon color="white" @click="saveResidue()">
+             <v-icon>save</v-icon>
+          </v-btn>
+
+
         </v-card-actions>
       </v-card>
     </v-dialog>

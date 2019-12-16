@@ -11,7 +11,9 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn flat class='white--text'  @click="sinMovimiento()">Declarar Sin Movimiento</v-btn>
-            <v-btn flat class='white--text'  @click="createdeclaration()">Guardar</v-btn>
+            <v-btn icon color="main_green"  @click="createdeclaration()">
+                <v-icon>save</v-icon>
+            </v-btn>
           </v-toolbar-items>
         </v-toolbar>
 
@@ -142,7 +144,9 @@
         <v-toolbar  color="secondary_green" dark>
             <v-toolbar-title >Residuos</v-toolbar-title>
         <v-spacer></v-spacer>
-            <v-btn @click='toNewResidue' color="main_green">Agregar Residuo</v-btn>
+            <v-btn icon @click='toNewResidue' color="main_green">
+                <v-icon>add</v-icon>
+            </v-btn>          
         
             <v-btn @click='toNewResidue' color="main_green">Subir Excel</v-btn>
         </v-toolbar>
@@ -206,11 +210,11 @@
         dialog: true,
         notifications: false,
 
-        type: 'D.S.N°1/2013 MMA (Anual)',
-        types: ['D.S.N°1/2013 MMA (Anual)', 'D.S.N°1/2013 MMA (Mensual)'],
+        type: 'D.S.N°1/2013 MMA (Mensual)',
+        types: ['D.S.N°1/2013 MMA (Mensual)'],
 
-        period: '2019',
-        periods: ['2018','2019','2020'],
+        period: '2019/Enero',
+        periods: ['2019/Diciembre','2020/Enero','2020/Febrero', '2020/Marzo','2020/Abril'],
 
         correlative:'',
         company:'',

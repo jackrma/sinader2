@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="1100"
+      persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -15,12 +16,19 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Agregar Trazabilidad
-        </v-card-title>
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Agregar Trazabilidad</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn icon color="main_green"  @click="saveAll()">
+                <v-icon>save</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+
 
         <v-card-text>
      
@@ -55,7 +63,9 @@
 
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
-                          <v-btn flat class='white--text'  @click="NewDestiny">Agregar Destinatario</v-btn>
+                          <v-btn  icon color='main_green'  @click="NewDestiny">
+                            <v-icon>add</v-icon>
+                          </v-btn>
                         </v-toolbar-items>
                         </v-toolbar>
 
@@ -95,19 +105,6 @@
 
 
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="saveAll()"
-          >
-            Guardar
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

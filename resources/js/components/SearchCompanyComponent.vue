@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="700"
+      persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -15,12 +16,13 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-           Buscar Destinatario
-        </v-card-title>
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Buscar Empresa</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
 
         <v-card-text>
      
@@ -72,19 +74,6 @@
 
 
         </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="dialog = false"
-          >
-            Cerrar
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

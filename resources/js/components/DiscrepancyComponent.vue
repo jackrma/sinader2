@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="1000"
+      persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -15,12 +16,19 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Registrar Discrepancia
-        </v-card-title>
+ 
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Registrar Discrepancia</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn icon color="main_green"  @click="saveDiscrepancy()">
+                <v-icon>save</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
 
         <v-card-text>
 
@@ -60,18 +68,6 @@
 
         </v-card-text>
 
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="main_green"
-            class='white--text'
-            @click="saveDiscrepancy()"
-          >
-            Guardar
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
