@@ -11,7 +11,7 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn flat class='white--text'  @click="dialog = false">Rechazar</v-btn>
-            <v-btn flat class='white--text'  @click="dialog = false">Recepcionar</v-btn>
+            
           </v-toolbar-items>
         </v-toolbar>
 
@@ -76,16 +76,29 @@
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
             <td class="text-xs-right">{{ props.item.quantity }}</td>
-            <td class="text-xs-right">{{ props.item.disc_quantity }}</td>
+            <td v-if="props.item.discrep_quantity>0"  class="text-xs-right">{{ props.item.discrep_quantity }}</td>
+            <td v-if="props.item.discrep_quantity<=0" class="text-xs-right">{{ props.item.quantity }}</td>
 
             <td class="justify-center layout px-0">
-                <v-btn small @click="toNewResidue(props.item)" color="ds_138" dark>Discrepancia</v-btn>
-                <v-btn small @click="toNewTraceability(props.item)" color="ds_138" dark>Trazabilidad</v-btn>
+                <v-btn small @click="toNewResidue(props.item)" color="main_green" dark>Discrepancia</v-btn>
+                <v-btn small @click="toNewTraceability(props.item)" color="main_green" dark>Trazabilidad</v-btn>
             </td>   
 
 
           </template>
         </v-data-table>
+
+            <v-layout>
+                <v-flex xs10 class="px-1">
+                </v-flex>
+                <v-flex xs2 class="px-1">
+                    
+                    <v-btn  class="ma-2 white--text" color="main_green"  @click="receive()">
+                        Recepcionar
+                        <v-icon right>save</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>  
 
       </v-card>
     </v-dialog>
@@ -205,10 +218,11 @@
                 instance.$mount();
                 this.$refs.container.appendChild(instance.$el);
 
-
-
-
         },
+        receive(){
+            alert('Esta Declaración se dará por recibida en su totalidad')
+            this.dialog = false;
+        }
 
 
     }

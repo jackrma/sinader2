@@ -3,6 +3,7 @@
     <v-dialog
       v-model="dialog"
       width="450"
+      persistent
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -15,12 +16,15 @@
       </template> -->
 
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Agregar Transporte
-        </v-card-title>
+
+
+        <v-toolbar dark color="main_green">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Seleccionar Transporte</v-toolbar-title>
+        </v-toolbar>
+
 
         <v-card-text>
                         <v-layout>
@@ -53,28 +57,16 @@
                         </v-flex>
                     </v-layout>
                     <v-layout>
-                        <v-flex xs10 class="px-1">
-
-                            <v-text-field v-model="transport" readonly label="Empresa de Transporte"></v-text-field>
-<!-- 
-                            <v-select
-                                :items="carriers"
-                                v-model="transport"
-                                label="Empresa de Transportes"
-                                item-text="name"  
-                                :rules = "generalRule"
-                                v-on:change="changeCarrier"
-                                return-object
-
-                            ></v-select>  -->
+                        <v-flex xs12 class="px-1">                         
+                            <v-text-field color="main_green" box placeholder="Seleccionar" @click='toSearch' v-model="transport"  readonly label="Empresa Trasnporte"></v-text-field>
                         </v-flex>    
-                        <v-flex xs2 class="px-1">
+         <!--                <v-flex xs2 class="px-1">
                             <v-btn text icon color="grey lighten-2" @click='toSearch' >
                                 <v-icon>search</v-icon>
                             </v-btn>
-                        </v-flex>
+                        </v-flex> -->
                     </v-layout>
-                    <v-layout>
+<!--                     <v-layout>
                         <v-flex xs12 class="px-1">
                             <v-select
                                 :items="vehicle_types"
@@ -86,7 +78,7 @@
                                 return-object
                             ></v-select> 
                         </v-flex>
-                    </v-layout>
+                    </v-layout> -->
                     <v-layout>
                         <v-flex xs12 class="px-1">
                             <v-select
@@ -207,8 +199,7 @@
         },
 
         refreshCarrier(){
-            alert(JSON.stringify(this.$store.getters.carrier));
-
+            
             this.transport = this.$store.getters.carrier.name;
             this.changeCarrier(this.$store.getters.carrier);
         },
@@ -220,7 +211,7 @@
             axios.get('/api/vehicle/'+this.carrier_selected.id)
                 .then(function (resp) {    
                     app.vehicles = resp.data;
-                alert(JSON.stringify(resp.data));
+                // alert(JSON.stringify(resp.data));
                 })
                 .catch(function (resp) {
                     console.log(resp);

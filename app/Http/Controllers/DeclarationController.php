@@ -115,19 +115,20 @@ class DeclarationController extends Controller
         Info("**************************");
         Info($residues);
 
-        foreach ($residues as $waste ) {
-            
+        foreach ($residues as $waste ) {            
             $waste_detail = new WasteDetail();
 
             $waste_detail->declaration_id   = $declaration_id;
 
             $waste_detail->waste            = $waste['waste'];   
+            $waste_detail->chapter          = $waste['chapter'];
+            $waste_detail->subchapter       = $waste['subchapter'];
 
             $waste_detail->company          = $waste['company'];
             $waste_detail->establishment    = $waste['establishment'];
             $waste_detail->processing       = $waste['processing'];
             $waste_detail->gestion          = $waste['gestion'];
-            
+
             $waste_detail->pais             = $waste['pais'];
             $waste_detail->empresa          = $waste['empresa'];
             $waste_detail->contacto         = $waste['contacto'];
@@ -135,6 +136,10 @@ class DeclarationController extends Controller
 
             $waste_detail->quantity         = $waste['quantity'];
             $waste_detail->waste_id         = $waste['waste_id'];
+
+            $waste_detail->chapter_id         = $waste['chapter_id'];
+            $waste_detail->subchapter_id         = $waste['subchapter_id'];
+
             $waste_detail->company_id       = $waste['company_id'];
             $waste_detail->establishment_id = $waste['establishment_id'];
             $waste_detail->manage_id        = $waste['manage_id'];
@@ -144,6 +149,11 @@ class DeclarationController extends Controller
 
             if(array_key_exists('carrier_id',$waste)){
                 $waste_detail->carrier_id = $waste['carrier_id'];
+                $waste_detail->carrier_name = $waste['carrier'];
+                $waste_detail->trasnport_date = $waste['trasnport_date'];
+                $waste_detail->plate = $waste['plate'];
+
+                
             } else {
                 $waste_detail->carrier_id = 1;
             }

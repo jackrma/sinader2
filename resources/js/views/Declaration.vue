@@ -28,8 +28,9 @@
             <v-toolbar color="secondary_green" dark>
                 <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn  icon @click='toNewDeclaration("")' color="main_green">
-                    <v-icon>add</v-icon>
+                <v-btn  class="ma-2 white--text" @click='toNewDeclaration("")' color="main_green">
+                    Nueva declaración
+                    <v-icon right>add</v-icon>
                 </v-btn>
 
 
@@ -69,6 +70,9 @@
                 <td> 
                     <v-btn  v-if="props.item.status=='CREADA'" small @click="enviar(props.item)" color="ds_138" dark>Enviar</v-btn>
                 </td>   
+                <td> 
+                    <v-btn  v-if="props.item.status=='ENVIADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Ver</v-btn>
+                </td> 
               </template>
             </v-data-table>
         </v-flex>
@@ -144,6 +148,7 @@
             declaration_edit: declaration,
             }});
             instance.$mount();
+            this.$refs.container.innerHTML = "" 
             this.$refs.container.appendChild(instance.$el);
         },
 

@@ -10,10 +10,8 @@
           <v-toolbar-title>Nueva Declaración</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn flat class='white--text'  @click="sinMovimiento()">Declarar Sin Movimiento</v-btn>
-            <v-btn icon color="main_green"  @click="createdeclaration()">
-                <v-icon>save</v-icon>
-            </v-btn>
+            <v-btn flat class='white--text' v-if="this.declaration.status!='ENVIADA'"  @click="sinMovimiento()">Declarar Sin Movimiento</v-btn>
+
           </v-toolbar-items>
         </v-toolbar>
 
@@ -72,7 +70,7 @@
                             <v-select
                                 :items="periods"
                                 v-model="period"
-                                label="Tipo Reporte"
+                                label="Periodo"
                             ></v-select>
                         </v-flex>
                     </v-layout>
@@ -144,11 +142,12 @@
         <v-toolbar  color="secondary_green" dark>
             <v-toolbar-title >Residuos</v-toolbar-title>
         <v-spacer></v-spacer>
-            <v-btn icon @click='toNewResidue' color="main_green">
-                <v-icon>add</v-icon>
+            <v-btn  v-if="this.declaration.status!='ENVIADA'" class="ma-2 white--text" @click='toNewResidue' color="main_green">
+                Agregar
+                <v-icon lefth>add</v-icon>
             </v-btn>          
         
-            <v-btn @click='toNewResidue' color="main_green">Subir Excel</v-btn>
+            <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toNewResidue' color="main_green">Subir Excel</v-btn>
         </v-toolbar>
         <v-data-table
           :headers="headers"
@@ -158,7 +157,7 @@
         >
           <template v-slot:items="props">
             <td class="text-xs-right">{{ props.item.waste }}</td>
-            <td class="text-xs-right">{{ props.item.sum }}</td>
+            <td class="text-xs-right">{{ props.item.quantity }}</td>
             <td class="text-xs-right">{{ props.item.company }}</td>
             <td class="text-xs-right">{{ props.item.establishment }}</td>
             <td class="text-xs-right">{{ props.item.processing }}</td>
@@ -166,11 +165,11 @@
 
             <td class="justify-center layout px-0">
 
-                <v-btn icon  @click="edit_item(props.item)" >
+<!--                 <v-btn icon  @click="edit_item(props.item)" >
                     <v-icon>edit</v-icon>
-                </v-btn>
+                </v-btn> -->
 
-                <v-btn icon @click="delete_item(props.item)" >
+                <v-btn  icon @click="delete_item(props.item)" >
                     <v-icon>delete</v-icon>
                 </v-btn>
 
@@ -181,6 +180,17 @@
           </template>
         </v-data-table>
 
+             <v-layout>
+                <v-flex xs10 class="px-1">
+                </v-flex>
+                <v-flex xs2 class="px-1">
+                    
+                    <v-btn v-if="this.declaration.status!='ENVIADA'" class="ma-2 white--text" color="main_green"  @click="createdeclaration()">
+                        Guardar
+                        <v-icon right>save</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>        
 
       </v-card>
     </v-dialog>
@@ -359,6 +369,7 @@
                 source: '', 
                 }});
                 instance.$mount();
+                this.$refs.container.innerHTML = "" 
                 this.$refs.container.appendChild(instance.$el);
             }else {
                 var ComponentReserv = Vue.extend(NewResidueMunComponent)
@@ -366,6 +377,7 @@
                 source: '', 
                 }});
                 instance.$mount();
+                this.$refs.container.innerHTML = "" 
                 this.$refs.container.appendChild(instance.$el);
             }
 
@@ -385,6 +397,7 @@
                 residue_edit: item, 
                 }});
                 instance.$mount();
+                this.$refs.container.innerHTML = "" 
                 this.$refs.container.appendChild(instance.$el);
             }else {
                 var ComponentReserv = Vue.extend(NewResidueMunComponent)
@@ -392,13 +405,16 @@
                 residue_edit: item, 
                 }});
                 instance.$mount();
+                this.$refs.container.innerHTML = "" 
                 this.$refs.container.appendChild(instance.$el);
             }
 
         },
 
         refreshList(){
-            // alert(JSON.stringify(this.$store.getters.residue));
+            // 
+
+            alert(JSON.stringify(this.$store.getters.residue));
 
             if(this.$store.getters.indexedit == -1){
                 this.residues.push(this.$store.getters.residue);

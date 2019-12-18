@@ -40,9 +40,9 @@ class WasteDetailController extends Controller
 
         $waste_detail = WasteDetail::where('id', $waste_detail_id)->get()->first();
 
-        $waste_detail->disc_quantity = $request->input('disc_quantity');
-        $waste_detail->disc_unit     = $request->input('disc_unit');
-        $waste_detail->disc_comment  = $request->input('disc_comment');
+        $waste_detail->discrep_quantity = $request->input('disc_quantity');
+        $waste_detail->discrep_unit     = $request->input('disc_unit');
+        $waste_detail->discrep_comment  = $request->input('disc_comment');
         $waste_detail->save();
 
         return response()->json($waste_detail);

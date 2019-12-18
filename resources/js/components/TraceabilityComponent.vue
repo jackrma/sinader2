@@ -21,12 +21,7 @@
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Agregar Trazabilidad</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn icon color="main_green"  @click="saveAll()">
-                <v-icon>save</v-icon>
-            </v-btn>
-          </v-toolbar-items>
+
         </v-toolbar>
 
 
@@ -62,11 +57,12 @@
                             <v-toolbar-title >Destinatarios</v-toolbar-title>
 
                         <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                          <v-btn  icon color='main_green'  @click="NewDestiny">
-                            <v-icon>add</v-icon>
+                        
+                          <v-btn  class="ma-2 white--text" color='main_green'  @click="NewDestiny">
+                            Agregar
+                            <v-icon right>add</v-icon>
                           </v-btn>
-                        </v-toolbar-items>
+                        
                         </v-toolbar>
 
                         </v-flex>
@@ -105,6 +101,19 @@
 
 
         </v-card-text>
+
+             <v-layout>
+                <v-flex xs10 class="px-1">
+                </v-flex>
+                <v-flex xs2 class="px-1">
+                    
+                    <v-btn class="ma-2 white--text" color="main_green"  @click="saveAll()">
+                        Guardar
+                        <v-icon right>save</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>  
+
       </v-card>
     </v-dialog>
   </div>
@@ -168,7 +177,12 @@
 
             //alert(JSON.stringify(this.waste_detail));
             this.residue= this.waste_detail.waste;
-            this.cantidad= this.waste_detail.quantity;
+
+            if(this.waste_detail.discrep_quantity>0){
+              this.cantidad= this.waste_detail.discrep_quantity;
+            }else {
+              this.cantidad= this.waste_detail.quantity;
+            }
             this.unidad= 'Toneladas';
 
             this.total=0;

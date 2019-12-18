@@ -44,7 +44,7 @@
             >
             </v-list-tile>
           </v-list-group>
-          <v-list-tile  active-class="secondary_green--text" :to="item.link" v-else :key="item.text" @click="">
+          <v-list-tile  active-class="secondary_green--text" :to="item.link" v-else :key="item.text" @click="drawer = !drawer">
 
             <v-list-tile-content>
               <v-list-tile-title>
@@ -109,7 +109,7 @@
   export default {
     data: () => ({
       dialog: false,
-      drawer: null,
+      drawer: true,
       step:"",
       establishment: null,
       naturalStates:[],

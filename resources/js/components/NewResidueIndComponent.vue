@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      width="1000"
+      width="1200"
       persistent="true"
     >
 <!--       <template v-slot:activator="{ on }">
@@ -23,61 +23,19 @@
           <v-toolbar-title>Agregar Residuo</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn icon color="main_green"  @click="saveResidue()">
-                <v-icon>save</v-icon>
-            </v-btn>
+
+              <v-switch class='py-4' v-model="checkbox"  label="Residuo exportado ?"> </v-switch>
+
+<!--                 <v-checkbox
+                  v-model="checkbox"
+                  label="Residuo Exportado ?"
+                  @click = "selectExport()"
+                ></v-checkbox> -->
           </v-toolbar-items>
+          <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
             <v-form ref="form"  lazy-validation>
-                    <v-layout>
-                        <v-flex  xs3 class="px-1">
-
-                            <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
-
-                        </v-flex>
-                        <v-flex xs1 class="px-1">
-                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
-                                <v-icon>search</v-icon>
-                            </v-btn>
-                        </v-flex>
-
-                        <v-flex  xs3 class="px-1">
-                            <v-select
-                                :items="establishments"
-                                v-model="establishment"
-                                item-text="name"  
-                                label="Establecimiento"
-                                v-on:change="changeEstablishment"
-                                return-object
-                            ></v-select> 
-
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="processings"
-                                v-model="procesing"
-                                label="Tipo de Tratamiento"
-                                item-text="name"  
-                                v-on:change="changeProcess"
-                                return-object
-                            ></v-select> 
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="gestions"
-                                v-model="gestion"
-                                label="Tipo de Gestión"
-                                item-text="name" 
-                                v-on:change="changeGestion"
-                                return-object
-                            ></v-select> 
-
-                        </v-flex>
-
-                    </v-layout>
 
                     <v-layout>
                         <v-flex  xs4 class="px-1">
@@ -119,33 +77,6 @@
                         </v-flex>
                         
                     </v-layout>
-                    <v-layout>
-                        <v-flex xs3 class="px-1">
-                            <v-text-field  :rules = "numberRule" v-model='cantidad' type='number' label="Cantidad"></v-text-field>
-                        </v-flex>
-
-                        <v-flex xs3 class="px-1">
-                            <v-select
-                                :items="units"
-                                v-model="unidad"
-                                label="Unidad de Medida"
-                                item-text="name" 
-                                :rules = "generalRule"
-                                v-on:change="changeUnit"
-                                return-object
-                            ></v-select> 
-                        </v-flex>
-
-                    </v-layout>
-
-                    <v-layout>
-                        <v-checkbox
-                          v-model="checkbox"
-                          label="Residuo Exportado ?"
-                          @click = "selectExport()"
-                        ></v-checkbox>
-                    </v-layout>    
-
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
                             <!-- <v-text-field v-model="pais" label="País"></v-text-field> -->
@@ -175,18 +106,98 @@
                         </v-flex>
 
                     </v-layout>
-                    <v-layout v-if="this.$store.getters.type=='CentroAcopio'">
+
+
+                    <v-layout v-if="! checkbox">
+                        <v-flex  xs3 class="px-1">
+
+                            <v-text-field color="main_green" box placeholder="Seleccionar" @click='toSearch' v-model="receiver_name"  readonly label="Destinatario"></v-text-field>
+
+                        </v-flex>
+
+                        <v-flex  xs3 class="px-1">
+                            <v-select
+                                :items="establishments"
+                                v-model="establishment"
+                                item-text="name"  
+                                label="Establecimiento"
+                                v-on:change="changeEstablishment"
+                                return-object
+                            ></v-select> 
+
+                        </v-flex>
+                        <v-flex xs3 class="px-1">
+                            
+                            <v-select
+                                :items="processings"
+                                v-model="procesing"
+                                label="Tipo de Tratamiento"
+                                item-text="name"  
+                                v-on:change="changeProcess"
+                                return-object
+                            ></v-select> 
+                        </v-flex>
+                        <v-flex xs3 class="px-1">
+                            
+                            <v-select
+                                :items="gestions"
+                                v-model="gestion"
+                                label="Tipo de Gestión"
+                                item-text="name" 
+                                v-on:change="changeGestion"
+                                return-object
+                            ></v-select> 
+
+                        </v-flex>
+
+                    </v-layout>
+
+                    <v-layout>
+                        <v-flex xs3 class="px-1">
+                            <v-text-field  :rules = "numberRule" v-model='cantidad' type='number' label="Cantidad"></v-text-field>
+                        </v-flex>
+
+                        <v-flex xs3 class="px-1">
+                            <v-select
+                                :items="units"
+                                v-model="unidad"
+                                label="Unidad de Medida"
+                                item-text="name" 
+                                :rules = "generalRule"
+                                v-on:change="changeUnit"
+                                return-object
+                            ></v-select> 
+                        </v-flex>
+
+                    </v-layout>
+
+ 
+
+
+                    <v-layout v-if="this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='DestinatarioFinal' ">
+
+                        <v-flex xs3 class= "px-2">  
+                            <v-text-field color="main_green" box placeholder="Seleccionar" @click='toTransport' v-model="carriername"  readonly label="Empresa Trasnporte"></v-text-field>
+                        </v-flex>    
                         <v-flex xs3 class= "px-2">                  
-                            <v-btn @click='toTransport' class='white--text' color="main_green">Agregar Transporte</v-btn>
+                            <v-text-field readonly v-model="carrier_date" label="Fecha de Transporte"></v-text-field>
                         </v-flex>
                         <v-flex xs3>
-                            <p>Trasnporte: {{carriername}} {{vehicleplate}}</p>  
+                            <v-text-field readonly v-model="vehicleplate" label="Patente"></v-text-field>
                         </v-flex>
                       
                     </v-layout>
             </v-form>        
 
         </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+            <v-btn class="ma-2 white--text"  color="main_green"  @click="saveResidue()">
+                GUARDAR
+                <v-icon right>save</v-icon>
+            </v-btn>
+        </v-card-actions>    
+
       </v-card>
     </v-dialog>
   </div>
@@ -219,24 +230,30 @@
         dialog: true,
 
         cantidad:0,
+        establishment:'',
         unidad:'',
         destiny:'',
         residue:'',
-        residuetext:'',
+        residue_name:'',
         capitulos: '',
         capitulo:'',
         subcapitulos: '',
         subcapitulo: '',
         residues: '',
 
-        company_selected:'',
-        establishment_selected:'',
-        establishment:'',
-        residue_selected:'',
-        process_selected:'',
-        gestion_selected:'',
-        unit_selected:'',
+        company_id:'',
+        establishment_id:'',
+        establishment_name:'',
+        residue_id:'',
+        process_id:'',
+        gestion_id:'',
+        unit_id:'',
         country_selected:'',
+
+        chapter_id:'',
+        chapter_name:'',
+        subchapter_id:'',
+        subchapter_name:'',
 
         pais:'Chile',
         empresa:'',
@@ -246,6 +263,7 @@
         carrier:'',
         carriername:'',
         vehicleplate:'',
+        carrier_date:'',
 
         tipos_recoleccion: '',
         
@@ -338,15 +356,62 @@
         },
 
         setEdit(){
-            
-                    this.residuetext = this.residue_edit.waste; 
                     this.cantidad    = this.residue_edit.quantity;
                      
                     this.empresa     = this.residue_edit.empresa;
                     this.contacto    = this.residue_edit.contacto;
                     this.email       = this.residue_edit.email;
+                    this.pais        = this.residue_edit.pais;
+
+                    this.capitulo    = this.residue_edit.chapter;
                     
+                    this.chapter_id    = this.residue_edit.chapter_id;
+                    this.chapter_name    = this.residue_edit.chapter;
+
+                    this.subchapter_id = this.residue_edit.subchapter_id;
+                    this.subchapter_name = this.residue_edit.subchapter;
+
+                    this.company_id    = this.residue_edit.company_id;
+
+                    this.receiver_name = this.residue_edit.company;
+
+                    this.carrier_id = this.residue_edit.carrier_id;
+                    this.carriername = this.residue_edit.carrier_name;
+                    this.vehicleplate = this.residue_edit.plate;
+                    this.carrier_date = this.residue_edit.trasnport_date;
+                    
+                    this.residue_id   = this.residue_edit.waste_id;
+                    this.process_id   = this.residue_edit.process_id;
+                    this.gestion_id   = this.residue_edit.manage_id;
+                    this.unit_id      = this.residue_edit.unit_id;
+
+                    
+
                     var app = this;
+                    axios.get('/api/lersubchapter/' + this.chapter_id)
+                        .then(function (resp) {   
+                            app.subcapitulos = resp.data;
+                            app.subcapitulo = app.residue_edit.subchapter;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            alert("Error chapter :" + resp);
+                        });
+
+                        
+
+                    axios.get('/api/lerwaste/' + this.residue_edit.subchapter_id)
+                    .then(function (resp) {   
+                        app.residues = resp.data;
+                        app.residue_name = app.residue_edit.waste; 
+                        app.residue = app.residue_edit.waste; 
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Error chapter :" + resp);
+                    });
+
+                    
                     axios.get('/api/unit/forid/'+this.residue_edit.unit_id)
                         .then(function (resp) {    
                             app.unidad = resp.data;
@@ -355,51 +420,40 @@
                             console.log(resp);
                             alert("Error unit :" + resp);
                         });
+  
 
-                    if(this.residue_edit.company_id){
-                    axios.get('/api/company/forid/'+this.residue_edit.company_id)
+                    if(this.residue_edit.establishment_id){
+
+                    axios.get('/api/establishments/'+this.company_id)
                         .then(function (resp) {    
-                            app.$store.commit('changeReceiver',  resp.data);
-                            app.selectCompany();
+                            app.establishments = resp.data;
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error company :" + resp);
-                        });    
-                    }    
+                            alert("Error chapter :" + resp);
+                        });
 
-                    if(this.residue_edit.establishment_id){
+
                     axios.get('/api/establishment/forid/'+this.residue_edit.establishment_id)
                         .then(function (resp) {    
                             app.establishment_selected=resp.data;
                             app.establishment = app.establishment_selected.name;
+                            app.establishment_name = app.establishment_selected.name;
+                            app.establishment_id = app.establishment_selected.id;
 
-                            // alert('establesimiento');
-
-                            // alert(JSON.stringify(app.establishment_selected));
                         })
                         .catch(function (resp) {
                             console.log(resp);
                             alert("Error establisgment :" + resp);
                         }); 
-                    }    
-
-                    if(this.residue_edit.country_id){
-                    axios.get('/api/country/forid/'+this.residue_edit.country_id)
-                        .then(function (resp) {    
-                            app.country_selected=resp.data;
-                        })
-                        .catch(function (resp) {
-                            console.log(resp);
-                            alert("Error country :" + resp);
-                        }); 
-                    }    
+                    }       
 
                     if(this.residue_edit.process_id){
                     axios.get('/api/processtype/forid/'+this.residue_edit.process_id)
                         .then(function (resp) {    
                             app.process_selected=resp.data;
                             app.procesing= app.process_selected.name;
+                            app.processing_name= app.process_selected.name;
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -412,6 +466,7 @@
                         .then(function (resp) {    
                             app.gestion_selected=resp.data;
                             app.gestion = app.gestion_selected.name;
+                            app.gestion_name = app.gestion_selected.name;
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -419,41 +474,7 @@
                         });
                     }
 
-                    if(this.residue_edit.waste_id){
-
-                    axios.get('/api/lerwaste/forid/'+this.residue_edit.waste_id)
-                        .then(function (resp) {    
-                            app.residue_selected=resp.data;
-                            app.subchapter_selected = app.residue_selected.subchapter;
-
-
-                            axios.get('/api/lerchapter/forid/'+app.subchapter_selected.chapter_id)
-                                .then(function (resp) {    
-                                    app.chapter_selected=resp.data;
-                                    app.capitulo = app.chapter_selected.name;
-
-                                    app.changeChapter(app.chapter_selected);
-                                    app.changeSupChapter(app.subchapter_selected);
-                                    app.changeResidue(app.residue_selected);
-
-                                    app.residue = app.residue_selected.name;
-                                    app.subcapitulo = app.subchapter_selected.name;
-
-
-                                })
-                                .catch(function (resp) {
-                                    console.log(resp);
-                                    alert("Error lerwaste :" + resp);
-                                });
-
-                        })
-                        .catch(function (resp) {
-                            console.log(resp);
-                            alert("Error lerwaste :" + resp);
-                        });
-                    
-
-                    }
+                  
 
 
                     if(this.residue_edit.carrier_id){
@@ -472,6 +493,9 @@
 
         changeChapter(chapter_selected){
             var app = this;
+
+            this.chapter_id = chapter_selected.id;
+            this.chapter_name = chapter_selected.name;
             
             axios.get('/api/lersubchapter/' + chapter_selected.id)
                 .then(function (resp) {   
@@ -489,6 +513,9 @@
 
         changeSupChapter(subchapter_selected){
             var app = this;
+
+            this.subchapter_id = subchapter_selected.id;
+            this.subchapter_name = subchapter_selected.name;
             
             axios.get('/api/lerwaste/' + subchapter_selected.id)
                 .then(function (resp) {   
@@ -501,13 +528,15 @@
         },
 
         changeResidue(residue_selected){
+            this.residue_name = residue_selected.name;
+            this.residue_id = residue_selected.id;
             this.residue_selected = residue_selected;
-            this.residuetext = residue_selected.waste_code +' | '+ residue_selected.name;
         },
 
         selectCompany(){
             // alert(JSON.stringify(this.$store.getters.receiver));
 
+            this.company_id = this.$store.getters.receiver.id
             this.receiver_name= this.$store.getters.receiver.rut +'-'+ this.$store.getters.receiver.digit +' | '+ this.$store.getters.receiver.name;
             this.changeCompany(this.$store.getters.receiver);
             
@@ -518,7 +547,7 @@
             // alert('receiver');
             var app = this;
             this.company_selected = company_selected;
-
+            this.company_id = company_selected.id;
             axios.get('/api/establishments/'+this.company_selected.id)
                 .then(function (resp) {    
                     app.establishments = resp.data;
@@ -531,14 +560,20 @@
 
         changeEstablishment(establishment_selected){
             //alert(JSON.stringify(establishment_selected));
+            this.establishment_name = establishment_selected.name;
+            this.establishment_id = establishment_selected.id;
             this.establishment_selected = establishment_selected;
         },
 
         changeProcess(process_selected){
+            this.processing_name = process_selected.name;
+            this.process_id = process_selected.id;
             this.process_selected = process_selected;
         },
 
         changeGestion(gestion_selected){
+            this.gestion_name = gestion_selected.name;
+            this.gestion_id = gestion_selected.id;
             this.gestion_selected = gestion_selected;
         },
 
@@ -549,6 +584,7 @@
 
         changeUnit(unit_selected){
             this.unit_selected = unit_selected;
+            this.unit_id = unit_selected.id;
         },
 
         selectExport(){
@@ -577,8 +613,7 @@
 
             if (this.$refs.form.validate()){
 
-                var establishment_name = this.establishment_selected.id + ' | ' + this.establishment_selected.name;
-                var company_name = this.company_selected.rut + ' | ' + this.company_selected.name;
+                var company_name = this.receiver_name;
 
                 if(this.checkbox){
                     establishment_name = '';
@@ -587,27 +622,36 @@
 
 
                 this.residue = {
-                    waste: this.residuetext,
+                    waste: this.residue_name,
+                    chapter:  this.chapter_name,  
+                    subchapter: this.subchapter_name,
                     sum: this.cantidad + ' ' + this.unidad.name,
                     company: company_name,
-                    establishment: establishment_name,
+                    establishment: this.establishment_name,
+
                     
-                    processing: this.procesing.name,
-                    gestion: this.gestion.name,
+                    processing: this.processing_name,
+                    gestion: this.gestion_name,
                     pais: this.pais,
                     empresa: this.empresa,
                     contacto: this.contacto,
                     email: this.email,
 
-                    company_id: this.company_selected.id,
-                    establishment_id: this.establishment_selected.id,
-                    process_id: this.process_selected.id,
-                    manage_id: this.gestion_selected.id,
+                    company_id: this.company_id,
+                    establishment_id: this.establishment_id,
+                    process_id: this.process_id,
+                    manage_id: this.gestion_id,
                     quantity: this.cantidad,
-                    waste_id: this.residue_selected.id,
-                    unit_id: this.unit_selected.id,
-                    carrier_id: this.carrier.carrier_id,
-                    carrier:this.carrier,
+
+                    waste_id: this.residue_id,
+                    chapter_id: this.chapter_id,
+                    subchapter_id: this.subchapter_id,
+
+                    unit_id: this.unit_id,
+                    carrier_id: this.carrier_id,
+                    carrier:this.carriername,
+                    trasnport_date:this.carrier_date,
+                    plate: this.vehicleplate,
 
 
                 };
@@ -630,11 +674,11 @@
         },
 
         refreshCarrier(){
+            this.carrier_id = this.$store.getters.carrier.carrier_id;
             this.carrier = this.$store.getters.carrier;
             this.carriername = this.carrier.carriername;
             this.vehicleplate = this.carrier.vehicleplate;
-
-            //alert(JSON.stringify(this.carrier));
+            this.carrier_date = this.carrier.transport_date;
         },
         toSearch(){
                 var ComponentReserv = Vue.extend(SearchReceiverComponent)

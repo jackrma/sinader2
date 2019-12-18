@@ -19,12 +19,13 @@ class CreateWasteDetailTable extends Migration
             $table->integer('declaration_id')->references('id')->on('declaration');
 
             $table->string('waste');
-            
+            $table->string('chapter');
+            $table->string('subchapter');
 
-            $table->string('company')->nullable();;
-            $table->string('establishment')->nullable();;
-            $table->string('processing')->nullable();;
-            $table->string('gestion')->nullable();;
+            $table->string('company')->nullable();
+            $table->string('establishment')->nullable();
+            $table->string('processing')->nullable();
+            $table->string('gestion')->nullable();
             $table->string('recolection')->nullable();
             
             $table->string('pais')->nullable();
@@ -33,14 +34,17 @@ class CreateWasteDetailTable extends Migration
             $table->string('email')->nullable();
             
             $table->string('status');
-            $table->integer('disc_quantity')->nullable();
-            $table->string('disc_unit')->nullable();
-            $table->string('disc_comment')->nullable();
+            $table->integer('discrep_quantity')->nullable();
+            $table->string('discrep_unit')->nullable();
+            $table->string('discrep_comment')->nullable();
 
 
             
             $table->double('quantity', 12 , 4);
             $table->integer('waste_id')->references('id')->on('ler_waste');
+            $table->integer('chapter_id')->references('id')->on('ler_chapter');
+            $table->integer('subchapter_id')->references('id')->on('ler_subchapter');
+
             $table->integer('company_id')->nullable()->references('id')->on('companies');
             $table->integer('establishment_id')->nullable()->references('id')->on('establishment');
 
@@ -49,9 +53,14 @@ class CreateWasteDetailTable extends Migration
             $table->integer('unit_id')->references('id')->on('units');
             $table->integer('recolection_id')->nullable()->references('id')->on('recolection_types');
 
+
+
             $table->integer('carrier_id')->nullable()->references('id')->on('carriers');
             $table->string('carrier_name')->nullable();
-            $table->integer('plate')->nullable()->references('plate')->on('vehicle');
+            $table->date('trasnport_date')->nullable();
+            
+            $table->integer('plate_id')->nullable()->references('plate')->on('vehicle');
+            $table->string('plate')->nullable();
 
 
             $table->timestamps();

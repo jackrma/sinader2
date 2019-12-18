@@ -13,14 +13,10 @@ import store            from './store';
 import router           from './routes'
 import VueApexCharts    from 'vue-apexcharts'
 
-
-
 import AppComponent         from './components/AppComponent'
-
 
 Vue.use(Vuex);
 Vue.use(VueApexCharts)
-
 
 window.axios = require('axios');
 axios.defaults.headers.common = {
@@ -29,12 +25,7 @@ axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest'
 };
 
-
-
-
 Vue.prototype.$http = window.axios
-
-
 
 Vue.use(Vuetify, {
     theme: {
@@ -56,6 +47,7 @@ Vue.use(Vuetify, {
         info: '#2196F3',
         success: '#4CAF50',
         warning: '#FFC107'
+        
 
 
 
