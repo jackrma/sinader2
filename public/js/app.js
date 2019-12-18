@@ -2173,6 +2173,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2467,6 +2481,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2500,6 +2518,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       this.residue_name = this.residue.waste;
+      this.cantidad = this.residue.quantity;
       this.unidad = 'Toneladas';
       var app = this;
       axios.get('/api/unit').then(function (resp) {
@@ -2797,11 +2816,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 /* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
 /* harmony import */ var _components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/SearchCompanyComponent */ "./resources/js/components/SearchCompanyComponent.vue");
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4018,6 +4032,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5067,6 +5090,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 /* harmony import */ var _components_NewTransportComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewTransportComponent */ "./resources/js/components/NewTransportComponent.vue");
 /* harmony import */ var _components_SearchTransportComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/SearchTransportComponent */ "./resources/js/components/SearchTransportComponent.vue");
+//
+//
 //
 //
 //
@@ -8066,63 +8091,114 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("v-data-table", {
-                staticClass: "elevation-1",
-                attrs: { headers: _vm.headers, items: _vm.residues },
-                scopedSlots: _vm._u([
-                  {
-                    key: "items",
-                    fn: function(props) {
-                      return [
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.waste))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.quantity))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.company))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.establishment))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.processing))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-xs-right" }, [
-                          _vm._v(_vm._s(props.item.gestion))
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          { staticClass: "justify-center layout px-0" },
-                          [
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: { icon: "" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.delete_item(props.item)
-                                  }
-                                }
-                              },
-                              [_c("v-icon", [_vm._v("delete")])],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ]
-                    }
-                  }
-                ])
-              }),
+              this.declaration.status != "ENVIADA"
+                ? _c("v-data-table", {
+                    staticClass: "elevation-1",
+                    attrs: { headers: _vm.headers, items: _vm.residues },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "items",
+                          fn: function(props) {
+                            return [
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.waste))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.quantity))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.company))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.establishment))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.processing))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.gestion))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "justify-center layout px-0" },
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { icon: "" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.delete_item(props.item)
+                                        }
+                                      }
+                                    },
+                                    [_c("v-icon", [_vm._v("delete")])],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      false,
+                      821270900
+                    )
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              this.declaration.status == "ENVIADA"
+                ? _c("v-data-table", {
+                    staticClass: "elevation-1",
+                    attrs: { headers: _vm.headers, items: _vm.residues },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "items",
+                          fn: function(props) {
+                            return [
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.waste))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.quantity))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.company))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.establishment))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.processing))
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-xs-right" }, [
+                                _vm._v(_vm._s(props.item.gestion))
+                              ])
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      false,
+                      2836164826
+                    )
+                  })
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "v-layout",
@@ -8232,29 +8308,7 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-toolbar-title", [_vm._v("Registrar Discrepancia")]),
-                  _vm._v(" "),
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-toolbar-items",
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { icon: "", color: "main_green" },
-                          on: {
-                            click: function($event) {
-                              return _vm.saveDiscrepancy()
-                            }
-                          }
-                        },
-                        [_c("v-icon", [_vm._v("save")])],
-                        1
-                      )
-                    ],
-                    1
-                  )
+                  _c("v-toolbar-title", [_vm._v("Registrar Discrepancia")])
                 ],
                 1
               ),
@@ -8353,6 +8407,32 @@ var render = function() {
                         ],
                         1
                       )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ma-2 white--text",
+                      attrs: { color: "main_green" },
+                      on: {
+                        click: function($event) {
+                          return _vm.saveDiscrepancy()
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n                GUARDAR\n                "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("save")])
                     ],
                     1
                   )
@@ -9878,7 +9958,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1000" },
+          attrs: { width: "1200" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -9918,22 +9998,22 @@ var render = function() {
                   _c(
                     "v-toolbar-items",
                     [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { icon: "", color: "main_green" },
-                          on: {
-                            click: function($event) {
-                              return _vm.saveResidue()
-                            }
-                          }
-                        },
-                        [_c("v-icon", [_vm._v("save")])],
-                        1
-                      )
+                      _c("v-switch", {
+                        staticClass: "py-4",
+                        attrs: { label: "Residuo exportado ?" },
+                        model: {
+                          value: _vm.checkbox,
+                          callback: function($$v) {
+                            _vm.checkbox = $$v
+                          },
+                          expression: "checkbox"
+                        }
+                      })
                     ],
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer")
                 ],
                 1
               ),
@@ -9945,126 +10025,6 @@ var render = function() {
                     "v-form",
                     { ref: "form", attrs: { "lazy-validation": "" } },
                     [
-                      _c(
-                        "v-layout",
-                        [
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-text-field", {
-                                attrs: { readonly: "", label: "Destinatario" },
-                                model: {
-                                  value: _vm.receiver_name,
-                                  callback: function($$v) {
-                                    _vm.receiver_name = $$v
-                                  },
-                                  expression: "receiver_name"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs1: "" } },
-                            [
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    text: "",
-                                    icon: "",
-                                    color: "grey lighten-2"
-                                  },
-                                  on: { click: _vm.toSearch }
-                                },
-                                [_c("v-icon", [_vm._v("search")])],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.establishments,
-                                  "item-text": "name",
-                                  label: "Establecimiento",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeEstablishment },
-                                model: {
-                                  value: _vm.establishment,
-                                  callback: function($$v) {
-                                    _vm.establishment = $$v
-                                  },
-                                  expression: "establishment"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.processings,
-                                  label: "Tipo de Tratamiento",
-                                  "item-text": "name",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeProcess },
-                                model: {
-                                  value: _vm.procesing,
-                                  callback: function($$v) {
-                                    _vm.procesing = $$v
-                                  },
-                                  expression: "procesing"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.gestions,
-                                  label: "Tipo de Gestión",
-                                  "item-text": "name",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeGestion },
-                                model: {
-                                  value: _vm.gestion,
-                                  callback: function($$v) {
-                                    _vm.gestion = $$v
-                                  },
-                                  expression: "gestion"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
                       _c(
                         "v-layout",
                         [
@@ -10138,23 +10098,6 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c(
-                        "v-layout",
-                        [
-                          _c("v-checkbox", {
-                            attrs: { label: "Residuo Exportado ?" },
-                            model: {
-                              value: _vm.checkbox,
-                              callback: function($$v) {
-                                _vm.checkbox = $$v
-                              },
-                              expression: "checkbox"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
                       _vm.checkbox
                         ? _c(
                             "v-layout",
@@ -10163,14 +10106,20 @@ var render = function() {
                                 "v-flex",
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
-                                  _c("v-text-field", {
-                                    attrs: { label: "País" },
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.countries,
+                                      label: "Pais",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeCountry },
                                     model: {
-                                      value: _vm.pais,
+                                      value: _vm.country,
                                       callback: function($$v) {
-                                        _vm.pais = $$v
+                                        _vm.country = $$v
                                       },
-                                      expression: "pais"
+                                      expression: "country"
                                     }
                                   })
                                 ],
@@ -10233,7 +10182,138 @@ var render = function() {
                             ],
                             1
                           )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.checkbox
+                        ? _c(
+                            "v-layout",
+                            [
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      color: "main_green",
+                                      box: "",
+                                      placeholder: "Seleccionar",
+                                      readonly: "",
+                                      label: "Destinatario"
+                                    },
+                                    on: { click: _vm.toSearch },
+                                    model: {
+                                      value: _vm.receiver_name,
+                                      callback: function($$v) {
+                                        _vm.receiver_name = $$v
+                                      },
+                                      expression: "receiver_name"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.establishments,
+                                      "item-text": "name",
+                                      label: "Establecimiento",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeEstablishment },
+                                    model: {
+                                      value: _vm.establishment,
+                                      callback: function($$v) {
+                                        _vm.establishment = $$v
+                                      },
+                                      expression: "establishment"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.processings,
+                                      label: "Tipo de Tratamiento",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeProcess },
+                                    model: {
+                                      value: _vm.procesing,
+                                      callback: function($$v) {
+                                        _vm.procesing = $$v
+                                      },
+                                      expression: "procesing"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.gestions,
+                                      label: "Tipo de Gestión",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeGestion },
+                                    model: {
+                                      value: _vm.gestion,
+                                      callback: function($$v) {
+                                        _vm.gestion = $$v
+                                      },
+                                      expression: "gestion"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         : _vm._e()
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ma-2 white--text",
+                      attrs: { color: "main_green" },
+                      on: {
+                        click: function($event) {
+                          return _vm.saveResidue()
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n                GUARDAR\n                "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("save")])
                     ],
                     1
                   )
@@ -10743,22 +10823,24 @@ var render = function() {
                               [_vm._v("Discrepancia")]
                             ),
                             _vm._v(" "),
-                            _c(
-                              "v-btn",
-                              {
-                                attrs: {
-                                  small: "",
-                                  color: "main_green",
-                                  dark: ""
-                                },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.toNewTraceability(props.item)
-                                  }
-                                }
-                              },
-                              [_vm._v("Trazabilidad")]
-                            )
+                            _vm.$store.getters.type != "DestinatarioFinal"
+                              ? _c(
+                                  "v-btn",
+                                  {
+                                    attrs: {
+                                      small: "",
+                                      color: "main_green",
+                                      dark: ""
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.toNewTraceability(props.item)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Trazabilidad")]
+                                )
+                              : _vm._e()
                           ],
                           1
                         )
@@ -11778,7 +11860,7 @@ var render = function() {
                             "v-btn",
                             {
                               staticClass: "white--text",
-                              attrs: { color: "main_green" },
+                              attrs: { color: "secondary_green" },
                               on: { click: _vm.toNewTransport }
                             },
                             [_vm._v("Nuevo Transporte")]
@@ -11850,7 +11932,11 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n            Guardar\n          ")]
+                    [
+                      _vm._v("\n            Guardar\n            "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("save")])
+                    ],
+                    1
                   )
                 ],
                 1
@@ -12079,11 +12165,11 @@ var render = function() {
                               _vm._v(_vm._s(props.item.certificate))
                             ]),
                             _vm._v(" "),
-                            _c(
-                              "td",
-                              [
-                                props.item.status == "CREADA"
-                                  ? _c(
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
                                       "v-btn",
                                       {
                                         attrs: { icon: "", color: "white" },
@@ -12098,16 +12184,16 @@ var render = function() {
                                       [_c("v-icon", [_vm._v("edit")])],
                                       1
                                     )
-                                  : _vm._e()
-                              ],
-                              1
-                            ),
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "td",
-                              [
-                                props.item.status == "CREADA"
-                                  ? _c(
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
                                       "v-btn",
                                       {
                                         attrs: { icon: "", color: "white" },
@@ -12120,21 +12206,21 @@ var render = function() {
                                       [_c("v-icon", [_vm._v("delete")])],
                                       1
                                     )
-                                  : _vm._e()
-                              ],
-                              1
-                            ),
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "td",
-                              [
-                                props.item.status == "CREADA"
-                                  ? _c(
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
                                       "v-btn",
                                       {
                                         attrs: {
                                           small: "",
-                                          color: "ds_138",
+                                          color: "secondary_green",
                                           dark: ""
                                         },
                                         on: {
@@ -12145,21 +12231,21 @@ var render = function() {
                                       },
                                       [_vm._v("Enviar")]
                                     )
-                                  : _vm._e()
-                              ],
-                              1
-                            ),
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "td",
-                              [
-                                props.item.status == "ENVIADA"
-                                  ? _c(
+                            props.item.status == "ENVIADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
                                       "v-btn",
                                       {
                                         attrs: {
                                           small: "",
-                                          color: "ds_138",
+                                          color: "secondary_green",
                                           dark: ""
                                         },
                                         on: {
@@ -12172,10 +12258,10 @@ var render = function() {
                                       },
                                       [_vm._v("Ver")]
                                     )
-                                  : _vm._e()
-                              ],
-                              1
-                            )
+                                  ],
+                                  1
+                                )
+                              : _vm._e()
                           ]
                         }
                       }
@@ -12286,7 +12372,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           small: "",
-                                          color: "ds_138",
+                                          color: "main_green",
                                           dark: ""
                                         },
                                         on: {
@@ -12399,7 +12485,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           small: "",
-                                          color: "ds_138",
+                                          color: "main_green",
                                           dark: ""
                                         },
                                         on: { click: _vm.toReceive }
@@ -12414,7 +12500,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           small: "",
-                                          color: "ds_138",
+                                          color: "main_green",
                                           dark: ""
                                         },
                                         on: { click: _vm.toReceive }

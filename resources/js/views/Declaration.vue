@@ -57,21 +57,21 @@
                 <td class="text-xs-right">{{ props.item.certificate }}</td>
 
 
-                <td> 
-                    <v-btn icon v-if="props.item.status=='CREADA'" @click="toNewDeclaration(props.item)" color="white">
+                <td v-if="props.item.status=='CREADA'"> 
+                    <v-btn icon  @click="toNewDeclaration(props.item)" color="white">
                         <v-icon>edit</v-icon>
                     </v-btn>
                 </td>
-                <td>    
-                     <v-btn icon v-if="props.item.status=='CREADA'"  @click="toDelete(props.item)" color="white" >
+                <td v-if="props.item.status=='CREADA'" >    
+                     <v-btn icon  @click="toDelete(props.item)" color="white" >
                          <v-icon>delete</v-icon>
                      </v-btn>
                 </td>  
-                <td> 
-                    <v-btn  v-if="props.item.status=='CREADA'" small @click="enviar(props.item)" color="ds_138" dark>Enviar</v-btn>
+                <td v-if="props.item.status=='CREADA'"> 
+                    <v-btn   small @click="enviar(props.item)" color="secondary_green" dark>Enviar</v-btn>
                 </td>   
-                <td> 
-                    <v-btn  v-if="props.item.status=='ENVIADA'" small @click="toNewDeclaration(props.item)" color="ds_138" dark>Ver</v-btn>
+                <td v-if="props.item.status=='ENVIADA'" > 
+                    <v-btn  small @click="toNewDeclaration(props.item)" color="secondary_green" dark>Ver</v-btn>
                 </td> 
               </template>
             </v-data-table>

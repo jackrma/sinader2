@@ -22,12 +22,7 @@
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Registrar Discrepancia</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn icon color="main_green"  @click="saveDiscrepancy()">
-                <v-icon>save</v-icon>
-            </v-btn>
-          </v-toolbar-items>
+
         </v-toolbar>
 
         <v-card-text>
@@ -67,6 +62,15 @@
 
 
         </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+            <v-btn class="ma-2 white--text"  color="main_green"  @click="saveDiscrepancy()">
+                GUARDAR
+                <v-icon right>save</v-icon>
+            </v-btn>
+        </v-card-actions>  
+
 
       </v-card>
     </v-dialog>
@@ -108,6 +112,8 @@
         initialize(){   
 
         this.residue_name = this.residue.waste;
+        this.cantidad = this.residue.quantity;
+
         this.unidad = 'Toneladas';
           
         var app = this;

@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="dialog"
-      width="1000"
+      width="1200"
     >
 <!--       <template v-slot:activator="{ on }">
         <v-btn
@@ -23,66 +23,13 @@
           <v-toolbar-title>Agregar Destinatario de Trazabilidad</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn icon color="main_green"  @click="saveResidue()">
-                <v-icon>save</v-icon>
-            </v-btn>
+              <v-switch class='py-4' v-model="checkbox"  label="Residuo exportado ?"> </v-switch>
           </v-toolbar-items>
+          <v-spacer></v-spacer>
         </v-toolbar>
 
         <v-card-text>
             <v-form ref="form"  lazy-validation>
-
-                 <v-layout>
-                        <v-flex  xs3 class="px-1">
-
-                            <v-text-field v-model="receiver_name" readonly label="Destinatario"></v-text-field>
-
-                        </v-flex>
-                        <v-flex xs1 class="px-1">
-                            <v-btn text icon color="grey lighten-2" @click='toSearch' >
-                                <v-icon>search</v-icon>
-                            </v-btn>
-                        </v-flex>
-
-                        <v-flex  xs3 class="px-1">
-                            <v-select
-                                :items="establishments"
-                                v-model="establishment"
-                                item-text="name"  
-                                label="Establecimiento"
-                                :rules = "generalRule"
-                                v-on:change="changeEstablishment"
-                                return-object
-                            ></v-select> 
-
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="processings"
-                                v-model="procesing"
-                                label="Tipo de Tratamiento"
-                                item-text="name"  
-                                :rules = "generalRule"
-                                v-on:change="changeProcess"
-                                return-object
-                            ></v-select> 
-                        </v-flex>
-                        <v-flex xs3 class="px-1">
-                            
-                            <v-select
-                                :items="gestions"
-                                v-model="gestion"
-                                label="Tipo de Gestión"
-                                item-text="name" 
-                                :rules = "generalRule"
-                                v-on:change="changeGestion"
-                                return-object
-                            ></v-select> 
-
-                        </v-flex>
-
-                    </v-layout>
 
 
                     <v-layout>
@@ -111,34 +58,96 @@
                     </v-layout>
 
 
-                    <v-layout>
-                        <v-checkbox
-                          v-model="checkbox"
-                          label="Residuo Exportado ?"
-                        ></v-checkbox>
-                    </v-layout>    
 
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model='pais' label="País"></v-text-field>
+                            <!-- <v-text-field v-model="pais" label="País"></v-text-field> -->
+
+                            <v-select
+                                :items="countries"
+                                v-model="country"
+                                label="Pais"
+                                item-text="name" 
+                                v-on:change="changeCountry"
+                                return-object
+                            ></v-select> 
+
+
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model='empresa'  label="Empresa"></v-text-field>
+                            <v-text-field v-model="empresa" label="Empresa"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model='contacto' label="Contacto"></v-text-field>
+                            <v-text-field v-model="contacto" label="Contacto"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model='email' label="Email"></v-text-field>
+                            <v-text-field v-model="email" label="Email"></v-text-field>
                         </v-flex>
 
                     </v-layout>
 
+
+                    <v-layout v-if="! checkbox">
+                        <v-flex  xs3 class="px-1">
+
+                            <v-text-field color="main_green" box placeholder="Seleccionar" @click='toSearch' v-model="receiver_name"  readonly label="Destinatario"></v-text-field>
+
+                        </v-flex>
+
+                        <v-flex  xs3 class="px-1">
+                            <v-select
+                                :items="establishments"
+                                v-model="establishment"
+                                item-text="name"  
+                                label="Establecimiento"
+                                v-on:change="changeEstablishment"
+                                return-object
+                            ></v-select> 
+
+                        </v-flex>
+                        <v-flex xs3 class="px-1">
+                            
+                            <v-select
+                                :items="processings"
+                                v-model="procesing"
+                                label="Tipo de Tratamiento"
+                                item-text="name"  
+                                v-on:change="changeProcess"
+                                return-object
+                            ></v-select> 
+                        </v-flex>
+                        <v-flex xs3 class="px-1">
+                            
+                            <v-select
+                                :items="gestions"
+                                v-model="gestion"
+                                label="Tipo de Gestión"
+                                item-text="name" 
+                                v-on:change="changeGestion"
+                                return-object
+                            ></v-select> 
+
+                        </v-flex>
+
+                    </v-layout>
+
+
+
            </v-form>         
         </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+            <v-btn class="ma-2 white--text"  color="main_green"  @click="saveResidue()">
+                GUARDAR
+                <v-icon right>save</v-icon>
+            </v-btn>
+        </v-card-actions>   
+
+
       </v-card>
     </v-dialog>
   </div>

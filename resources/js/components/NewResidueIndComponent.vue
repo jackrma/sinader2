@@ -26,11 +26,6 @@
 
               <v-switch class='py-4' v-model="checkbox"  label="Residuo exportado ?"> </v-switch>
 
-<!--                 <v-checkbox
-                  v-model="checkbox"
-                  label="Residuo Exportado ?"
-                  @click = "selectExport()"
-                ></v-checkbox> -->
           </v-toolbar-items>
           <v-spacer></v-spacer>
         </v-toolbar>

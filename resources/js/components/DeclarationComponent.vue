@@ -153,7 +153,7 @@
           :headers="headers"
           :items="residues"
           class="elevation-1"
-         
+          v-if="this.declaration.status!='ENVIADA'"
         >
           <template v-slot:items="props">
             <td class="text-xs-right">{{ props.item.waste }}</td>
@@ -163,7 +163,8 @@
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
 
-            <td class="justify-center layout px-0">
+
+            <td  class="justify-center layout px-0">
 
 <!--                 <v-btn icon  @click="edit_item(props.item)" >
                     <v-icon>edit</v-icon>
@@ -172,11 +173,24 @@
                 <v-btn  icon @click="delete_item(props.item)" >
                     <v-icon>delete</v-icon>
                 </v-btn>
-
-                <!-- <v-btn small @click="edit_item(props.item)" color="ds_138" dark>Eliminar</v-btn> -->
-                <!-- <v-btn small @click="delete_item(props.item)" color="ds_138" dark>Eliminar</v-btn> -->
             </td>   
 
+          </template>
+        </v-data-table>
+
+        <v-data-table
+          :headers="headers"
+          :items="residues"
+          class="elevation-1"
+          v-if="this.declaration.status=='ENVIADA'"
+        >
+          <template v-slot:items="props">
+            <td class="text-xs-right">{{ props.item.waste }}</td>
+            <td class="text-xs-right">{{ props.item.quantity }}</td>
+            <td class="text-xs-right">{{ props.item.company }}</td>
+            <td class="text-xs-right">{{ props.item.establishment }}</td>
+            <td class="text-xs-right">{{ props.item.processing }}</td>
+            <td class="text-xs-right">{{ props.item.gestion }}</td>
           </template>
         </v-data-table>
 

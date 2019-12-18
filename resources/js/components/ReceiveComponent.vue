@@ -81,7 +81,7 @@
 
             <td class="justify-center layout px-0">
                 <v-btn small @click="toNewResidue(props.item)" color="main_green" dark>Discrepancia</v-btn>
-                <v-btn small @click="toNewTraceability(props.item)" color="main_green" dark>Trazabilidad</v-btn>
+                <v-btn v-if="$store.getters.type!='DestinatarioFinal' " small @click="toNewTraceability(props.item)" color="main_green" dark>Trazabilidad</v-btn>
             </td>   
 
 

@@ -95,7 +95,7 @@
 
                     <v-layout>
                         <v-flex xs12 class="px-1">
-                            <v-btn @click='toNewTransport' class='white--text' color="main_green">Nuevo Transporte</v-btn>
+                            <v-btn @click='toNewTransport' class='white--text' color="secondary_green">Nuevo Transporte</v-btn>
 
                         </v-flex>
                     </v-layout> 
@@ -127,7 +127,9 @@
             @click="saveCarrier()"
           >
             Guardar
+            <v-icon right>save</v-icon>
           </v-btn>
+
         </v-card-actions>
       </v-card>
     </v-dialog>

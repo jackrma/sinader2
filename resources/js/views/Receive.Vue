@@ -27,7 +27,7 @@
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive(props.item)" color="ds_138" dark>Recepcionar</v-btn>
+            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive(props.item)" color="main_green" dark>Recepcionar</v-btn>
 
         </td>   
       </template>
@@ -72,9 +72,9 @@
         <td class="text-xs-right">{{ props.item.certificate }}</td>
 
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive" color="ds_138" dark>Editar</v-btn>
+            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive" color="main_green" dark>Editar</v-btn>
  
-             <v-btn  v-if="props.item.status!='ENVIADO'" small @click="toReceive" color="ds_138" dark>Editar</v-btn>
+             <v-btn  v-if="props.item.status!='ENVIADO'" small @click="toReceive" color="main_green" dark>Editar</v-btn>
         </td>   
       </template>
     </v-data-table>
