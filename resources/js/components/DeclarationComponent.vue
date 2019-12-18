@@ -67,11 +67,46 @@
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-select
+
+  <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="date"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="period"
+            label="Periodo"
+            prepend-icon="event"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="period"
+          type="month"
+          no-title
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
+
+<!--                             <v-select
                                 :items="periods"
                                 v-model="period"
                                 label="Periodo"
-                            ></v-select>
+                            ></v-select> -->
                         </v-flex>
                     </v-layout>
 
@@ -166,9 +201,9 @@
 
             <td  class="justify-center layout px-0">
 
-<!--                 <v-btn icon  @click="edit_item(props.item)" >
+                <v-btn icon  @click="edit_item(props.item)" >
                     <v-icon>edit</v-icon>
-                </v-btn> -->
+                </v-btn>
 
                 <v-btn  icon @click="delete_item(props.item)" >
                     <v-icon>delete</v-icon>
@@ -237,8 +272,11 @@
         type: 'D.S.N°1/2013 MMA (Mensual)',
         types: ['D.S.N°1/2013 MMA (Mensual)'],
 
-        period: '2019/Enero',
-        periods: ['2019/Diciembre','2020/Enero','2020/Febrero', '2020/Marzo','2020/Abril'],
+        
+       
+        period: new Date().toISOString().substr(0, 7),
+        menu: false,
+        modal: false,
 
         correlative:'',
         company:'',
@@ -279,7 +317,7 @@
 
     methods: {
         initialize(){
-
+            this.$store.commit('changeIndexedit', -1);
 
             this.company        = this.$store.getters.company.name;
             this.rut            = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
@@ -383,16 +421,14 @@
                 source: '', 
                 }});
                 instance.$mount();
-                this.$refs.container.innerHTML = "" 
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
             }else {
                 var ComponentReserv = Vue.extend(NewResidueMunComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
                 source: '', 
                 }});
                 instance.$mount();
-                this.$refs.container.innerHTML = "" 
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
             }
 
 
@@ -411,28 +447,26 @@
                 residue_edit: item, 
                 }});
                 instance.$mount();
-                this.$refs.container.innerHTML = "" 
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
             }else {
                 var ComponentReserv = Vue.extend(NewResidueMunComponent)
                 var instance = new ComponentReserv({store: this.$store, propsData: {
                 residue_edit: item, 
                 }});
                 instance.$mount();
-                this.$refs.container.innerHTML = "" 
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
             }
 
         },
 
         refreshList(){
-            // 
-
-            alert(JSON.stringify(this.$store.getters.residue));
+           // alert(JSON.stringify(this.$store.getters.residue));
 
             if(this.$store.getters.indexedit == -1){
+                //alert("es nuevo");
                 this.residues.push(this.$store.getters.residue);
             } else {
+                //alert("es existente");
                 this.residues.splice(this.$store.getters.editindex, 1);
                 this.residues.push(this.$store.getters.residue);
                 this.$store.commit('changeIndexedit', -1);

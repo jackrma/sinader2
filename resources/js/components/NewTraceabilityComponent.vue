@@ -320,7 +320,7 @@
             source: '', 
             }});
             instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
         refreshCarrier(){
@@ -336,7 +336,7 @@
                 source: '', 
                 }});
                 instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
        
         },
         saveResidue(){

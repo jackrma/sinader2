@@ -204,7 +204,7 @@
                 residue: residue, 
                 }});
                 instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
 
         },
 
@@ -216,7 +216,7 @@
                 waste_detail: item, declaration_origin: this.declaration_edit 
                 }});
                 instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
 
         },
         receive(){

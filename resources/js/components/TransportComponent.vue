@@ -233,7 +233,7 @@
             source: '', 
             }});
             instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
         toSearch(){
@@ -242,7 +242,7 @@
                 source: '', 
                 }});
                 instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
        
         },
 

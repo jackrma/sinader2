@@ -2187,6 +2187,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2203,8 +2238,9 @@ __webpack_require__.r(__webpack_exports__);
       notifications: false,
       type: 'D.S.N°1/2013 MMA (Mensual)',
       types: ['D.S.N°1/2013 MMA (Mensual)'],
-      period: '2019/Enero',
-      periods: ['2019/Diciembre', '2020/Enero', '2020/Febrero', '2020/Marzo', '2020/Abril'],
+      period: new Date().toISOString().substr(0, 7),
+      menu: false,
+      modal: false,
       correlative: '',
       company: '',
       rut: '',
@@ -2244,6 +2280,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {
+      this.$store.commit('changeIndexedit', -1);
       this.company = this.$store.getters.company.name;
       this.rut = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
       this.establishment = this.$store.getters.establishment.name;
@@ -2330,8 +2367,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         instance.$mount();
-        this.$refs.container.innerHTML = "";
-        this.$refs.container.appendChild(instance.$el);
+        this.$refs.container.replaceChild(instance.$el);
       } else {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
         var instance = new ComponentReserv({
@@ -2341,8 +2377,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         instance.$mount();
-        this.$refs.container.innerHTML = "";
-        this.$refs.container.appendChild(instance.$el);
+        this.$refs.container.replaceChild(instance.$el);
       }
     },
     edit_item: function edit_item(item) {
@@ -2358,8 +2393,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         instance.$mount();
-        this.$refs.container.innerHTML = "";
-        this.$refs.container.appendChild(instance.$el);
+        this.$refs.container.replaceChild(instance.$el);
       } else {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
         var instance = new ComponentReserv({
@@ -2369,17 +2403,16 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         instance.$mount();
-        this.$refs.container.innerHTML = "";
-        this.$refs.container.appendChild(instance.$el);
+        this.$refs.container.replaceChild(instance.$el);
       }
     },
     refreshList: function refreshList() {
-      // 
-      alert(JSON.stringify(this.$store.getters.residue));
-
+      // alert(JSON.stringify(this.$store.getters.residue));
       if (this.$store.getters.indexedit == -1) {
+        //alert("es nuevo");
         this.residues.push(this.$store.getters.residue);
       } else {
+        //alert("es existente");
         this.residues.splice(this.$store.getters.editindex, 1);
         this.residues.push(this.$store.getters.residue);
         this.$store.commit('changeIndexedit', -1);
@@ -2794,7 +2827,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     }
   }
 });
@@ -3032,14 +3065,12 @@ __webpack_require__.r(__webpack_exports__);
         return !!v || 'Campo requerido';
       }],
       numberRule: [function (v) {
-        return !!v || 'Campo requerido';
-      }, function (v) {
-        return v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico';
+        return v && /^\d+(\.\d+)?$/.test(v) || 'Debe ser numérico';
       }],
       receiver_name: '',
       checkbox: false,
       dialog: true,
-      cantidad: 0,
+      cantidad: '',
       establishment: '',
       unidad: '',
       destiny: '',
@@ -3137,6 +3168,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     setEdit: function setEdit() {
+      //alert(JSON.stringify(this.residue_edit));
       this.cantidad = this.residue_edit.quantity;
       this.empresa = this.residue_edit.empresa;
       this.contacto = this.residue_edit.contacto;
@@ -3345,7 +3377,7 @@ __webpack_require__.r(__webpack_exports__);
           subchapter_id: this.subchapter_id,
           unit_id: this.unit_id,
           carrier_id: this.carrier_id,
-          carrier: this.carriername,
+          carrier_name: this.carriername,
           trasnport_date: this.carrier_date,
           plate: this.vehicleplate
         };
@@ -3363,7 +3395,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     refreshCarrier: function refreshCarrier() {
       this.carrier_id = this.$store.getters.carrier.carrier_id;
@@ -3381,7 +3413,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     }
   }
 });
@@ -4162,7 +4194,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     });
     instance.$mount();
-    this.$refs.container.appendChild(instance.$el);
+    this.$refs.container.replaceChild(instance.$el);
   }), _defineProperty(_methods, "refreshCarrier", function refreshCarrier() {
     this.carrier = this.$store.getters.carrier;
     this.carriername = this.carrier.carriername;
@@ -4176,7 +4208,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     });
     instance.$mount();
-    this.$refs.container.appendChild(instance.$el);
+    this.$refs.container.replaceChild(instance.$el);
   }), _defineProperty(_methods, "saveResidue", function saveResidue() {
     if (this.$refs.form.validate()) {
       this.residue = {
@@ -4500,7 +4532,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     toNewTraceability: function toNewTraceability(item) {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TraceabilityComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
@@ -4512,7 +4544,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     receive: function receive() {
       alert('Esta Declaración se dará por recibida en su totalidad');
@@ -5046,7 +5078,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         });
         instance.$mount();
-        this.$refs.container.appendChild(instance.$el);
+        this.$refs.container.replaceChild(instance.$el);
       } else {
         alert('Candidad completa, no es posible agregar un nuevo destinatario');
       }
@@ -5301,7 +5333,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     toSearch: function toSearch() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchTransportComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
@@ -5312,7 +5344,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     val_move_date: function val_move_date() {
       this.menu1 = false;
@@ -5526,7 +5558,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       instance.$mount();
       this.$refs.container.innerHTML = "";
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     toDelete: function toDelete(declaration) {
       var app = this;
@@ -5715,7 +5747,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     },
     toNewReceive: function toNewReceive() {
       var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
@@ -5726,7 +5758,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
       instance.$mount();
-      this.$refs.container.appendChild(instance.$el);
+      this.$refs.container.replaceChild(instance.$el);
     }
   }
 });
@@ -7857,16 +7889,119 @@ var render = function() {
                         "v-flex",
                         { staticClass: "px-1", attrs: { xs3: "" } },
                         [
-                          _c("v-select", {
-                            attrs: { items: _vm.periods, label: "Periodo" },
-                            model: {
-                              value: _vm.period,
-                              callback: function($$v) {
-                                _vm.period = $$v
+                          _c(
+                            "v-menu",
+                            {
+                              ref: "menu",
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                "return-value": _vm.date,
+                                lazy: "",
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "full-width": "",
+                                "max-width": "290px",
+                                "min-width": "290px"
                               },
-                              expression: "period"
-                            }
-                          })
+                              on: {
+                                "update:returnValue": function($event) {
+                                  _vm.date = $event
+                                },
+                                "update:return-value": function($event) {
+                                  _vm.date = $event
+                                }
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function(ref) {
+                                    var on = ref.on
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          {
+                                            attrs: {
+                                              label: "Periodo",
+                                              "prepend-icon": "event",
+                                              readonly: ""
+                                            },
+                                            model: {
+                                              value: _vm.period,
+                                              callback: function($$v) {
+                                                _vm.period = $$v
+                                              },
+                                              expression: "period"
+                                            }
+                                          },
+                                          on
+                                        )
+                                      )
+                                    ]
+                                  }
+                                }
+                              ]),
+                              model: {
+                                value: _vm.menu,
+                                callback: function($$v) {
+                                  _vm.menu = $$v
+                                },
+                                expression: "menu"
+                              }
+                            },
+                            [
+                              _vm._v(" "),
+                              _c(
+                                "v-date-picker",
+                                {
+                                  attrs: {
+                                    type: "month",
+                                    "no-title": "",
+                                    scrollable: ""
+                                  },
+                                  model: {
+                                    value: _vm.period,
+                                    callback: function($$v) {
+                                      _vm.period = $$v
+                                    },
+                                    expression: "period"
+                                  }
+                                },
+                                [
+                                  _c("v-spacer"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { flat: "", color: "primary" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.menu = false
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Cancel")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { flat: "", color: "primary" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.$refs.menu.save(_vm.date)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("OK")]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -8135,6 +8270,20 @@ var render = function() {
                                       attrs: { icon: "" },
                                       on: {
                                         click: function($event) {
+                                          return _vm.edit_item(props.item)
+                                        }
+                                      }
+                                    },
+                                    [_c("v-icon", [_vm._v("edit")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: { icon: "" },
+                                      on: {
+                                        click: function($event) {
                                           return _vm.delete_item(props.item)
                                         }
                                       }
@@ -8151,7 +8300,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      821270900
+                      3893474433
                     )
                   })
                 : _vm._e(),
@@ -9201,6 +9350,7 @@ var render = function() {
                             [
                               _c("v-text-field", {
                                 attrs: {
+                                  placeholder: "999,99",
                                   rules: _vm.numberRule,
                                   type: "number",
                                   label: "Cantidad"
@@ -55068,24 +55218,10 @@ axios.defaults.headers.common = {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = window.axios;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    main_green: '#242351',
-    secondary_green: '#45449E',
-    highlight_green: '#446E9E',
-    side_bar_gray: '#242351',
-    seconday_gray: '#EEEEEE',
-    ds_138: '#079992',
-    readings: '#4388A5',
-    covs: '#00596D',
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107' // main_green: '#079992',
-    // secondary_green: '#38ACA9',
-    // highlight_green: '#6BEC87',
-    // side_bar_gray: '#595959',
+    // main_green: '#242351',
+    // secondary_green: '#45449E',
+    // highlight_green: '#446E9E',
+    // side_bar_gray: '#242351',
     // seconday_gray: '#EEEEEE',
     // ds_138: '#079992',
     // readings: '#4388A5',
@@ -55097,7 +55233,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-
+    main_green: '#079992',
+    secondary_green: '#38ACA9',
+    highlight_green: '#6BEC87',
+    side_bar_gray: '#595959',
+    seconday_gray: '#EEEEEE',
+    ds_138: '#079992',
+    readings: '#4388A5',
+    covs: '#00596D',
+    primary: '#1976D2',
+    secondary: '#424242',
+    accent: '#82B1FF',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107'
   }
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({

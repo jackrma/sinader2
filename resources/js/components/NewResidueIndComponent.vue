@@ -149,7 +149,7 @@
 
                     <v-layout>
                         <v-flex xs3 class="px-1">
-                            <v-text-field  :rules = "numberRule" v-model='cantidad' type='number' label="Cantidad"></v-text-field>
+                            <v-text-field placeholder='999,99' :rules = "numberRule" v-model='cantidad' type='number' label="Cantidad"></v-text-field>
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
@@ -217,14 +217,15 @@
       return {
 
         generalRule: [v => !!v || 'Campo requerido'],
-        numberRule: [v => !!v || 'Campo requerido', v => v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico',],
+
+        numberRule: [v => v && /^\d+(\.\d+)?$/.test(v) || 'Debe ser numérico'],
 
         receiver_name:'',
 
         checkbox:false,
         dialog: true,
 
-        cantidad:0,
+        cantidad:'',
         establishment:'',
         unidad:'',
         destiny:'',
@@ -351,6 +352,9 @@
         },
 
         setEdit(){
+
+                    //alert(JSON.stringify(this.residue_edit));
+
                     this.cantidad    = this.residue_edit.quantity;
                      
                     this.empresa     = this.residue_edit.empresa;
@@ -370,8 +374,8 @@
 
                     this.receiver_name = this.residue_edit.company;
 
-                    this.carrier_id = this.residue_edit.carrier_id;
-                    this.carriername = this.residue_edit.carrier_name;
+                    this.carrier_id   = this.residue_edit.carrier_id;
+                    this.carriername  = this.residue_edit.carrier_name;
                     this.vehicleplate = this.residue_edit.plate;
                     this.carrier_date = this.residue_edit.trasnport_date;
                     
@@ -644,7 +648,7 @@
 
                     unit_id: this.unit_id,
                     carrier_id: this.carrier_id,
-                    carrier:this.carriername,
+                    carrier_name:this.carriername,
                     trasnport_date:this.carrier_date,
                     plate: this.vehicleplate,
 
@@ -665,7 +669,7 @@
             source: '', 
             }});
             instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
         refreshCarrier(){
@@ -681,7 +685,7 @@
                 source: '', 
                 }});
                 instance.$mount();
-                this.$refs.container.appendChild(instance.$el);
+                this.$refs.container.replaceChild(instance.$el);
        
         },
 

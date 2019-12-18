@@ -208,7 +208,7 @@
  
                   }});
                   instance.$mount();
-                  this.$refs.container.appendChild(instance.$el);
+                  this.$refs.container.replaceChild(instance.$el);
             } else {
                 alert('Candidad completa, no es posible agregar un nuevo destinatario')
             }

@@ -151,7 +151,7 @@
              
           }});
             instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
 
@@ -162,7 +162,7 @@
              
           }});
             instance.$mount();
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
     }

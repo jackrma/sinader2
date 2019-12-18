@@ -149,7 +149,7 @@
             }});
             instance.$mount();
             this.$refs.container.innerHTML = "" 
-            this.$refs.container.appendChild(instance.$el);
+            this.$refs.container.replaceChild(instance.$el);
         },
 
         toDelete(declaration){
@@ -175,6 +175,7 @@
                     alert("Error declarations/index :" + resp);
                 });
         }
+
     }
     }
 </script>    
