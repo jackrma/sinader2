@@ -311,9 +311,9 @@ class DeclarationController extends Controller
     public function pdf()
     {        
 
-        $pdf = PDF::loadView('Declaration', compact('declaration'));
+        // $pdf = PDF::loadView('Declaration', compact('declaration'));
 
-        return $pdf->download('Declaracion.pdf');
+        // return $pdf->download('Declaracion.pdf');
     }
 
     function getMod11Dv( $num ){

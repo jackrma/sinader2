@@ -55218,10 +55218,24 @@ axios.defaults.headers.common = {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = window.axios;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    // main_green: '#242351',
-    // secondary_green: '#45449E',
-    // highlight_green: '#446E9E',
-    // side_bar_gray: '#242351',
+    main_green: '#242351',
+    secondary_green: '#45449E',
+    highlight_green: '#446E9E',
+    side_bar_gray: '#242351',
+    seconday_gray: '#EEEEEE',
+    ds_138: '#079992',
+    readings: '#4388A5',
+    covs: '#00596D',
+    primary: '#1976D2',
+    secondary: '#424242',
+    accent: '#82B1FF',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107' // main_green: '#079992',
+    // secondary_green: '#38ACA9',
+    // highlight_green: '#6BEC87',
+    // side_bar_gray: '#595959',
     // seconday_gray: '#EEEEEE',
     // ds_138: '#079992',
     // readings: '#4388A5',
@@ -55233,21 +55247,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-    main_green: '#079992',
-    secondary_green: '#38ACA9',
-    highlight_green: '#6BEC87',
-    side_bar_gray: '#595959',
-    seconday_gray: '#EEEEEE',
-    ds_138: '#079992',
-    readings: '#4388A5',
-    covs: '#00596D',
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107'
+
   }
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
