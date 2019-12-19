@@ -37,7 +37,7 @@
 						<h1 class="text-small3">SISTEMA NACIONAL DE DECLARACIÓN DE RESIDUOS (SINADER)</h1>
 			        </td>
 			        <td>
-			        	<img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($declaration['id'])) !!} ">
+			        	<img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate( 'https://sinader.mma.gob.cl/api/validate/' . $declaration['id'])) !!} ">
 			        </td>
 			        
 			    </tr>
