@@ -3,6 +3,7 @@ ENV DEBIAN_FRONTEND=nointeractive
 COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 RUN apt-get update --quiet \
     && apt-get install -y libpq-dev \
+    && apt-get install php7.0-gd
     && docker-php-ext-install pdo pdo_pgsql \
     && a2enmod rewrite \
     && apt-get --yes --quiet autoremove \

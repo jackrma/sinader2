@@ -313,12 +313,11 @@ class DeclarationController extends Controller
 
     public function pdf($id)
     {        
-        // $declaration = Declaration::where('id',$id)->get()->first();
+        $declaration = Declaration::where('id',$id)->get()->first();
+        $waste_detail= WasteDetail::where('declaration_id',$declaration->id)->get();        
 
-        $declaration = 'ESTA ES UNA DECLARACION';
-
-        $pdf = PDF::loadView('certificado', compact('declaration'));
-        return $pdf->download('certificado');
+        $pdf = PDF::loadView('certificado', compact('declaration','waste_detail'));
+        return $pdf->stream('certificado');
 
     }
 
