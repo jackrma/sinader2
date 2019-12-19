@@ -226,6 +226,7 @@
             <td class="text-xs-right">{{ props.item.establishment }}</td>
             <td class="text-xs-right">{{ props.item.processing }}</td>
             <td class="text-xs-right">{{ props.item.gestion }}</td>
+
           </template>
         </v-data-table>
 

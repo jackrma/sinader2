@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+	Route::get('/declaration/pdf/{id}', 'DeclarationController@pdf');
+
 Route::middleware('client')->group(function () {
 	Route::post('/user_invitation', 'ApiUserController@setSecretInvitation');
 	Route::post('/solicitud_industrial', 'ApiUserController@solicitudIndustrial');
@@ -84,6 +86,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/declaration/sinmovimiento', 'DeclarationController@sinMovimento');
 	Route::post('/declaration/delete/{declaration_id}', 'DeclarationController@delete');
 	Route::post('/declaration/savetraceability','DeclarationController@savetraceability');
+
+
+
 
 	Route::post('/declaration/enviar/{declaration_id}', 'DeclarationController@changeStatusEnviada');
 

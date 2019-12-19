@@ -54,7 +54,11 @@
                 <td class="text-xs-right">{{ props.item.created_at }}</td>
                 <td class="text-xs-right">{{ props.item.type }}</td>
                 <td class="text-xs-right">{{ props.item.status }}</td>
-                <td class="text-xs-right">{{ props.item.certificate }}</td>
+
+                <v-btn  @click="toPdf(props.item)" >
+                    Certificado        
+                </v-btn>
+                <!-- <td class="text-xs-right">{{ props.item.certificate }}</td> -->
 
 
                 <td v-if="props.item.status=='CREADA'"> 
@@ -174,7 +178,42 @@
                     console.log(resp);
                     alert("Error declarations/index :" + resp);
                 });
+        },
+
+        toPdf(declaration){
+            var app = this;
+            axios.get('/api/declaration/pdf/'+declaration.id,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/pdf'
+                    },
+                    responseType: "blob"
+                }
+
+                )
+                .then(function (resp) {  
+                    
+                 var fileURL = window.URL.createObjectURL(new Blob([resp.data]));
+                 var fileLink = document.createElement('a');
+                 fileLink.href = fileURL;
+                 fileLink.setAttribute('download', 'file.pdf');
+                 document.body.appendChild(fileLink);
+
+            
+                 fileLink.click();
+
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+
+
+
+
         }
+
 
     }
     }

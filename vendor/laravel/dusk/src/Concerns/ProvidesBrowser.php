@@ -56,6 +56,7 @@ trait ProvidesBrowser
      *
      * @param  \Closure  $callback
      * @return \Laravel\Dusk\Browser|void
+     *
      * @throws \Exception
      * @throws \Throwable
      */
@@ -85,6 +86,7 @@ trait ProvidesBrowser
      *
      * @param  \Closure  $callback
      * @return array
+     *
      * @throws \ReflectionException
      */
     protected function createBrowsersFor(Closure $callback)
@@ -118,6 +120,7 @@ trait ProvidesBrowser
      *
      * @param  \Closure  $callback
      * @return int
+     *
      * @throws \ReflectionException
      */
     protected function browsersNeededFor(Closure $callback)
@@ -134,6 +137,10 @@ trait ProvidesBrowser
     protected function captureFailuresFor($browsers)
     {
         $browsers->each(function ($browser, $key) {
+            if (property_exists($browser, 'fitOnFailure') && $browser->fitOnFailure) {
+                $browser->fitContent();
+            }
+
             $name = str_replace('\\', '_', get_class($this)).'_'.$this->getName(false);
 
             $browser->screenshot('failure-'.$name.'-'.$key);
@@ -184,6 +191,7 @@ trait ProvidesBrowser
      * Create the remote web driver instance.
      *
      * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     *
      * @throws \Exception
      */
     protected function createWebDriver()

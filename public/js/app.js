@@ -2222,6 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -5493,6 +5494,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -5573,6 +5578,26 @@ __webpack_require__.r(__webpack_exports__);
       var app = this;
       axios.post('/api/declaration/enviar/' + declaration.id).then(function (resp) {
         app.getdecalrations();
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toPdf: function toPdf(declaration) {
+      var app = this;
+      axios.get('/api/declaration/pdf/' + declaration.id, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/pdf'
+        },
+        responseType: "blob"
+      }).then(function (resp) {
+        var fileURL = window.URL.createObjectURL(new Blob([resp.data]));
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'file.pdf');
+        document.body.appendChild(fileLink);
+        fileLink.click();
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error declarations/index :" + resp);
@@ -12311,9 +12336,21 @@ var render = function() {
                               _vm._v(_vm._s(props.item.status))
                             ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.certificate))
-                            ]),
+                            _c(
+                              "v-btn",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    return _vm.toPdf(props.item)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                    Certificado        \n                "
+                                )
+                              ]
+                            ),
                             _vm._v(" "),
                             props.item.status == "CREADA"
                               ? _c(

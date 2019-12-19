@@ -11,6 +11,9 @@ use App\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use \PDF;
+use \QrCode;
+
 
 class DeclarationController extends Controller
 {
@@ -308,12 +311,15 @@ class DeclarationController extends Controller
 
 
 
-    public function pdf()
+    public function pdf($id)
     {        
+        // $declaration = Declaration::where('id',$id)->get()->first();
 
-        // $pdf = PDF::loadView('Declaration', compact('declaration'));
+        $declaration = 'ESTA ES UNA DECLARACION';
 
-        // return $pdf->download('Declaracion.pdf');
+        $pdf = PDF::loadView('certificado', compact('declaration'));
+        return $pdf->download('certificado');
+
     }
 
     function getMod11Dv( $num ){
