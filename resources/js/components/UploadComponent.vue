@@ -1,7 +1,7 @@
 <template>
 
 
-	 <v-layout row justify-center>
+     <v-layout row justify-center>
     <v-dialog v-model="dialog" persistent max-width="500">
       <template v-slot:activator="{ on }">
 
@@ -13,22 +13,25 @@
       <v-card>
         <v-card-text>
 
-			<v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
-				<img :src="imageUrl" height="150" v-if="imageUrl"/>
-				<v-text-field label="Select File" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
-				<input
-					type="file"
-					style="display: none"
-					ref="image"
-					accept="image/*"
-					@change="onFilePicked"
-				>
-			</v-flex>
-			
+
+
+            <v-flex xs12 class="px-2">
+                <v-text-field label="Adjuntar Archivo (20MB max)" @click='pickFile' v-model='fileName' prepend-icon='attach_file'></v-text-field>
+                <input
+                    type="file"
+                    style="display: none"
+                    ref="file"
+                    accept=".xls"
+                    @change="onFilePicked"
+                    :rules = "generalRule"
+                >
+            </v-flex>
+
+            
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="dialog = false">Guardar</v-btn>
+          <v-btn color="green darken-1" flat @click="uploadAll()">Guardar</v-btn>
           <v-btn color="green darken-1" flat @click="dialog = false">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
@@ -39,13 +42,66 @@
 </template>  
 
 
-
-
-
 <script>
   export default {
     data: () => ({
-        dialog: false,
+        dialog: true,
+        fileName:'',
+        imageFile:'',
     }),
+    methods: {
+        pickFile () {
+            this.$refs.file.click ()
+        },
+        onFilePicked (e) {
+            const files = e.target.files
+            if(files[0] !== undefined) {
+                this.fileName = files[0].name
+                if(this.fileName.lastIndexOf('.') <= 0) {
+                    return
+                }
+                const fr = new FileReader ()
+                fr.readAsDataURL(files[0])
+                fr.addEventListener('load', () => {
+                    this.imageUrl = fr.result
+                    this.imageFile = files[0] // this is an image file that can be sent to server...
+                })
+            } else {
+                this.fileName = ''
+                this.imageFile = ''
+                this.imageUrl = ''
+            }
+        },
+        uploadAll(){
+
+            // if (this.$refs.form.validate()){
+                var declaration = {
+                    'declaration_id': 1,
+                    
+                }
+
+                
+                let formData = new FormData();
+                formData.append('data',  JSON.stringify(declaration));
+                formData.append('file', this.imageFile);
+                axios.post('/api/declaration/upload',formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(function (resp) {
+                    // EventBus.$emit('excelUpload', 'someValue');
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error Upload :" + resp);
+                });
+                this.dialog = false;     
+
+                      
+            // }
+        }
+    }
 }
 </script>

@@ -87,6 +87,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/declaration/delete/{declaration_id}', 'DeclarationController@delete');
 	Route::post('/declaration/savetraceability','DeclarationController@savetraceability');
 
+	Route::post('/declaration/upload','DeclarationController@upload');
+
 
 
 

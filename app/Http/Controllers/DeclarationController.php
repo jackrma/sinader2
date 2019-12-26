@@ -355,5 +355,10 @@ class DeclarationController extends Controller
       return 0;
     }
 
+    function upload(Request $request){
+        Info("****** Upload *********");
+        Info($request);
+        Info("***************");
+    }
 
 }

@@ -182,7 +182,7 @@
                 <v-icon lefth>add</v-icon>
             </v-btn>          
         
-            <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toNewResidue' color="main_green">Subir Excel</v-btn>
+            <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toUpload' color="main_green">Subir Excel</v-btn>
         </v-toolbar>
         <v-data-table
           :headers="headers"
@@ -259,6 +259,7 @@
  
   import NewResidueIndComponent  from './../components/NewResidueIndComponent';
   import NewResidueMunComponent  from './../components/NewResidueMunComponent';
+  import UploadComponent  from './../components/UploadComponent';
   
 
   export default {
@@ -481,7 +482,18 @@
         delete_item(item){
 
             this.residues.pop(item);
-        },   
+        },  
+
+        toUpload(){
+
+                var ComponentReserv = Vue.extend(UploadComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: {
+                residue_edit: '', 
+                }});
+                instance.$mount();
+                this.$refs.container.replaceChild(instance.$el);
+
+        },
 
 
     }
