@@ -122,7 +122,7 @@
     created () {
         this.initialize();
         var app = this;
-        EventBus.$on('saveDeclaration', function(){   
+        EventBus.$once('saveDeclaration', function(){   
             app.getdecalrations();
         });
     },

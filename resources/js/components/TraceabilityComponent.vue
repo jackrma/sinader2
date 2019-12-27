@@ -164,7 +164,7 @@
     created(){
         var app = this;
         this.initialize();
-        EventBus.$on('saveResidues', function(){  
+        EventBus.$once('saveResidues', function(){  
             //alert('residues');
             app.refreshList();
         });

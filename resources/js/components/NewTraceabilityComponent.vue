@@ -203,7 +203,7 @@
         // EventBus.$on('saveCarrier', function(){  
         //     app.refreshCarrier();
         // });
-        EventBus.$on('selectReceiver', function(){ 
+        EventBus.$once('selectReceiver', function(){ 
             app.selectCompany();
         });
 

@@ -179,10 +179,13 @@
         <v-spacer></v-spacer>
             <v-btn  v-if="this.declaration.status!='ENVIADA'" class="ma-2 white--text" @click='toNewResidue' color="main_green">
                 Agregar
-                <v-icon lefth>add</v-icon>
+                <v-icon right>add</v-icon>
             </v-btn>          
         
-            <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toUpload' color="main_green">Subir Excel</v-btn>
+            <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toUpload' color="main_green">Subir Excel
+                <v-icon right>cloud_upload</v-icon>
+            </v-btn>
+            <!-- <v-btn v-if="this.declaration.status!='ENVIADA'" @click='toSendMail' color="main_green">Prueba Mail</v-btn> -->
         </v-toolbar>
         <v-data-table
           :headers="headers"
@@ -311,7 +314,7 @@
     created () {
         this.initialize();
         var app = this;
-        EventBus.$on('saveResidues', function(){   
+        EventBus.$once('saveResidues', function(){   
             app.refreshList();
         });
 
@@ -495,6 +498,18 @@
 
         },
 
+        toSendMail(){
+
+            axios.get('/api/notification/mail')
+                .then(function (resp) {    
+                    app.vehicles = resp.data;
+                // alert(JSON.stringify(resp.data));
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error mail :" + resp);
+                });
+        }
 
     }
 

@@ -155,7 +155,7 @@
     created () {
         this.initialize();
         var app = this;
-        EventBus.$on('saveDiscrepancy', function(){   
+        EventBus.$once('saveDiscrepancy', function(){   
             app.refreshList();
         });
     },

@@ -90,6 +90,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/declaration/upload','DeclarationController@upload');
 
 
+	Route::get('/notification/mail','UserController@sendMail');
+
 
 
 	Route::post('/declaration/enviar/{declaration_id}', 'DeclarationController@changeStatusEnviada');

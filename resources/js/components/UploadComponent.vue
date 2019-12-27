@@ -31,8 +31,14 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="uploadAll()">Guardar</v-btn>
-          <v-btn color="green darken-1" flat @click="dialog = false">Cancelar</v-btn>
+          <v-btn color="secondary_green" class='white--text' @click="uploadAll()">
+            Procesar
+            <v-icon right>cached</v-icon>
+          </v-btn>
+          <v-btn color="secondary_green" class='white--text' @click="dialog = false">
+            Cancelar
+                <v-icon right>cancel</v-icon>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

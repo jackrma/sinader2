@@ -278,10 +278,10 @@
     created(){
         var app = this;
         this.initialize();
-        EventBus.$on('saveCarrier', function(){  
+        EventBus.$once('saveCarrier', function(){  
             app.refreshCarrier();
         });
-        EventBus.$on('selectReceiver', function(){ 
+        EventBus.$once('selectReceiver', function(){ 
             app.selectCompany();
         });
 

@@ -2224,6 +2224,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2277,7 +2280,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
       app.refreshList();
     });
   },
@@ -2434,6 +2437,14 @@ __webpack_require__.r(__webpack_exports__);
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
+    },
+    toSendMail: function toSendMail() {
+      axios.get('/api/notification/mail').then(function (resp) {
+        app.vehicles = resp.data; // alert(JSON.stringify(resp.data));
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error mail :" + resp);
+      });
     }
   }
 });
@@ -3129,10 +3140,10 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var app = this;
     this.initialize();
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveCarrier', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveCarrier', function () {
       app.refreshCarrier();
     });
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('selectReceiver', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('selectReceiver', function () {
       app.selectCompany();
     });
   },
@@ -4125,7 +4136,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //     app.refreshCarrier();
     // });
 
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('selectReceiver', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('selectReceiver', function () {
       app.selectCompany();
     });
   },
@@ -4506,7 +4517,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveDiscrepancy', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveDiscrepancy', function () {
       app.refreshList();
     });
   },
@@ -5055,7 +5066,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var app = this;
     this.initialize();
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
       //alert('residues');
       app.refreshList();
     });
@@ -5299,7 +5310,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var app = this;
     this.initialize();
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('selectCarrier', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('selectCarrier', function () {
       app.refreshCarrier();
     });
   },
@@ -5389,6 +5400,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5662,7 +5679,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveDeclaration', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveDeclaration', function () {
       app.getdecalrations();
     });
   },
@@ -8355,7 +8372,7 @@ var render = function() {
                         },
                         [
                           _vm._v("\n                Agregar\n                "),
-                          _c("v-icon", { attrs: { lefth: "" } }, [
+                          _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("add")
                           ])
                         ],
@@ -8370,7 +8387,13 @@ var render = function() {
                           attrs: { color: "main_green" },
                           on: { click: _vm.toUpload }
                         },
-                        [_vm._v("Subir Excel")]
+                        [
+                          _vm._v("Subir Excel\n                "),
+                          _c("v-icon", { attrs: { right: "" } }, [
+                            _vm._v("cloud_upload")
+                          ])
+                        ],
+                        1
                       )
                     : _vm._e()
                 ],
@@ -12357,27 +12380,37 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "green darken-1", flat: "" },
+                      staticClass: "white--text",
+                      attrs: { color: "secondary_green" },
                       on: {
                         click: function($event) {
                           return _vm.uploadAll()
                         }
                       }
                     },
-                    [_vm._v("Guardar")]
+                    [
+                      _vm._v("\n          Procesar\n          "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("cached")])
+                    ],
+                    1
                   ),
                   _vm._v(" "),
                   _c(
                     "v-btn",
                     {
-                      attrs: { color: "green darken-1", flat: "" },
+                      staticClass: "white--text",
+                      attrs: { color: "secondary_green" },
                       on: {
                         click: function($event) {
                           _vm.dialog = false
                         }
                       }
                     },
-                    [_vm._v("Cancelar")]
+                    [
+                      _vm._v("\n          Cancelar\n              "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("cancel")])
+                    ],
+                    1
                   )
                 ],
                 1

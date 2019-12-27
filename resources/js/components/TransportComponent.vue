@@ -174,7 +174,7 @@
     created(){
         var app = this;
         this.initialize();
-        EventBus.$on('selectCarrier', function(){  
+        EventBus.$once('selectCarrier', function(){  
             app.refreshCarrier();
         });
     },
