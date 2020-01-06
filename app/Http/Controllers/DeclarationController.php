@@ -8,8 +8,10 @@ use App\UserEstablishment;
 use App\Establishment;
 use App\WasteDetail;
 use App\Company;
+use App\MonthWaste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Excel;
 
 use \PDF;
 use \QrCode;
@@ -356,9 +358,11 @@ class DeclarationController extends Controller
     }
 
     function upload(Request $request){
-        Info("****** Upload *********");
-        Info($request);
-        Info("***************");
+        // Info("****** Upload *********");
+        // Info($request);
+        // Info("***************");
+        $rows = Excel::toArray(new MonthWaste, $request->file('file'));
+        return response()->json(["rows"=>$rows]);
     }
 
 }

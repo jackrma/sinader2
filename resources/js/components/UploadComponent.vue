@@ -21,7 +21,7 @@
                     type="file"
                     style="display: none"
                     ref="file"
-                    accept=".xls"
+                    accept=".xlsx"
                     @change="onFilePicked"
                     :rules = "generalRule"
                 >
@@ -98,6 +98,8 @@
                 })
                 .then(function (resp) {
                     // EventBus.$emit('excelUpload', 'someValue');
+
+                    alert(JSON.stringify(resp.data));
                 })
                 .catch(function (resp) {
                     console.log(resp);

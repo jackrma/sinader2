@@ -47,6 +47,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/companies', 'CompanyController@index');
     Route::get('/companies/search', 'CompanyController@search');
     Route::get('/company/forid/{id}', 'CompanyController@forid');
+    Route::get('/company/search_sii/{rut}', 'CompanyController@searchSii');
+
 
 
 	Route::get('/lerchapter', 'LerChapterController@data');

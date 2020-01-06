@@ -54,6 +54,23 @@ class CompanyController extends Controller
 		return response()->json($companies);
 	}
 
+	public function searchSii($rut){
+
+        $company        = 'Generador A';
+        $rut            = '11333777';
+        $digit			= '9';
+        $address        = 'San Martin';
+        $number			= '76';
+        $comune_id		= '1';
+        $commune_name   = 'Santiago';
+        $region_id      = '13';
+        $region_name    = 'Metropolitana de Santiago';
+
+        $generator = ['company_name'=> $company, 'rut' => $rut, 'digit'=>$digit, 'street' =>$address, 'number'=> $number, 'commune_name'=> $commune_name, 'region_name'=>$region_name ];
+
+        return response()->json($generator);
+	}
+
 
 
 }
