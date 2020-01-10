@@ -9,8 +9,13 @@ use App\Establishment;
 use App\WasteDetail;
 use App\Company;
 use App\MonthWaste;
+use App\ProcessType;
+use App\Carrier;
+use App\Vehicle;
+use App\LerWaste;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Imports\MonthWasteImport;
 use Excel;
 
 use \PDF;
@@ -358,11 +363,101 @@ class DeclarationController extends Controller
     }
 
     function upload(Request $request){
-        // Info("****** Upload *********");
-        // Info($request);
-        // Info("***************");
-        $rows = Excel::toArray(new MonthWaste, $request->file('file'));
-        return response()->json(["rows"=>$rows]);
+        
+        Info("****** Upload *********");
+        Info($request);
+        Info("***************");
+
+        
+        //$rows = Excel::toArray(new MonthWaste, $request->file('file'));
+        MonthWaste::truncate();
+
+        $ExcelImport = Excel::import(new MonthWasteImport, $request->file('file'));
+        //(new MonthWasteImport)->import(request()->file('file'));
+        
+        $errors = [];
+        
+        //return response()->json(["rows"=>$rows]);
+
+        $monthwaste = monthwaste::all()->toArray();
+        
+        $waste_detail = [];
+        $line=0;
+        foreach ($monthwaste as $waste ) {
+
+            $line++;
+            
+            $rut_company = substr($waste['rut'], 0, -2); //strpos($waste['rut'], '-'));
+            $rut_carrier = substr($waste['carrier'], 0, -2); //strpos($waste['carrier'], '-') - 1);
+
+            Info("****** Upload *********");
+            Info($rut_company);
+            Info("-----------");
+            Info($rut_carrier);
+            Info("***************");
+
+            $company = Company::where('rut', $rut_company)->first();
+            $establishment = Establishment::where('retc_code', $waste['entablishment'])->first();
+            $process = ProcessType::where('id', $waste['process'])->first();
+            $carrier = Carrier::where('rut', $rut_carrier )->first();
+            $vehicle = Vehicle::where('plate', $waste['plate'])->first();
+            $ler_waste = LerWaste::where('waste_code', $waste['ler'])->first();
+  
+            $waste_detail['declaration_id']   = 1; //$declaration_id;
+            $waste_detail['waste']            = $ler_waste->name;   
+
+            if($company){
+                $waste_detail['company_id']   = $company->id;
+                $waste_detail['company']      = $company->name;
+            }else{
+                //return response()->json(["compañia no existe"]);
+                $errors[] = "Linea ".$line.": compañia no existe";
+            }
+
+            if($establishment){
+                $waste_detail['establishment_id'] = $establishment->id;
+                $waste_detail['establishment']    = $establishment->name;
+            }else{
+                //return response()->json(["Establecimiento no existe"]);
+                $errors[] = "Linea ".$line.": Establecimiento no existe";
+            }
+
+            if($process){
+                $waste_detail['process_id']       = $process->id;
+                $waste_detail['processing']       = $process->name;
+            }else{
+                $errors[] = "Linea ".$line.": proceso no existe";
+            }
+
+            $waste_detail['quantity']         = $waste['quantity'];
+
+            if($ler_waste){
+                $waste_detail['waste_id']         = $ler_waste->id;
+            }else{
+                $errors[] = "Linea ".$line.": Código LER no existe";
+            }
+                 
+            
+            $waste_detail['unit_id']          = 1;
+
+            if($carrier){
+                $waste_detail['carrier_id']       = $carrier->carrier_id;
+            }else{
+                $errors[] = "Linea ".$line.": Transportista no existe";
+            }
+
+            $waste_detail['plate']            = $waste['plate'];
+
+
+        }
+
+        if($errors){
+            return response()->json(["errors"=>$errors]);
+        }else{
+            return response()->json(["waste_detail"=>$waste_detail]);  
+        }
+
+        //return response()->json(["errors"=>$errors]);
     }
 
 }

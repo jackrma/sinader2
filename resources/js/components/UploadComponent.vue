@@ -82,7 +82,7 @@
 
             // if (this.$refs.form.validate()){
                 var declaration = {
-                    'declaration_id': 1,
+                     declaration_id: 1 
                     
                 }
 
@@ -90,6 +90,8 @@
                 let formData = new FormData();
                 formData.append('data',  JSON.stringify(declaration));
                 formData.append('file', this.imageFile);
+                //formData.append('waste_detail', this.residues);
+
                 axios.post('/api/declaration/upload',formData,
                     {
                         headers: {
