@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', 'UserController@data');
     
     Route::get('/establishment', 'EstablishmentController@data');
+    Route::get('/establishment/all/{type}', 'EstablishmentController@AllData');
 
     Route::get('/establishment/forid/{id}', 'EstablishmentController@forid');
     Route::get('/establishments/{company_id}', 'EstablishmentController@index');

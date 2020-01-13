@@ -1,4 +1,14 @@
 <template>
+
+<v-layout row>
+    <v-card>
+
+    <v-toolbar  color="main_green" dark>
+
+        <v-toolbar-title>Solicitudes de Establecimientos</v-toolbar-title>
+    </v-toolbar>
+
+
   <v-data-table
     v-model="selected"
     :headers="headers"
@@ -29,6 +39,11 @@
       </td> 
     </template>
   </v-data-table>
+
+    </v-card>
+</v-layout row>
+
+
 </template>
 
 

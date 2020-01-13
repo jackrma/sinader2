@@ -54,6 +54,17 @@ class DatabaseSeeder extends Seeder
 
 
 // ************************
+
+
+  	App\User::create(['name'=> 'Maritza Barrera', 'email'=>'mbarrera@mma.gob.cl', 'password'=>'prueba']);
+
+    App\Establishment::create(["name"=>"Administrador","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'Administrador']);
+
+    App\UserEstablishment::create(["user_id"=>5, "establishment_id"=>5, "retc_id" => 119010]);
+
+
+// ************************
+
     App\Country::truncate();
 	App\Country::create(['name'=> 'Afganistán']);
 	App\Country::create(['name'=> 'Albania']);

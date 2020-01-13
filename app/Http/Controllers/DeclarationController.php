@@ -358,9 +358,6 @@ class DeclarationController extends Controller
     }
 
     function upload(Request $request){
-        // Info("****** Upload *********");
-        // Info($request);
-        // Info("***************");
         $rows = Excel::toArray(new MonthWaste, $request->file('file'));
         return response()->json(["rows"=>$rows]);
     }

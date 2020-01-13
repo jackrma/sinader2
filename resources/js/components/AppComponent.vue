@@ -182,6 +182,29 @@
                         ]
                     } 
 
+                    if(app.$store.getters.type=='Administrador'){
+                        app.items= [
+
+                            { icon: 'contacts', text: 'Bienvenida', link: '/welcome' },
+                            { icon: 'declaration', text: 'Solicitudes de Establecimiento', link: '/requisition_list' },
+                            { icon: 'declaration', text: 'Declaraciones', link: '/declarationsadmin' },
+                            { icon: 'declaration', text: 'Generadores Municipales', link: '/listadminmun' },
+                            { icon: 'declaration', text: 'Generadores Industriales', link: '/listadminind' },
+                            { icon: 'declaration', text: 'Destinatarios', link: '/listadmindf' },
+                            { icon: 'declaration', text: 'Centro de Acopio', link: '/listadminca' },
+                            { icon: 'declaration', text: 'Mantenedor de empresas transportistas', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de autorizaciones sanitarias transportes', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de transportes (patentes)', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de códigos LER Capitulos', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de códigos LER Subcapitulos', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de códigos LER Residuo', link: '/' },
+                            { icon: 'declaration', text: 'Mantenedor de Periodos de declaración', link: '/' },
+                            { icon: 'declaration', text: 'Reportes', link: '/' },
+
+                        ]
+                    } 
+
+
 
 
                 })

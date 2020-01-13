@@ -6,6 +6,12 @@ import Welcome    from './views/Welcome'
 import RequisitionList    from './views/RequisitionListView'
 import Declaration    from './views/Declaration'
 import Receive    from './views/Receive'
+import DeclarationsAdmin    from './views/DeclarationsAdmin'
+import ListAdminInd    from './views/ListAdminInd'
+import ListAdminMun    from './views/ListAdminMun'
+import ListAdminCA    from './views/ListAdminCA'
+import ListAdminDF    from './views/ListAdminDF'
+
 
 Vue.use(VueRouter);
 
@@ -41,7 +47,34 @@ const router = new VueRouter({
             name: 'requisition_list',
             component: RequisitionList,
         },
-        
+        {
+            path: '/declarationsadmin',
+            name: 'declarationsadmin',
+            component: DeclarationsAdmin,
+        },
+        {
+            path: '/listadminind',
+            name: 'listadminind',
+            component: ListAdminInd,
+        },
+        {
+            path: '/listadminmun',
+            name: 'listadminmun',
+            component: ListAdminMun,
+        },
+        {
+            path: '/listadminca',
+            name: 'listadminca',
+            component: ListAdminCA,
+        },
+        {
+            path: '/listadmindf',
+            name: 'listadmindf',
+            component: ListAdminDF,
+        },
+
+
+
     ],
 });
 

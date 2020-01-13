@@ -38,4 +38,12 @@ class EstablishmentController extends Controller
     {
     	return response()->json(['ok' => true, 'message' => "Establecimiento Actualizado" ]);
     }
+
+	public function AllData($type){
+
+		$establishment = Establishment::where('type',$type)->with('company')->with('commune')->with('region')->get();
+
+
+		return response()->json($establishment);
+	}    
 }
