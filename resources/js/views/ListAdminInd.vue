@@ -14,32 +14,32 @@
             </v-toolbar>
         </v-flex>
     </v-layout>
- <v-layout row>
+    <v-layout row>
         <v-flex xs12 class='px-4'>
                   <v-card class="py-4 px-2">
                         <v-card-title>
                             <v-text-field
-                                v-model="rut"
+                                v-model="rut_search"
                                 label="Rut"
                                 single-line
                                 hide-details
                             ></v-text-field>
                             <v-spacer></v-spacer>
                             <v-text-field
-                                v-model="name"
+                                v-model="establishment_search"
                                 label="Establecimiento"
                                 single-line
                                 hide-details
                             ></v-text-field>  
                             <v-spacer></v-spacer>
                          
-                            <v-text-field
+<!--                             <v-text-field
                                 v-model="name"
                                 label="Comuna"
                                 single-line
                                 hide-details
                             ></v-text-field> 
-                            <v-spacer></v-spacer> 
+                            <v-spacer></v-spacer>  -->
                             <v-btn text icon color="grey lighten-2" @click='toSearch' >
                                 <v-icon>search</v-icon>
                             </v-btn>
@@ -128,7 +128,10 @@
         
         ],
         declarations: [
-        ]
+        ],
+
+        establishment_search:'',
+        rut_search:'',
 
         }),
     
@@ -155,7 +158,24 @@
                     alert("Error declarations/index :" + resp);
                 });
         },
+        toSearch(){
+            var app = this;
+            var params = {type: 'GeneradorIndustrial',
+                      establishment: this.establishment_search,
+                      rut: this.rut_search,
+                     }
 
+                     alert(JSON.stringify(params));
+
+            axios.post('/api/establishments/search', params)
+                .then(function (resp) {    
+                    app.declarations = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+        },
 
         toNewDeclaration (declaration){
 

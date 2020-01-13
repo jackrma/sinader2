@@ -57,7 +57,7 @@
                         <v-icon>edit</v-icon>
                     </v-btn>
                 </td>
-                <td v-if="props.item.status=='CREADA'" >    
+<!--                 <td v-if="props.item.status=='CREADA'" >    
                      <v-btn icon  @click="toDelete(props.item)" color="white" >
                          <v-icon>delete</v-icon>
                      </v-btn>
@@ -67,7 +67,7 @@
                 </td>   
                 <td v-if="props.item.status=='ENVIADA'" > 
                     <v-btn  small @click="toNewDeclaration(props.item)" color="secondary_green" dark>Ver</v-btn>
-                </td> 
+                </td>  -->
               </template>
             </v-data-table>
         </v-flex>
@@ -125,7 +125,7 @@
 
         getdecalrations(){
             var app = this;
-            axios.get('/api/declarations')
+            axios.get('/api/declarations/admin')
                 .then(function (resp) {    
                     app.declarations = resp.data;
                 })

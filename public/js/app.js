@@ -6589,7 +6589,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     getdecalrations: function getdecalrations() {
       var app = this;
-      axios.get('/api/declarations').then(function (resp) {
+      axios.get('/api/declarations/admin').then(function (resp) {
         app.declarations = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -6797,7 +6797,9 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Region',
         value: ''
       }],
-      declarations: []
+      declarations: [],
+      establishment_search: '',
+      rut_search: ''
     };
   },
   created: function created() {
@@ -6811,6 +6813,21 @@ __webpack_require__.r(__webpack_exports__);
     getestablishment: function getestablishment() {
       var app = this;
       axios.get('/api/establishment/all/' + 'CentroAcopio').then(function (resp) {
+        app.declarations = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toSearch: function toSearch() {
+      var app = this;
+      var params = {
+        type: 'CentroAcopio',
+        establishment: this.establishment_search,
+        rut: this.rut_search
+      };
+      alert(JSON.stringify(params));
+      axios.post('/api/establishments/search', params).then(function (resp) {
         app.declarations = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -6988,7 +7005,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -7018,7 +7034,9 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Region',
         value: ''
       }],
-      declarations: []
+      declarations: [],
+      establishment_search: '',
+      rut_search: ''
     };
   },
   created: function created() {
@@ -7032,6 +7050,21 @@ __webpack_require__.r(__webpack_exports__);
     getestablishment: function getestablishment() {
       var app = this;
       axios.get('/api/establishment/all/' + 'DestinatarioFinal').then(function (resp) {
+        app.declarations = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toSearch: function toSearch() {
+      var app = this;
+      var params = {
+        type: 'DestinatarioFinal',
+        establishment: this.establishment_search,
+        rut: this.rut_search
+      };
+      alert(JSON.stringify(params));
+      axios.post('/api/establishments/search', params).then(function (resp) {
         app.declarations = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -7239,7 +7272,9 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Region',
         value: ''
       }],
-      declarations: []
+      declarations: [],
+      establishment_search: '',
+      rut_search: ''
     };
   },
   created: function created() {
@@ -7253,6 +7288,21 @@ __webpack_require__.r(__webpack_exports__);
     getestablishment: function getestablishment() {
       var app = this;
       axios.get('/api/establishment/all/' + 'GeneradorIndustrial').then(function (resp) {
+        app.declarations = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toSearch: function toSearch() {
+      var app = this;
+      var params = {
+        type: 'GeneradorIndustrial',
+        establishment: this.establishment_search,
+        rut: this.rut_search
+      };
+      alert(JSON.stringify(params));
+      axios.post('/api/establishments/search', params).then(function (resp) {
         app.declarations = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
@@ -7462,7 +7512,9 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Region',
         value: ''
       }],
-      declarations: []
+      declarations: [],
+      establishment_search: '',
+      rut_search: ''
     };
   },
   created: function created() {
@@ -7527,6 +7579,21 @@ __webpack_require__.r(__webpack_exports__);
         fileLink.setAttribute('download', 'file.pdf');
         document.body.appendChild(fileLink);
         fileLink.click();
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
+    },
+    toSearch: function toSearch() {
+      var app = this;
+      var params = {
+        type: 'GeneradorMunicipal',
+        establishment: this.establishment_search,
+        rut: this.rut_search
+      };
+      alert(JSON.stringify(params));
+      axios.post('/api/establishments/search', params).then(function (resp) {
+        app.declarations = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error declarations/index :" + resp);
@@ -15334,80 +15401,6 @@ var render = function() {
                                   ],
                                   1
                                 )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            props.item.status == "CREADA"
-                              ? _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: { icon: "", color: "white" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toDelete(props.item)
-                                          }
-                                        }
-                                      },
-                                      [_c("v-icon", [_vm._v("delete")])],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            props.item.status == "CREADA"
-                              ? _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: {
-                                          small: "",
-                                          color: "secondary_green",
-                                          dark: ""
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.enviar(props.item)
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Enviar")]
-                                    )
-                                  ],
-                                  1
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            props.item.status == "ENVIADA"
-                              ? _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: {
-                                          small: "",
-                                          color: "secondary_green",
-                                          dark: ""
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toNewDeclaration(
-                                              props.item
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Ver")]
-                                    )
-                                  ],
-                                  1
-                                )
                               : _vm._e()
                           ]
                         }
@@ -15499,11 +15492,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.rut,
+                              value: _vm.rut_search,
                               callback: function($$v) {
-                                _vm.rut = $$v
+                                _vm.rut_search = $$v
                               },
-                              expression: "rut"
+                              expression: "rut_search"
                             }
                           }),
                           _vm._v(" "),
@@ -15516,28 +15509,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.name,
+                              value: _vm.establishment_search,
                               callback: function($$v) {
-                                _vm.name = $$v
+                                _vm.establishment_search = $$v
                               },
-                              expression: "name"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-spacer"),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Comuna",
-                              "single-line": "",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.name,
-                              callback: function($$v) {
-                                _vm.name = $$v
-                              },
-                              expression: "name"
+                              expression: "establishment_search"
                             }
                           }),
                           _vm._v(" "),
@@ -15770,11 +15746,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.rut,
+                              value: _vm.rut_search,
                               callback: function($$v) {
-                                _vm.rut = $$v
+                                _vm.rut_search = $$v
                               },
-                              expression: "rut"
+                              expression: "rut_search"
                             }
                           }),
                           _vm._v(" "),
@@ -15787,28 +15763,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.name,
+                              value: _vm.establishment_search,
                               callback: function($$v) {
-                                _vm.name = $$v
+                                _vm.establishment_search = $$v
                               },
-                              expression: "name"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-spacer"),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Comuna",
-                              "single-line": "",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.name,
-                              callback: function($$v) {
-                                _vm.name = $$v
-                              },
-                              expression: "name"
+                              expression: "establishment_search"
                             }
                           }),
                           _vm._v(" "),
@@ -16045,11 +16004,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.rut,
+                              value: _vm.rut_search,
                               callback: function($$v) {
-                                _vm.rut = $$v
+                                _vm.rut_search = $$v
                               },
-                              expression: "rut"
+                              expression: "rut_search"
                             }
                           }),
                           _vm._v(" "),
@@ -16062,28 +16021,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.name,
+                              value: _vm.establishment_search,
                               callback: function($$v) {
-                                _vm.name = $$v
+                                _vm.establishment_search = $$v
                               },
-                              expression: "name"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-spacer"),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Comuna",
-                              "single-line": "",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.name,
-                              callback: function($$v) {
-                                _vm.name = $$v
-                              },
-                              expression: "name"
+                              expression: "establishment_search"
                             }
                           }),
                           _vm._v(" "),
@@ -16318,11 +16260,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.rut,
+                              value: _vm.rut_search,
                               callback: function($$v) {
-                                _vm.rut = $$v
+                                _vm.rut_search = $$v
                               },
-                              expression: "rut"
+                              expression: "rut_search"
                             }
                           }),
                           _vm._v(" "),
@@ -16335,28 +16277,11 @@ var render = function() {
                               "hide-details": ""
                             },
                             model: {
-                              value: _vm.name,
+                              value: _vm.establishment_search,
                               callback: function($$v) {
-                                _vm.name = $$v
+                                _vm.establishment_search = $$v
                               },
-                              expression: "name"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-spacer"),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Comuna",
-                              "single-line": "",
-                              "hide-details": ""
-                            },
-                            model: {
-                              value: _vm.name,
-                              callback: function($$v) {
-                                _vm.name = $$v
-                              },
-                              expression: "name"
+                              expression: "establishment_search"
                             }
                           }),
                           _vm._v(" "),
@@ -59333,10 +59258,24 @@ axios.defaults.headers.common = {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = window.axios;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    // main_green: '#242351',
-    // secondary_green: '#45449E',
-    // highlight_green: '#446E9E',
-    // side_bar_gray: '#242351',
+    main_green: '#242351',
+    secondary_green: '#45449E',
+    highlight_green: '#446E9E',
+    side_bar_gray: '#242351',
+    seconday_gray: '#EEEEEE',
+    ds_138: '#079992',
+    readings: '#4388A5',
+    covs: '#00596D',
+    primary: '#1976D2',
+    secondary: '#424242',
+    accent: '#82B1FF',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107' // main_green: '#079992',
+    // secondary_green: '#38ACA9',
+    // highlight_green: '#6BEC87',
+    // side_bar_gray: '#595959',
     // seconday_gray: '#EEEEEE',
     // ds_138: '#079992',
     // readings: '#4388A5',
@@ -59348,21 +59287,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-    main_green: '#079992',
-    secondary_green: '#38ACA9',
-    highlight_green: '#6BEC87',
-    side_bar_gray: '#595959',
-    seconday_gray: '#EEEEEE',
-    ds_138: '#079992',
-    readings: '#4388A5',
-    covs: '#00596D',
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107'
+
   }
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({

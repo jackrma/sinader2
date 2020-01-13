@@ -43,7 +43,32 @@ class EstablishmentController extends Controller
 
 		$establishment = Establishment::where('type',$type)->with('company')->with('commune')->with('region')->get();
 
-
 		return response()->json($establishment);
 	}    
+
+	public function search(Request $request){
+
+		Info($request);
+
+		$rut  = $request->input('rut');
+		$name = $request->input('establishment');
+		$type = $request->input('type'); 
+
+
+		$establishments = Establishment::where('type',$type)->with('company')->with('commune')->with('region')->get();
+
+		if($rut){
+			$company = Company::where('rut',$rut)->get()->first();
+
+			$establishments = Establishment::where('type',$type)->where('company_id',$company->id)->with('company')->with('commune')->with('region')->get();
+		}
+
+		if($name){
+			$establishments = Establishment::where('type',$type)->where('name','ilike','%' . $name . '%')->with('company')->with('commune')->with('region')->get();
+		}
+
+
+
+		return response()->json($establishments);
+	} 
 }

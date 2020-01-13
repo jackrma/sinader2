@@ -30,6 +30,14 @@ class DeclarationController extends Controller
     }
 
 
+    public function indexAdmin()
+    {
+
+        $declarations = Declaration::all();
+        return response()->json($declarations);
+    }
+
+
     public function forreceiver($receiver_id){
         $declarations = Declaration::join('waste_details','declarations.id',"=",'waste_details.declaration_id')->where('waste_details.establishment_id',$receiver_id)->get();
         return response()->json($declarations);   

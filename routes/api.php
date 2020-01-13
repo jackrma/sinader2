@@ -42,6 +42,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/establishment/forid/{id}', 'EstablishmentController@forid');
     Route::get('/establishments/{company_id}', 'EstablishmentController@index');
+    Route::post('/establishments/search', 'EstablishmentController@search');
     
 
     Route::get('/company', 'CompanyController@data');
@@ -82,6 +83,8 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::get('/declarations', 'DeclarationController@index');
+    Route::get('/declarations/admin', 'DeclarationController@indexAdmin');
+
     Route::get('/declarations/forreceiver/{receiver_id}', 'DeclarationController@forreceiver');
     Route::get('/declaration/{declaration_id}', 'DeclarationController@declaration');
     Route::post('/declaration/create', 'DeclarationController@create');
