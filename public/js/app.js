@@ -2283,6 +2283,9 @@ __webpack_require__.r(__webpack_exports__);
     _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
       app.refreshList();
     });
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('excelUpload', function () {
+      app.refreshExcel();
+    });
   },
   methods: {
     initialize: function initialize() {
@@ -2424,6 +2427,18 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit('changeIndexedit', -1);
       }
     },
+    refreshExcel: function refreshExcel() {
+      //alert(JSON.stringify(this.$store.getters.wastedetail));
+      //alert(typeof this.$store.getters.wastedetail);
+      var wastedetail = this.$store.getters.wastedetail;
+
+      for (var prop in wastedetail) {
+        //alert(wastedetail[prop])
+        this.residues.push(wastedetail[prop]);
+      }
+
+      ;
+    },
     delete_item: function delete_item(item) {
       this.residues.pop(item);
     },
@@ -2437,6 +2452,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
+      alert(JSON.stringify(data)); //this.$residues.push('waste_detail');
     },
     toSendMail: function toSendMail() {
       axios.get('/api/notification/mail').then(function (resp) {
@@ -6031,6 +6047,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 //
 //
 //
@@ -6081,12 +6101,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: true,
       fileName: '',
-      imageFile: ''
+      imageFile: '',
+      residues: []
     };
   },
   methods: {
@@ -6123,6 +6148,7 @@ __webpack_require__.r(__webpack_exports__);
         declaration_id: 1
       };
       var formData = new FormData();
+      var app = this;
       formData.append('data', JSON.stringify(declaration));
       formData.append('file', this.imageFile); //formData.append('waste_detail', this.residues);
 
@@ -6131,8 +6157,9 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (resp) {
-        // EventBus.$emit('excelUpload', 'someValue');
-        alert(JSON.stringify(resp.data));
+        app.$store.commit('changeWastedetail', resp.data);
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('excelUpload', "someValue"); //this.residues = resp.data;
+        //alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error Upload :" + resp);
@@ -57988,7 +58015,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     receiver: '',
     residue: '',
     carrier: '',
-    indexedit: -1
+    indexedit: -1,
+    wastedetail: ''
   },
   mutations: {
     changeType: function changeType(state, type) {
@@ -58017,6 +58045,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     changeIndexedit: function changeIndexedit(state, indexedit) {
       state.indexedit = indexedit;
+    },
+    changeWastedetail: function changeWastedetail(state, wastedetail) {
+      state.wastedetail = wastedetail;
     }
   },
   getters: {
@@ -58046,6 +58077,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     indexedit: function indexedit(state) {
       return state.indexedit;
+    },
+    wastedetail: function wastedetail(state) {
+      return state.wastedetail;
     }
   },
   plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__["default"])()]

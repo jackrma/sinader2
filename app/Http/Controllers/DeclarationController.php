@@ -13,6 +13,8 @@ use App\ProcessType;
 use App\Carrier;
 use App\Vehicle;
 use App\LerWaste;
+use App\LerSubChapter;
+use App\LerChapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Imports\MonthWasteImport;
@@ -381,8 +383,11 @@ class DeclarationController extends Controller
 
         $monthwaste = monthwaste::all()->toArray();
         
+        $residue = [];
         $waste_detail = [];
         $line=0;
+        $ind=0;
+        $errors=0;
         foreach ($monthwaste as $waste ) {
 
             $line++;
@@ -403,61 +408,83 @@ class DeclarationController extends Controller
             $vehicle = Vehicle::where('plate', $waste['plate'])->first();
             $ler_waste = LerWaste::where('waste_code', $waste['ler'])->first();
   
-            $waste_detail['declaration_id']   = 1; //$declaration_id;
-            $waste_detail['waste']            = $ler_waste->name;   
+            $waste_detail[$ind]['declaration_id']   = 1; //$declaration_id;
+            
+            if($ler_waste){
+                $waste_detail[$ind]['waste']        = $ler_waste->name;
+                $ler_subchapter = LerSubChapter::where('id', $ler_waste->subchapter_id)->first();
+                $ler_chapter = LerChapter::where('id', $ler_subchapter->chapter_id)->first();
+                $waste_detail[$ind]['chapter_id']      = $ler_chapter->id;
+                $waste_detail[$ind]['subchapter_id']   = $ler_subchapter->id;
+
+                $waste_detail[$ind]['chapter']      = $ler_chapter->name;
+                $waste_detail[$ind]['subchapter']   = $ler_subchapter->name;
+
+
+
+            }else{
+                //return response()->json(["compañia no existe"]);
+                $errors[] = "Linea ".$line.": Residuo no existe";
+            }
+
+               
 
             if($company){
-                $waste_detail['company_id']   = $company->id;
-                $waste_detail['company']      = $company->name;
+                $waste_detail[$ind]['company_id']   = $company->id;
+                $waste_detail[$ind]['company']      = $company->name;
             }else{
                 //return response()->json(["compañia no existe"]);
                 $errors[] = "Linea ".$line.": compañia no existe";
             }
 
             if($establishment){
-                $waste_detail['establishment_id'] = $establishment->id;
-                $waste_detail['establishment']    = $establishment->name;
+                $waste_detail[$ind]['establishment_id'] = $establishment->id;
+                $waste_detail[$ind]['establishment']    = $establishment->name;
             }else{
                 //return response()->json(["Establecimiento no existe"]);
                 $errors[] = "Linea ".$line.": Establecimiento no existe";
             }
 
             if($process){
-                $waste_detail['process_id']       = $process->id;
-                $waste_detail['processing']       = $process->name;
+                $waste_detail[$ind]['process_id']   = $process->id;
+                $waste_detail[$ind]['processing']   = $process->name;
             }else{
                 $errors[] = "Linea ".$line.": proceso no existe";
             }
 
-            $waste_detail['quantity']         = $waste['quantity'];
+            $waste_detail[$ind]['quantity']         = $waste['quantity'];
 
             if($ler_waste){
-                $waste_detail['waste_id']         = $ler_waste->id;
+                $waste_detail[$ind]['waste_id']     = $ler_waste->id;
             }else{
                 $errors[] = "Linea ".$line.": Código LER no existe";
             }
                  
             
-            $waste_detail['unit_id']          = 1;
+            $waste_detail[$ind]['unit_id']          = 2;
 
             if($carrier){
-                $waste_detail['carrier_id']       = $carrier->carrier_id;
+                $waste_detail[$ind]['carrier_id']     = $carrier->carrier_id;
+                $waste_detail[$ind]['carrier_name']   = $carrier->carrier_name;
+                $waste_detail[$ind]['trasnport_date'] = $waste['date'];
+               // $waste_detail->plate              = $waste['plate'];            
+                
             }else{
                 $errors[] = "Linea ".$line.": Transportista no existe";
             }
 
-            $waste_detail['plate']            = $waste['plate'];
+            $waste_detail[$ind]['plate']            = $waste['plate'];
 
+            $ind++;
 
         }
 
         if($errors){
             return response()->json(["errors"=>$errors]);
         }else{
-            return response()->json(["waste_detail"=>$waste_detail]);  
+            return response()->json($waste_detail);  
         }
 
-        //return response()->json(["errors"=>$errors]);
     }
 
 }

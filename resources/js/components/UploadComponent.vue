@@ -49,11 +49,18 @@
 
 
 <script>
+  import Vue from 'vue';  
+  import Vuex from 'vuex'; 
+  import { mapState } from 'vuex';  
+
+  import { EventBus } from './../eventbus.js';
+  
   export default {
     data: () => ({
         dialog: true,
         fileName:'',
         imageFile:'',
+        residues: [],
     }),
     methods: {
         pickFile () {
@@ -86,8 +93,8 @@
                     
                 }
 
-                
                 let formData = new FormData();
+                let app = this;
                 formData.append('data',  JSON.stringify(declaration));
                 formData.append('file', this.imageFile);
                 //formData.append('waste_detail', this.residues);
@@ -99,9 +106,14 @@
                     }
                 })
                 .then(function (resp) {
-                    // EventBus.$emit('excelUpload', 'someValue');
+                    
+                    app.$store.commit('changeWastedetail', resp.data);
 
-                    alert(JSON.stringify(resp.data));
+                    EventBus.$emit('excelUpload', "someValue");
+                    //this.residues = resp.data;
+                    
+
+                    //alert(JSON.stringify(resp.data));
                 })
                 .catch(function (resp) {
                     console.log(resp);
