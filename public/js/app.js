@@ -2347,6 +2347,9 @@ __webpack_require__.r(__webpack_exports__);
     _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
       app.refreshList();
     });
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('excelUpload', function () {
+      app.refreshExcel();
+    });
   },
   methods: {
     initialize: function initialize() {
@@ -2488,6 +2491,18 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit('changeIndexedit', -1);
       }
     },
+    refreshExcel: function refreshExcel() {
+      //alert(JSON.stringify(this.$store.getters.wastedetail));
+      //alert(typeof this.$store.getters.wastedetail);
+      var wastedetail = this.$store.getters.wastedetail;
+
+      for (var prop in wastedetail) {
+        //alert(wastedetail[prop])
+        this.residues.push(wastedetail[prop]);
+      }
+
+      ;
+    },
     delete_item: function delete_item(item) {
       this.residues.pop(item);
     },
@@ -2501,6 +2516,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
+      alert(JSON.stringify(data)); //this.$residues.push('waste_detail');
     },
     toSendMail: function toSendMail() {
       axios.get('/api/notification/mail').then(function (resp) {
@@ -6095,6 +6111,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 //
 //
 //
@@ -6145,12 +6165,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: true,
       fileName: '',
-      imageFile: ''
+      imageFile: '',
+      residues: []
     };
   },
   methods: {
@@ -6184,18 +6209,21 @@ __webpack_require__.r(__webpack_exports__);
     uploadAll: function uploadAll() {
       // if (this.$refs.form.validate()){
       var declaration = {
-        'declaration_id': 1
+        declaration_id: 1
       };
       var formData = new FormData();
+      var app = this;
       formData.append('data', JSON.stringify(declaration));
-      formData.append('file', this.imageFile);
+      formData.append('file', this.imageFile); //formData.append('waste_detail', this.residues);
+
       axios.post('/api/declaration/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (resp) {
-        // EventBus.$emit('excelUpload', 'someValue');
-        alert(JSON.stringify(resp.data));
+        app.$store.commit('changeWastedetail', resp.data);
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('excelUpload', "someValue"); //this.residues = resp.data;
+        //alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error Upload :" + resp);
@@ -7126,10 +7154,123 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListAdminInd.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ListAdminInd.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************/
+=======
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Welcome.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Welcome.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.redondeado {\r\n  border-radius: 5px;\n}\n.welcome_disclaimer {\r\n  text-align: justify;\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.padded {\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.welcome_icon {\r\n  min-width: 50px;\r\n  max-width: 150px;\n}\n.sitio_de_interes {\r\n  min-width: 40px;\r\n  max-width: 100px;\r\n  margin: auto;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/*!*************************************************!*\
+  !*** ./node_modules/css-loader/lib/css-base.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/deepmerge/dist/es.js":
+/*!*******************************************!*\
+  !*** ./node_modules/deepmerge/dist/es.js ***!
+  \*******************************************/
+>>>>>>> Excel2
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -15957,6 +16098,7 @@ var render = function() {
       _c(
         "v-card",
         [
+<<<<<<< HEAD
           _c(
             "v-layout",
             { attrs: { row: "" } },
@@ -16179,6 +16321,15 @@ var render = function() {
             ],
             1
           )
+=======
+          _c("router-link", { attrs: { to: { name: "home" } } }, [
+            _vm._v("Home")
+          ]),
+          _vm._v(" |\r\n            "),
+          _c("router-link", { attrs: { to: { name: "hello" } } }, [
+            _vm._v("Hello World")
+          ])
+>>>>>>> Excel2
         ],
         1
       )
@@ -16338,7 +16489,11 @@ var render = function() {
                         },
                         [
                           _vm._v(
+<<<<<<< HEAD
                             "\n                    Exportar Excel\n                    "
+=======
+                            "\r\n                    Nueva declaración\r\n                    "
+>>>>>>> Excel2
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -16403,6 +16558,7 @@ var render = function() {
                             _c(
                               "td",
                               [
+<<<<<<< HEAD
                                 _c(
                                   "v-btn",
                                   {
@@ -16413,6 +16569,88 @@ var render = function() {
                                     },
                                     on: { click: function($event) {} }
                                   },
+=======
+                                _vm._v(
+                                  "\r\n                    Certificado        \r\n                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { icon: "", color: "white" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.toNewDeclaration(
+                                              props.item
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_c("v-icon", [_vm._v("edit")])],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { icon: "", color: "white" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.toDelete(props.item)
+                                          }
+                                        }
+                                      },
+                                      [_c("v-icon", [_vm._v("delete")])],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            props.item.status == "CREADA"
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: {
+                                          small: "",
+                                          color: "secondary_green",
+                                          dark: ""
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.enviar(props.item)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Enviar")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            props.item.status == "ENVIADA"
+                              ? _c(
+                                  "td",
+>>>>>>> Excel2
                                   [
                                     _vm._v(
                                       "Desactivar\n                        "
@@ -60481,7 +60719,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     receiver: '',
     residue: '',
     carrier: '',
-    indexedit: -1
+    indexedit: -1,
+    wastedetail: ''
   },
   mutations: {
     changeType: function changeType(state, type) {
@@ -60510,6 +60749,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     changeIndexedit: function changeIndexedit(state, indexedit) {
       state.indexedit = indexedit;
+    },
+    changeWastedetail: function changeWastedetail(state, wastedetail) {
+      state.wastedetail = wastedetail;
     }
   },
   getters: {
@@ -60539,6 +60781,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     indexedit: function indexedit(state) {
       return state.indexedit;
+    },
+    wastedetail: function wastedetail(state) {
+      return state.wastedetail;
     }
   },
   plugins: [Object(vuex_persistedstate__WEBPACK_IMPORTED_MODULE_2__["default"])()]
@@ -61256,8 +61501,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/osvaldo/sinader/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/osvaldo/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

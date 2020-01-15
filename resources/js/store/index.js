@@ -18,6 +18,7 @@ export default new Vuex.Store(
 	    residue:'',
 	    carrier:'',
 	    indexedit:-1,
+	    wastedetail:'',
 
 	},
 	mutations: {
@@ -49,6 +50,9 @@ export default new Vuex.Store(
 		changeIndexedit(state, indexedit) {
 		   	state.indexedit = indexedit;
 		},
+		changeWastedetail(state, wastedetail) {
+		   	state.wastedetail = wastedetail;
+		},
 	},
 	getters: {
 		type: state => state.type,
@@ -60,6 +64,7 @@ export default new Vuex.Store(
 		residue: state => state.residue,
 		carrier: state => state.carrier,
 		indexedit: state => state.indexedit,
+		wastedetail: state => state.wastedetail,
 	},
     plugins: [
     	createPersistedState()
