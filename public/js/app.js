@@ -7514,7 +7514,9 @@ __webpack_require__.r(__webpack_exports__);
       }],
       declarations: [],
       establishment_search: '',
-      rut_search: ''
+      rut_search: '',
+      downloadErrorDetailBlastSuccess: true,
+      downloadErrorDetailBlastFailure: false
     };
   },
   created: function created() {
@@ -7597,6 +7599,34 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error declarations/index :" + resp);
+      });
+    },
+    toExport: function toExport() {
+      var options = {
+        headers: {
+          'Authorization': 'Bearer ' + this.$store.getters.token
+        }
+      };
+      axios({
+        method: 'GET',
+        url: '/api/establishment/export',
+        responseType: 'blob',
+        headers: {
+          'Authorization': 'Bearer ' + this.$store.getters.token
+        }
+      }).then(function (resp) {
+        var url = window.URL.createObjectURL(new Blob([resp.data], {
+          type: 'application/vnd.ms-excel'
+        }));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'GeneradorMunicipal.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        console.log(resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/export :" + resp);
       });
     }
   }
@@ -15379,29 +15409,25 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            props.item.status == "CREADA"
-                              ? _c(
-                                  "td",
-                                  [
-                                    _c(
-                                      "v-btn",
-                                      {
-                                        attrs: { icon: "", color: "white" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toNewDeclaration(
-                                              props.item
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_c("v-icon", [_vm._v("edit")])],
-                                      1
-                                    )
-                                  ],
+                            _c(
+                              "td",
+                              [
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { icon: "", color: "white" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.toNewDeclaration(props.item)
+                                      }
+                                    }
+                                  },
+                                  [_c("v-icon", [_vm._v("edit")])],
                                   1
                                 )
-                              : _vm._e()
+                              ],
+                              1
+                            )
                           ]
                         }
                       }
@@ -16334,7 +16360,7 @@ var render = function() {
                         {
                           staticClass: "ma-2 white--text",
                           attrs: { color: "main_green" },
-                          on: { click: function($event) {} }
+                          on: { click: _vm.toExport }
                         },
                         [
                           _vm._v(
@@ -59258,24 +59284,10 @@ axios.defaults.headers.common = {
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$http = window.axios;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a, {
   theme: {
-    main_green: '#242351',
-    secondary_green: '#45449E',
-    highlight_green: '#446E9E',
-    side_bar_gray: '#242351',
-    seconday_gray: '#EEEEEE',
-    ds_138: '#079992',
-    readings: '#4388A5',
-    covs: '#00596D',
-    primary: '#1976D2',
-    secondary: '#424242',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107' // main_green: '#079992',
-    // secondary_green: '#38ACA9',
-    // highlight_green: '#6BEC87',
-    // side_bar_gray: '#595959',
+    // main_green: '#242351',
+    // secondary_green: '#45449E',
+    // highlight_green: '#446E9E',
+    // side_bar_gray: '#242351',
     // seconday_gray: '#EEEEEE',
     // ds_138: '#079992',
     // readings: '#4388A5',
@@ -59287,7 +59299,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-
+    main_green: '#079992',
+    secondary_green: '#38ACA9',
+    highlight_green: '#6BEC87',
+    side_bar_gray: '#595959',
+    seconday_gray: '#EEEEEE',
+    ds_138: '#079992',
+    readings: '#4388A5',
+    covs: '#00596D',
+    primary: '#1976D2',
+    secondary: '#424242',
+    accent: '#82B1FF',
+    error: '#FF5252',
+    info: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107'
   }
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
@@ -60361,7 +60387,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); // Ejemplo de uso EventBus
 // import { EventBus } from './../eventbus.js';
-//     EventBus.$on('saveCovsReading', function(){    
+//     EventBus.$once('saveCovsReading', function(){    
 //         app.initialize();
 //     });
 //     EventBus.$emit('refreshDeclaration', 'someValue');

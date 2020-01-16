@@ -58,7 +58,7 @@
             <v-toolbar color="secondary_green" dark>
                 <v-toolbar-title></v-toolbar-title>
                <v-spacer></v-spacer>
-                <v-btn  class="ma-2 white--text" @click='' color="main_green">
+                <v-btn  class="ma-2 white--text" @click='toExport' color="main_green">
                     Exportar Excel
                     <v-icon right>cloud_download</v-icon>
                 </v-btn>
@@ -134,6 +134,8 @@
 
         establishment_search:'',
         rut_search:'',
+        downloadErrorDetailBlastSuccess: true,
+        downloadErrorDetailBlastFailure: false,        
 
         }),
     
@@ -247,10 +249,41 @@
                     console.log(resp);
                     alert("Error declarations/index :" + resp);
                 });
+        },
+
+        toExport(){
+                let options = {
+                    headers: {
+                      'Authorization': 'Bearer ' + this.$store.getters.token,
+                    }
+                  }
+
+
+                axios({
+                    method:'GET',
+                    url: '/api/establishment/export',      
+                    responseType: 'blob', 
+                    headers: { 'Authorization': 'Bearer ' + this.$store.getters.token }
+                })
+                .then(function (resp) {      
+            
+
+                    const url = window.URL.createObjectURL(new Blob([resp.data], {type:'application/vnd.ms-excel'}));
+                    const link = document.createElement('a');
+                    
+                    link.href = url;
+                    link.setAttribute('download', 'GeneradorMunicipal.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    console.log(resp.data);
+
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/export :" + resp);
+                });
         }
 
-
-
     }
-    }
+}
 </script>   

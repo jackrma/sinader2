@@ -8,11 +8,17 @@ use Illuminate\Support\Facades\Auth;
 use App\UserEstablishment;
 use App\Establishment;
 
+use App\Exports\EstablishmentExport;
+
+use Maatwebsite\Excel\Facades\Excel;
+
 class EstablishmentController extends Controller
 {
 
 
 	public function index($company_id){
+
+		Info("******Index*******");
 		$establishment = Establishment::where('company_id', $company_id)->where('type', 'DestinatarioFinal')->orWhere('type', 'CentroAcopio')->get();
 		return response()->json($establishment);
 	}
@@ -58,6 +64,7 @@ class EstablishmentController extends Controller
 		$establishments = Establishment::where('type',$type)->with('company')->with('commune')->with('region')->get();
 
 		if($rut){
+			$rut = substr ($rut, 0, -2);
 			$company = Company::where('rut',$rut)->get()->first();
 
 			$establishments = Establishment::where('type',$type)->where('company_id',$company->id)->with('company')->with('commune')->with('region')->get();
@@ -71,4 +78,12 @@ class EstablishmentController extends Controller
 
 		return response()->json($establishments);
 	} 
+
+
+    public function export() 
+    {
+    	Info('******** Export *********');
+        return Excel::download(new EstablishmentExport, 'establishment.xlsx');
+    }
+
 }

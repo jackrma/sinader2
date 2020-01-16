@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/establishment/forid/{id}', 'EstablishmentController@forid');
     Route::get('/establishments/{company_id}', 'EstablishmentController@index');
     Route::post('/establishments/search', 'EstablishmentController@search');
+    Route::get('/establishment/export', 'EstablishmentController@export');
     
 
     Route::get('/company', 'CompanyController@data');

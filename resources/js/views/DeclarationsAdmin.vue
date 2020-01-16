@@ -52,7 +52,7 @@
                 <!-- <td class="text-xs-right">{{ props.item.certificate }}</td> -->
 
 
-                <td v-if="props.item.status=='CREADA'"> 
+                <td> 
                     <v-btn icon  @click="toNewDeclaration(props.item)" color="white">
                         <v-icon>edit</v-icon>
                     </v-btn>
