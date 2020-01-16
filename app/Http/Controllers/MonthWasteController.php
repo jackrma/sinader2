@@ -10,15 +10,15 @@ use App\Imports\MonthWasteImport;
 class MonthWasteController extends Controller
 {
     private $excel;
- 
+    
     public function __construct(Excel $excel)
     {
         $this->excel = $excel;
     }
     
-    public function import($your_file)
+    public function import()
     {
-        (new MonthWasteImport)->import(request()->file($your_file));
+        (new MonthWasteImport)->import(request()->file('file'));
 
         return redirect('/')->with('success', 'Archivo importado correctamente!');
     }

@@ -3,10 +3,15 @@
 namespace App\Imports;
 
 use App\MonthWaste;
-use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Concerns\{Importable, ToModel, WithHeadingRow, WithValidation};
+//use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 
-class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation
+class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
 {
     /**
     * @param array $row
@@ -14,46 +19,58 @@ class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation
     * @return \Illuminate\Database\Eloquent\Model|null
     */
 
-    use Importable;
+    use Importable, SkipsFailures;
 
     public function model(array $row)
     {
-        return new MonthWaste([
+        try {
+            return new MonthWaste([
             //
-            'id' => $row['ID'],
-            'ler' => $row['LER'],
-            'rut' => $row['RUT'],
-            'entablishment' => $row['ESTABLECIMIENTO'],
-            'process' => $row['TRATAMIENTO'],
-            'quantity' => $row['CANTIDAD']
-            'carrier' => $row['RUT TRANSPORTISTA'],
-            'plate' => $row['PATENTE'],
-            'date' => $row['FECHA'],
-        ]);
+          //  'id' => $row['id'],
+                'ler' => $row['ler'],
+                'rut' => $row['rut'],
+                'entablishment' => $row['establecimiento'],
+                'process' => $row['tratamiento'],
+                'quantity' => $row['cantidad'],
+                'carrier' => $row['rut_transportista'],
+                'plate' => $row['patente'],
+                'date' => $row['fecha'],
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage(), $row);
+        }
     }
 
-    public function rules()
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function rules(): array
     {
         return [
-            'entablishment' => 'regex:/[0-9]{3}/',
-            'plate' => 'regex:/[A-Z]{3}-[0-9]{3}/',
 
             'ler' => 'required',
             'rut' => 'required',
-            'entablishment' => 'required',
-            'process' => 'required',
-            'quantity' => 'required',
-            'carrier' => 'required'
-            'plate' => 'required',
-            'date' => 'required'
+            'establecimiento' => 'required',
+            'tratamiento' => 'required',
+            'cantidad' => 'required',
+            'rut_transportista' => 'required',
+            'patente' => 'required',
+            'fecha' => 'required'
 
         ];
     }
 
-    public function onError(\Throwable $e)
+    public function validationMessages()
     {
-        // Handle the exception how you'd like.
-        \Log::error($e->getMessage());
-         return back();
+        return [
+            'ler.required' => trans('Se requiere código LER'),
+            'rut.required' => trans('Se requiere rut'),
+            'cantidad.required' => trans('La cantidad no puede venir en blanco'),
+            'rut_transportista.required' => trans('se requiere rut del transportista'),
+            'patente.requierd' => trans('se requiere patente'),
+        ];
     }
+
 }

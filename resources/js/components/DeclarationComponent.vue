@@ -255,7 +255,7 @@
 
   import Vue from 'vue';  
   import Vuex from 'vuex'; 
-  import { mapState } from 'vuex';  
+  import { mapState } from 'vuex'; 
   
   import { EventBus } from './../eventbus.js';
 
@@ -314,10 +314,14 @@
     created () {
         this.initialize();
         var app = this;
+
         EventBus.$once('saveResidues', function(){   
             app.refreshList();
         });
 
+        EventBus.$once('excelUpload', function(){   
+            app.refreshExcel();
+        });
     },
 
     methods: {
@@ -476,9 +480,24 @@
                 this.residues.push(this.$store.getters.residue);
                 this.$store.commit('changeIndexedit', -1);
             }
+        },  
+
+        refreshExcel(){
 
 
-        },   
+            //alert(JSON.stringify(this.$store.getters.wastedetail));
+
+            //alert(typeof this.$store.getters.wastedetail);
+
+                        
+            let wastedetail = this.$store.getters.wastedetail;
+
+            for (var prop in wastedetail) {
+                //alert(wastedetail[prop])
+                this.residues.push(wastedetail[prop])
+                };
+            
+        },    
 
  
 
@@ -495,6 +514,11 @@
                 }});
                 instance.$mount();
                 this.$refs.container.replaceChild(instance.$el);
+                
+                alert(JSON.stringify(data));
+                    
+                //this.$residues.push('waste_detail');
+
 
         },
 
