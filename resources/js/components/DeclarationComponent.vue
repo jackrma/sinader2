@@ -294,7 +294,7 @@
 
         headers: [
             { text: 'Descripción del Residuo', value: '' },            
-            { text: 'Cantidad(t)', value: '' },
+            { text: 'Cantidad(Kgs)', value: '' },
             { text: 'Destinatario', value: '' },
             { text: 'Nombre Establecimiento', value: '' },
             { text: 'Tipo de Tratamiento', value: '' },
@@ -319,7 +319,7 @@
             app.refreshList();
         });
 
-        EventBus.$once('excelUpload', function(){   
+        EventBus.$on('excelUpload', function(){   
             app.refreshExcel();
         });
     },
@@ -485,10 +485,12 @@
         refreshExcel(){
 
 
-            //alert(JSON.stringify(this.$store.getters.wastedetail));
+            alert(JSON.stringify(this.$store.getters.wastedetail));
 
             //alert(typeof this.$store.getters.wastedetail);
-
+            if (this.residues){
+                this.residues = [];
+            }
                         
             let wastedetail = this.$store.getters.wastedetail;
 
