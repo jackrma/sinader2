@@ -89,6 +89,7 @@ class ApiUserController extends Controller
             return abort(404,'Error: UserAccess');
         }
     }
+
     
     public function setUserVue(Request $request){
 
@@ -105,10 +106,20 @@ class ApiUserController extends Controller
 
         $ue = UserEstablishment::where('user_id', $user_id)->first();  
 
+
+        Info("*******  vu_connect ********");
+        Info($user_id);
+        Info($ue);
+
         if($ue){
             $token = $ue->user->createToken('VU')->accessToken;
 
             Session::flash('token', $token);
+
+            Info("***** vu_connect ******");
+            Info($ue);
+            Info($token);
+
 
             return redirect('/');
         } else {

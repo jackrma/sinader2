@@ -384,13 +384,15 @@
                     this.gestion_id   = this.residue_edit.manage_id;
                     this.unit_id      = this.residue_edit.unit_id;
 
+
                     
 
                     var app = this;
+                    app.subcapitulo = app.residue_edit.subchapter;
                     axios.get('/api/lersubchapter/' + this.chapter_id)
                         .then(function (resp) {   
                             app.subcapitulos = resp.data;
-                            app.subcapitulo = app.residue_edit.subchapter;
+                            
                         })
                         .catch(function (resp) {
                             console.log(resp);

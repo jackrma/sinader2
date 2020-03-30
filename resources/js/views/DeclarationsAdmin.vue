@@ -199,10 +199,6 @@
                     console.log(resp);
                     alert("Error declarations/index :" + resp);
                 });
-
-
-
-
         }
 
 
