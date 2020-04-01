@@ -11,6 +11,12 @@ import ListAdminInd    from './views/ListAdminInd'
 import ListAdminMun    from './views/ListAdminMun'
 import ListAdminCA    from './views/ListAdminCA'
 import ListAdminDF    from './views/ListAdminDF'
+import CarrierAdmin    from './views/CarrierAdmin'
+import VehicleAdmin    from './views/VehicleAdmin'
+import LerChapterAdmin from './views/LerChapterAdmin'
+import LerSubChapterAdmin from './views/LerSubChapterAdmin'
+import LerWasteAdmin    from './views/LerWasteAdmin'
+import DeclarationPeriodsAdmin  from './views/DeclarationPeriodsAdmin'
 
 
 Vue.use(VueRouter);
@@ -71,6 +77,36 @@ const router = new VueRouter({
             path: '/listadmindf',
             name: 'listadmindf',
             component: ListAdminDF,
+        },
+        {
+            path: '/vehicleadmin',
+            name: 'vehicleadmin',
+            component: VehicleAdmin,
+        },
+        {
+            path: '/carrieradmin',
+            name: 'carrieradmin',
+            component: CarrierAdmin,
+        },
+        {
+            path: '/lerchapteradmin',
+            name: 'lerchapteradmin',
+            component: LerChapterAdmin,
+        },
+        {
+            path: '/lersubchapteradmin',
+            name: 'lersubchapteradmin',
+            component: LerSubChapterAdmin,
+        },
+        {
+            path: '/lerwasteadmin',
+            name: 'lerwasteadmin',
+            component: LerWasteAdmin,
+        },
+        {
+            path: '/declarationperiodsadmin',
+            name: 'declarationperiodsadmin',
+            component: DeclarationPeriodsAdmin,
         },
 
 

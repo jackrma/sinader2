@@ -36,4 +36,52 @@ class CarrierController extends Controller
 	}
 
 
+	public function index(Request $request){
+		$carrier = carrier::all();
+		return response()->json($carrier);
+	}
+
+	public function store(Request $request){
+
+
+		$carrier = $request->Input('carrier');
+
+        Info($request);
+
+		//$carrierNew = carrier::where('id', $carrier["id"])->get()->first();
+
+        if(array_key_exists("id", $carrier)){
+            $carrierNew = carrier::where('id', $carrier["id"])->get()->first();
+        }else
+        {
+            $carrierNew = new carrier();
+        }
+
+        $carrierNew->rut    	= $carrier['rut'];
+        $carrierNew->dv   		= $carrier['dv'];
+        $carrierNew->name   	= $carrier['name'];
+        $carrierNew->address    = $carrier['address'];
+
+
+        if ($carrierNew->save() ){
+        	Info('Registro Grabado Correctamente!!');
+        }
+
+        Info($carrierNew);
+
+        return response()->json($carrierNew);
+        
+   	}
+
+   	public function delete($id)
+    {
+        Info($id);
+
+        carrier::where('id',$id)->delete();
+        
+        return response()->json($id);
+    }
+
+
+
 }

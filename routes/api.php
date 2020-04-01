@@ -107,4 +107,24 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/waste_details/forreceiver', 'WasteDetailController@forreceiver');
     Route::post('/waste_detail/updatediscrepancy','WasteDetailController@updateDiscrepancy');
 
+    Route::get('/vehicle', 'VehicleController@index');
+	Route::post('/vehicle/store', 'VehicleController@store');
+	Route::post('/vehicle/delete/{id}', 'VehicleController@delete');
+
+    Route::get('/carrier', 'CarrierController@index');
+	Route::post('/carrier/store', 'CarrierController@store');
+	Route::post('/carrier/delete/{id}', 'CarrierController@delete');
+
+    Route::get('/lerchapter', 'LerChapterController@index');
+	Route::post('/lerchapter/store', 'LerChapterController@store');
+	Route::post('/lerchapter/delete/{id}', 'LerChapterController@delete');
+
+    Route::get('/lersubchapter', 'LerSubChapterController@index');
+	Route::post('/lersubchapter/store', 'LerSubChapterController@store');
+	Route::post('/lersubchapter/delete/{id}', 'LerSubChapterController@delete');
+
+    Route::get('/lerwaste', 'LerWasteController@index');
+	Route::post('/lerwaste/store', 'LerWasteController@store');
+	Route::post('/lerwaste/delete/{id}', 'LerWasteController@delete');
+
 });
