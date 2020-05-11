@@ -196,7 +196,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error Vehicle Type :" + resp);
                 });
         },
 
@@ -217,7 +216,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error Vehicle :" + resp);
                 });
 
         },

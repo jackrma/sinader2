@@ -300,7 +300,12 @@ class DeclarationController extends Controller
     public function sinMovimento(Request $request)
     {
         $user = Auth::user();
+
         $user_establishment = UserEstablishment::where('user_id', $user->id)->first();
+        $establishment = Establishment::where('id', $user_establishment->establishment_id)->get()->first();
+        $company = Company::where('id',$establishment->company_id)->get()->first();
+
+
 
         $declaration = $request->Input('declaration');
 
@@ -315,6 +320,14 @@ class DeclarationController extends Controller
         $declarationNew->correlative_dv = $declaration['correlative_dv']; 
         $declarationNew->type           = $declaration['type'];
         $declarationNew->period         = $declaration['period'];
+
+        $declaration->rut            = $company->rut . '-' . $company->dv;
+        $declaration->company        = $company->name;
+        $declaration->establishment  = $establishment->name;
+        $declaration->direccion      = $establishment->street . ' ' . $establishment->number;
+        $declaration->comuna         = $establishment->commune->name;
+        $declaration->region         = $establishment->region->name;
+
         $declarationNew->status            = 'SINMOVIMIENTO';
         $declarationNew->establishment_id  = $user_establishment->establishment_id;
         $declarationNew->user_id           = $user->id;

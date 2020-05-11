@@ -192,7 +192,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error waste_details :" + resp);
                     }); 
         },
 

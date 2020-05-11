@@ -290,7 +290,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
  
@@ -300,7 +299,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
             axios.get('/api/countries')
@@ -309,7 +307,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
             if(this.residue_edit){
@@ -361,7 +358,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error chapter :" + resp);
                         });
 
                         
@@ -374,7 +370,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error chapter :" + resp);
                     });
 
                     
@@ -384,7 +379,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error unit :" + resp);
                         });
   
 
@@ -396,7 +390,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error chapter :" + resp);
                         });
 
 
@@ -410,7 +403,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error establisgment :" + resp);
                         }); 
                     }       
 
@@ -423,7 +415,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error process :" + resp);
                         }); 
                     }
 
@@ -436,7 +427,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error gestion :" + resp);
                         });
                     }
 
@@ -450,7 +440,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error carrier :" + resp);
                         });
                     }                    
         
@@ -470,7 +459,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -489,7 +477,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -520,7 +507,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 

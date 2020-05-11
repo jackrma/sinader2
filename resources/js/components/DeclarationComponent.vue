@@ -347,7 +347,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error waste_details :" + resp);
                     }); 
 
             } else {
@@ -358,7 +357,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error declaration/create :" + resp);
                     });                
             }
         },  
@@ -387,7 +385,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error declaration/store :" + resp);
                     });
                 this.dialog = false;
             } else {
@@ -401,7 +398,13 @@
             var declaration = {
                 correlative: this.declaration.correlative,
                 correlative_dv: this.declaration.correlative_dv,
-                
+
+                rut: this.rut,
+                company: this.company,
+                establishment: this.establishment,
+                direccion: this.address,
+                comuna: this.commune,
+                region: this.region,
                 type: this.type,
                 period: this.period,
                 carrier: 0,
@@ -413,7 +416,7 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error declaration/sinmovieminto :" + resp);
+                    alert("Error  :" + resp);                
                 });
             this.dialog = false;
 
@@ -516,11 +519,6 @@
                 }});
                 instance.$mount();
                 this.$refs.container.replaceChild(instance.$el);
-                
-                alert(JSON.stringify(data));
-                    
-                //this.$residues.push('waste_detail');
-
 
         },
 
@@ -533,7 +531,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error mail :" + resp);
                 });
         }
 

@@ -124,7 +124,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
         },
 
@@ -138,7 +137,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });            
         },
 

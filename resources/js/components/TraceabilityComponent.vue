@@ -193,7 +193,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
           
@@ -233,7 +232,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error declaration/sinmovieminto :" + resp);
                 });
 
             this.dialog = false;

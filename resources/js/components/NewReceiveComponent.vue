@@ -332,7 +332,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error waste_details :" + resp);
                     }); 
 
             } else {
@@ -343,7 +342,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error declaration/create :" + resp);
                     });                
             }
         },  
@@ -479,7 +477,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error mail :" + resp);
                 });
         },
 

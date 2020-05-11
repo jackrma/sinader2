@@ -117,7 +117,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error Upload :" + resp);
                 });
                 this.dialog = false;     
 

@@ -225,7 +225,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
             axios.get('/api/unit')
@@ -234,7 +233,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
             axios.get('/api/managetype')
@@ -243,7 +241,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ManageType :" + resp);
                 });
 
             axios.get('/api/processtype')
@@ -252,7 +249,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ProcessType :" + resp);
                 });
 
             axios.get('/api/recolectiontype')
@@ -261,7 +257,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error RecolectionType :" + resp);
                 });
             axios.get('/api/lerchapter')
                 .then(function (resp) {    
@@ -269,7 +264,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
         },
@@ -290,7 +284,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 

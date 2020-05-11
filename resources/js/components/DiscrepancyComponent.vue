@@ -124,7 +124,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
         },
         changeUnit(){
@@ -144,7 +143,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error  waste_detail/updatediscrepancy:" + resp);
                 });
             this.dialog = false;
         }

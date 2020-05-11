@@ -125,9 +125,6 @@
 
             var app = this;
 
-            alert('TOKEN');
-            alert(this.$store.getters.token);
-
             axios.get('/api/user')
                 .then(function (resp) {
                    // alert(JSON.stringify(resp.data));  
@@ -135,8 +132,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error user/data :" + resp);
-
                 }); 
 
             axios.get('/api/company')
@@ -146,7 +141,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error company/data :" + resp);
                 }); 
 
             axios.get('/api/establishment')
@@ -214,7 +208,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error establishment/data :" + resp);
                 }); 
 
 

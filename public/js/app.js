@@ -1866,21 +1866,17 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       var app = this;
-      alert('TOKEN');
-      alert(this.$store.getters.token);
       axios.get('/api/user').then(function (resp) {
         // alert(JSON.stringify(resp.data));  
         app.$store.commit('changeUser', resp.data);
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error user/data :" + resp);
       });
       axios.get('/api/company').then(function (resp) {
         // alert(JSON.stringify(resp.data));  
         app.$store.commit('changeCompany', resp.data);
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error company/data :" + resp);
       });
       axios.get('/api/establishment').then(function (resp) {
         // alert(JSON.stringify(resp.data));  
@@ -2016,7 +2012,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error establishment/data :" + resp);
       });
     }
   }
@@ -2370,7 +2365,6 @@ __webpack_require__.r(__webpack_exports__);
           app.residues = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error waste_details :" + resp);
         });
       } else {
         axios.post('/api/declaration/create').then(function (resp) {
@@ -2378,7 +2372,6 @@ __webpack_require__.r(__webpack_exports__);
           app.correlative = app.declaration.correlative + '-' + app.declaration.correlative_dv;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error declaration/create :" + resp);
         });
       }
     },
@@ -2405,7 +2398,6 @@ __webpack_require__.r(__webpack_exports__);
           _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDeclaration', 'someValue');
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error declaration/store :" + resp);
         });
         this.dialog = false;
       } else {
@@ -2416,6 +2408,12 @@ __webpack_require__.r(__webpack_exports__);
       var declaration = {
         correlative: this.declaration.correlative,
         correlative_dv: this.declaration.correlative_dv,
+        rut: this.rut,
+        company: this.company,
+        establishment: this.establishment,
+        direccion: this.address,
+        comuna: this.commune,
+        region: this.region,
         type: this.type,
         period: this.period,
         carrier: 0
@@ -2426,7 +2424,7 @@ __webpack_require__.r(__webpack_exports__);
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDeclaration', 'someValue');
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error declaration/sinmovieminto :" + resp);
+        alert("Error  :" + resp);
       });
       this.dialog = false;
     },
@@ -2521,14 +2519,12 @@ __webpack_require__.r(__webpack_exports__);
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
-      alert(JSON.stringify(data)); //this.$residues.push('waste_detail');
     },
     toSendMail: function toSendMail() {
       axios.get('/api/notification/mail').then(function (resp) {
         app.vehicles = resp.data; // alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error mail :" + resp);
       });
     }
   }
@@ -2668,7 +2664,6 @@ __webpack_require__.r(__webpack_exports__);
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     changeUnit: function changeUnit() {},
@@ -2683,7 +2678,6 @@ __webpack_require__.r(__webpack_exports__);
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDiscrepancy', 'someValue');
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error  waste_detail/updatediscrepancy:" + resp);
       });
       this.dialog = false;
     }
@@ -3017,7 +3011,6 @@ __webpack_require__.r(__webpack_exports__);
           app.residues = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error waste_details :" + resp);
         });
       } else {
         axios.post('/api/declaration/create').then(function (resp) {
@@ -3025,7 +3018,6 @@ __webpack_require__.r(__webpack_exports__);
           app.correlative = app.declaration.correlative + '-' + app.declaration.correlative_dv;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error declaration/create :" + resp);
         });
       }
     },
@@ -3126,7 +3118,6 @@ __webpack_require__.r(__webpack_exports__);
         app.vehicles = resp.data; // alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error mail :" + resp);
       });
     },
     validateSii: function validateSii() {
@@ -3425,19 +3416,16 @@ __webpack_require__.r(__webpack_exports__);
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
       axios.get('/api/lerchapter').then(function (resp) {
         app.capitulos = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/countries').then(function (resp) {
         app.countries = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
 
       if (this.residue_edit) {
@@ -3473,7 +3461,6 @@ __webpack_require__.r(__webpack_exports__);
         app.subcapitulo = app.residue_edit.subchapter;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/lerwaste/' + this.residue_edit.subchapter_id).then(function (resp) {
         app.residues = resp.data;
@@ -3481,13 +3468,11 @@ __webpack_require__.r(__webpack_exports__);
         app.residue = app.residue_edit.waste;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/unit/forid/' + this.residue_edit.unit_id).then(function (resp) {
         app.unidad = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
 
       if (this.residue_edit.establishment_id) {
@@ -3495,7 +3480,6 @@ __webpack_require__.r(__webpack_exports__);
           app.establishments = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error chapter :" + resp);
         });
         axios.get('/api/establishment/forid/' + this.residue_edit.establishment_id).then(function (resp) {
           app.establishment_selected = resp.data;
@@ -3504,7 +3488,6 @@ __webpack_require__.r(__webpack_exports__);
           app.establishment_id = app.establishment_selected.id;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error establisgment :" + resp);
         });
       }
 
@@ -3515,7 +3498,6 @@ __webpack_require__.r(__webpack_exports__);
           app.processing_name = app.process_selected.name;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error process :" + resp);
         });
       }
 
@@ -3526,7 +3508,6 @@ __webpack_require__.r(__webpack_exports__);
           app.gestion_name = app.gestion_selected.name;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error gestion :" + resp);
         });
       }
 
@@ -3535,7 +3516,6 @@ __webpack_require__.r(__webpack_exports__);
           app.carrier = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error carrier :" + resp);
         });
       }
     },
@@ -3548,7 +3528,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = [];
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeSupChapter: function changeSupChapter(subchapter_selected) {
@@ -3559,7 +3538,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeResidue: function changeResidue(residue_selected) {
@@ -3582,7 +3560,6 @@ __webpack_require__.r(__webpack_exports__);
         app.establishments = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
@@ -3993,37 +3970,31 @@ __webpack_require__.r(__webpack_exports__);
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
       axios.get('/api/managetype').then(function (resp) {
         app.gestions = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ManageType :" + resp);
       });
       axios.get('/api/processtype').then(function (resp) {
         app.processings = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ProcessType :" + resp);
       });
       axios.get('/api/recolectiontype').then(function (resp) {
         app.tipos_recoleccion = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error RecolectionType :" + resp);
       });
       axios.get('/api/lerchapter').then(function (resp) {
         app.capitulos = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/countries').then(function (resp) {
         app.countries = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
 
       if (this.residue_edit) {
@@ -4059,7 +4030,6 @@ __webpack_require__.r(__webpack_exports__);
         app.subcapitulos = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/lerwaste/' + this.residue_edit.subchapter_id).then(function (resp) {
         app.residues = resp.data;
@@ -4067,13 +4037,11 @@ __webpack_require__.r(__webpack_exports__);
         app.residue = app.residue_edit.waste;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
       axios.get('/api/unit/forid/' + this.residue_edit.unit_id).then(function (resp) {
         app.unidad = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
 
       if (this.residue_edit.establishment_id) {
@@ -4081,7 +4049,6 @@ __webpack_require__.r(__webpack_exports__);
           app.establishments = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error chapter :" + resp);
         });
         axios.get('/api/establishment/forid/' + this.residue_edit.establishment_id).then(function (resp) {
           app.establishment_selected = resp.data;
@@ -4090,7 +4057,6 @@ __webpack_require__.r(__webpack_exports__);
           app.establishment_id = app.establishment_selected.id;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error establisgment :" + resp);
         });
       }
 
@@ -4101,7 +4067,6 @@ __webpack_require__.r(__webpack_exports__);
           app.processing_name = app.process_selected.name;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error process :" + resp);
         });
       }
 
@@ -4112,7 +4077,6 @@ __webpack_require__.r(__webpack_exports__);
           app.gestion_name = app.gestion_selected.name;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error gestion :" + resp);
         });
       }
 
@@ -4121,7 +4085,6 @@ __webpack_require__.r(__webpack_exports__);
           app.carrier = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
-          alert("Error carrier :" + resp);
         });
       }
     },
@@ -4134,7 +4097,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = [];
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeSupChapter: function changeSupChapter(subchapter_selected) {
@@ -4145,7 +4107,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeResidue: function changeResidue(residue_selected) {
@@ -4154,13 +4115,11 @@ __webpack_require__.r(__webpack_exports__);
       this.residue_selected = residue_selected;
     },
     selectCompany: function selectCompany() {
-      // alert(JSON.stringify(this.$store.getters.receiver));
       this.company_id = this.$store.getters.receiver.id;
       this.receiver_name = this.$store.getters.receiver.rut + '-' + this.$store.getters.receiver.digit + ' | ' + this.$store.getters.receiver.name;
       this.changeCompany(this.$store.getters.receiver);
     },
     changeCompany: function changeCompany(company_selected) {
-      // alert('receiver');
       var app = this;
       this.company_selected = company_selected;
       this.company_id = company_selected.id;
@@ -4168,11 +4127,9 @@ __webpack_require__.r(__webpack_exports__);
         app.establishments = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
-      //alert(JSON.stringify(establishment_selected));
       this.establishment_name = establishment_selected.name;
       this.establishment_id = establishment_selected.id;
       this.establishment_selected = establishment_selected;
@@ -4534,32 +4491,26 @@ __webpack_require__.r(__webpack_exports__);
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
       axios.get('/api/managetype').then(function (resp) {
         app.gestions = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ManageType :" + resp);
       });
       axios.get('/api/processtype').then(function (resp) {
         app.processings = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ProcessType :" + resp);
       });
       axios.get('/api/recolectiontype').then(function (resp) {
         app.recolection_types = resp.data;
-        alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error RecolectionType :" + resp);
       });
       axios.get('/api/lerchapter').then(function (resp) {
         app.capitulos = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeChapter: function changeChapter(chapter_selected) {
@@ -4569,7 +4520,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = [];
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeSupChapter: function changeSupChapter(subchapter_selected) {
@@ -4578,7 +4528,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeResidue: function changeResidue(residue_selected) {
@@ -4629,8 +4578,7 @@ __webpack_require__.r(__webpack_exports__);
           carrier_id: 1,
           recolection_type: this.recolection_selected.id
         };
-        this.$store.commit('changeResidue', this.residue); // alert(JSON.stringify(this.$store.getters.residue));
-
+        this.$store.commit('changeResidue', this.residue);
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
         this.dialog = false;
       }
@@ -4866,37 +4814,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         app.unidad = app.unit_selected.name;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
       axios.get('/api/unit').then(function (resp) {
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
       axios.get('/api/managetype').then(function (resp) {
         app.gestions = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ManageType :" + resp);
       });
       axios.get('/api/processtype').then(function (resp) {
         app.processings = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error ProcessType :" + resp);
       });
       axios.get('/api/recolectiontype').then(function (resp) {
         app.tipos_recoleccion = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error RecolectionType :" + resp);
       });
       axios.get('/api/lerchapter').then(function (resp) {
         app.capitulos = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     selectCompany: function selectCompany() {
@@ -4910,7 +4852,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         app.establishments = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error chapter :" + resp);
       });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
@@ -5261,7 +5202,6 @@ __webpack_require__.r(__webpack_exports__);
         app.residues = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error waste_details :" + resp);
       });
     },
     toNewResidue: function toNewResidue(residue) {
@@ -5425,7 +5365,6 @@ __webpack_require__.r(__webpack_exports__);
         app.carriers = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     toSearch: function toSearch() {
@@ -5434,7 +5373,6 @@ __webpack_require__.r(__webpack_exports__);
         app.carriers = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     selected_item: function selected_item(item) {
@@ -5587,7 +5525,6 @@ __webpack_require__.r(__webpack_exports__);
         app.carriers = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     toSearch: function toSearch() {
@@ -5596,7 +5533,6 @@ __webpack_require__.r(__webpack_exports__);
         app.carriers = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     selected_item: function selected_item(item) {
@@ -5805,7 +5741,6 @@ __webpack_require__.r(__webpack_exports__);
         app.units = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error unit :" + resp);
       });
     },
     NewDestiny: function NewDestiny() {
@@ -5839,7 +5774,6 @@ __webpack_require__.r(__webpack_exports__);
         alert('Se han creado declaraciones de trazabilidad');
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error declaration/sinmovieminto :" + resp);
       });
       this.dialog = false;
     }
@@ -6045,7 +5979,6 @@ __webpack_require__.r(__webpack_exports__);
         app.vehicle_types = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error Vehicle Type :" + resp);
       });
     },
     refreshCarrier: function refreshCarrier() {
@@ -6059,7 +5992,6 @@ __webpack_require__.r(__webpack_exports__);
         app.vehicles = resp.data; // alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error Vehicle :" + resp);
       });
     },
     changeVehicle: function changeVehicle(vehicle_selected) {
@@ -6231,7 +6163,6 @@ __webpack_require__.r(__webpack_exports__);
         //alert(JSON.stringify(resp.data));
       })["catch"](function (resp) {
         console.log(resp);
-        alert("Error Upload :" + resp);
       });
       this.dialog = false; // }
     }

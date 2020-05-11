@@ -53,7 +53,7 @@
 			          Folio:{{ $declaration["correlative"] }}-{{$declaration["correlative_dv"] }}
 			        </td>
 			        <td>
-			        	Estado: {{ $declaration["status"]}}
+			        	Estado: {{  $declaration["status"]=="SINMOVIMIENTO" ? "SIN MOVIMIENTO" : $declaration["status"] }}
 			        </td>
 			        
 			    </tr>
@@ -131,7 +131,7 @@ de las obligaciones establecidas en el D.S. Nº1/2013 MMA (Art. Nº26, 27 o 28)<
 
 <p class="text-small3">La integridad y veracidad de la información es de exclusiva responsabilidad del Titular, el cual ante un proceso de fiscalización debe evidenciar las
 metodologías utilizadas de estimaciones (si fuera el caso) y considerar comprobantes (ej.: voucher de pesaje, guías de despacho u otros) que permitan
-verificar la información reportada de la gestión de sus residuos.</p>
+verificar la información reportada para la gestión de sus residuos.</p>
 
          
         </div>

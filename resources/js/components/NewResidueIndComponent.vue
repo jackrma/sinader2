@@ -298,7 +298,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
             axios.get('/api/managetype')
@@ -307,7 +306,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ManageType :" + resp);
                 });
 
             axios.get('/api/processtype')
@@ -316,7 +314,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ProcessType :" + resp);
                 });
 
             axios.get('/api/recolectiontype')
@@ -325,7 +322,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error RecolectionType :" + resp);
                 });
             axios.get('/api/lerchapter')
                 .then(function (resp) {    
@@ -333,7 +329,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
             axios.get('/api/countries')
@@ -342,7 +337,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
             if(this.residue_edit){
@@ -396,7 +390,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error chapter :" + resp);
                         });
 
                         
@@ -409,7 +402,6 @@
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Error chapter :" + resp);
                     });
 
                     
@@ -419,7 +411,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error unit :" + resp);
                         });
   
 
@@ -431,7 +422,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error chapter :" + resp);
                         });
 
 
@@ -445,7 +435,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error establisgment :" + resp);
                         }); 
                     }       
 
@@ -458,7 +447,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error process :" + resp);
                         }); 
                     }
 
@@ -471,7 +459,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error gestion :" + resp);
                         });
                     }
 
@@ -485,7 +472,6 @@
                         })
                         .catch(function (resp) {
                             console.log(resp);
-                            alert("Error carrier :" + resp);
                         });
                     }                    
         
@@ -505,7 +491,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -524,7 +509,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -535,7 +519,6 @@
         },
 
         selectCompany(){
-            // alert(JSON.stringify(this.$store.getters.receiver));
 
             this.company_id = this.$store.getters.receiver.id
             this.receiver_name= this.$store.getters.receiver.rut +'-'+ this.$store.getters.receiver.digit +' | '+ this.$store.getters.receiver.name;
@@ -545,7 +528,6 @@
 
         changeCompany(company_selected){
 
-            // alert('receiver');
             var app = this;
             this.company_selected = company_selected;
             this.company_id = company_selected.id;
@@ -555,12 +537,10 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
         changeEstablishment(establishment_selected){
-            //alert(JSON.stringify(establishment_selected));
             this.establishment_name = establishment_selected.name;
             this.establishment_id = establishment_selected.id;
             this.establishment_selected = establishment_selected;

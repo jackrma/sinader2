@@ -245,7 +245,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error unit :" + resp);
                 });
 
             axios.get('/api/managetype')
@@ -254,7 +253,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ManageType :" + resp);
                 });
 
             axios.get('/api/processtype')
@@ -263,17 +261,14 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error ProcessType :" + resp);
                 });
 
             axios.get('/api/recolectiontype')
                 .then(function (resp) {    
                     app.recolection_types = resp.data;
-                    alert(JSON.stringify(resp.data));
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error RecolectionType :" + resp);
                 });
             axios.get('/api/lerchapter')
                 .then(function (resp) {    
@@ -281,7 +276,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
 
         },
@@ -296,7 +290,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -309,7 +302,6 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Error chapter :" + resp);
                 });
         },
 
@@ -375,7 +367,6 @@
 
                 this.$store.commit('changeResidue', this.residue);
 
-               // alert(JSON.stringify(this.$store.getters.residue));
 
                 EventBus.$emit('saveResidues', 'someValue'); 
                 this.dialog = false;
