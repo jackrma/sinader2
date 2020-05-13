@@ -42,7 +42,7 @@ export default new Vuex.Store(
 		   	state.company = company;
 		},
 		changeResidue(state, residue) {
-		   	state.residue = residue;
+		   	state.residue= residue;
 		},
 		changeCarrier(state, carrier) {
 		   	state.carrier = carrier;

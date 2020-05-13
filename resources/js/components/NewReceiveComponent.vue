@@ -349,9 +349,13 @@
 
         searchSii(){
 
+            alert('Validación SII, pendiente, presione nuevamente para simular')
+
             var app = this;
             axios.get('/api/company/search_sii/'+this.rut)
                 .then(function (resp) {    
+
+
                     app.generator = resp.data;
 
                     app.company        = app.generator.company_name;

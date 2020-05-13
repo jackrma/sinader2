@@ -26,7 +26,7 @@ Route::middleware('client')->group(function () {
 
 	Route::post('/actualizar_empresa','CompanyController@update'); 
 	Route::post('/actualizar_establecimiento','EstablishmentController@update');
-	Route::post('/actualizar_usuario','UserController@update');
+	Route::post('/actualizar_usuario','UserControllerwaste@update');
 });
 
 Route::middleware('auth:api')->group(function () {

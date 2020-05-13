@@ -23,7 +23,7 @@
           <v-toolbar-title>Agregar Destinatario de Trazabilidad</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-              <v-switch class='py-4' v-model="checkbox"  label="Residuo exportado ?"> </v-switch>
+              <v-switch class='py-4' v-model="checkbox"  label="¿ Residuo exportado ?"> </v-switch>
           </v-toolbar-items>
           <v-spacer></v-spacer>
         </v-toolbar>

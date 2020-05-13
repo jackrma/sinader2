@@ -73,7 +73,18 @@
         name:'',
         plate:'',
         }
-      }
+      },
+
+    created () {
+        this.initialize();
+    },
+
+    methods: {
+        initialize(){
+            alert('Validación SII, pendiente')
+        }
     }
+  }
+
   
 </script>

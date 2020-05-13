@@ -2340,7 +2340,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
       app.refreshList();
     });
     _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('excelUpload', function () {
@@ -2480,19 +2480,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     refreshList: function refreshList() {
       // alert(JSON.stringify(this.$store.getters.residue));
+      // 
       if (this.$store.getters.indexedit == -1) {
-        //alert("es nuevo");
+        alert("es nuevo");
         this.residues.push(this.$store.getters.residue);
       } else {
-        //alert("es existente");
+        alert("es existente");
         this.residues.splice(this.$store.getters.editindex, 1);
         this.residues.push(this.$store.getters.residue);
         this.$store.commit('changeIndexedit', -1);
       }
     },
     refreshExcel: function refreshExcel() {
-      alert(JSON.stringify(this.$store.getters.wastedetail)); //alert(typeof this.$store.getters.wastedetail);
-
+      // alert(JSON.stringify(this.$store.getters.wastedetail));
+      //alert(typeof this.$store.getters.wastedetail);
       if (this.residues) {
         this.residues = [];
       }
@@ -3022,6 +3023,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     searchSii: function searchSii() {
+      alert('Validación SII, pendiente, presione nuevamente para simular');
       var app = this;
       axios.get('/api/company/search_sii/' + this.rut).then(function (resp) {
         app.generator = resp.data;
@@ -3890,6 +3892,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3913,7 +3916,7 @@ __webpack_require__.r(__webpack_exports__);
       dialog: true,
       cantidad: '',
       establishment: '',
-      unidad: '',
+      unidad: 'Toneladas',
       destiny: '',
       residue: '',
       residue_name: '',
@@ -3965,6 +3968,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {
+      // alert('initialize');
+      // alert(JSON.stringify(this.$store.getters.residue));
       var app = this;
       axios.get('/api/unit').then(function (resp) {
         app.units = resp.data;
@@ -4023,7 +4028,7 @@ __webpack_require__.r(__webpack_exports__);
       this.residue_id = this.residue_edit.waste_id;
       this.process_id = this.residue_edit.process_id;
       this.gestion_id = this.residue_edit.manage_id;
-      this.unit_id = this.residue_edit.unit_id;
+      this.unit_id = 2;
       var app = this;
       app.subcapitulo = app.residue_edit.subchapter;
       axios.get('/api/lersubchapter/' + this.chapter_id).then(function (resp) {
@@ -4196,13 +4201,14 @@ __webpack_require__.r(__webpack_exports__);
           waste_id: this.residue_id,
           chapter_id: this.chapter_id,
           subchapter_id: this.subchapter_id,
-          unit_id: this.unit_id,
+          unit_id: 2,
           carrier_id: this.carrier_id,
           carrier_name: this.carriername,
           trasnport_date: this.carrier_date,
           plate: this.vehicleplate
         };
-        this.$store.commit('changeResidue', this.residue);
+        this.$store.commit('changeResidue', this.residue); // alert(JSON.stringify(this.$store.getters.residue));
+
         this.dialog = false;
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
       }
@@ -5003,6 +5009,14 @@ __webpack_require__.r(__webpack_exports__);
       name: '',
       plate: ''
     };
+  },
+  created: function created() {
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {
+      alert('Validación SII, pendiente');
+    }
   }
 });
 
@@ -13151,7 +13165,7 @@ var render = function() {
                     [
                       _c("v-switch", {
                         staticClass: "py-4",
-                        attrs: { label: "Residuo exportado ?" },
+                        attrs: { label: "¿ Residuo exportado ?" },
                         model: {
                           value: _vm.checkbox,
                           callback: function($$v) {
@@ -13484,6 +13498,7 @@ var render = function() {
                                   label: "Unidad de Medida",
                                   "item-text": "name",
                                   rules: _vm.generalRule,
+                                  readonly: "",
                                   "return-object": ""
                                 },
                                 on: { change: _vm.changeUnit },
@@ -14066,7 +14081,7 @@ var render = function() {
                     [
                       _c("v-switch", {
                         staticClass: "py-4",
-                        attrs: { label: "Residuo exportado ?" },
+                        attrs: { label: "¿ Residuo exportado ?" },
                         model: {
                           value: _vm.checkbox,
                           callback: function($$v) {
@@ -64615,8 +64630,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/osvaldo/sinader/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/osvaldo/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbook/sinader/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbook/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

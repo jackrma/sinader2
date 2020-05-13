@@ -315,7 +315,7 @@
         this.initialize();
         var app = this;
 
-        EventBus.$once('saveResidues', function(){   
+        EventBus.$on('saveResidues', function(){   
             app.refreshList();
         });
 
@@ -472,13 +472,13 @@
         },
 
         refreshList(){
-           // alert(JSON.stringify(this.$store.getters.residue));
-
+            // alert(JSON.stringify(this.$store.getters.residue));
+// 
             if(this.$store.getters.indexedit == -1){
-                //alert("es nuevo");
+                alert("es nuevo");
                 this.residues.push(this.$store.getters.residue);
             } else {
-                //alert("es existente");
+                alert("es existente");
                 this.residues.splice(this.$store.getters.editindex, 1);
                 this.residues.push(this.$store.getters.residue);
                 this.$store.commit('changeIndexedit', -1);
@@ -488,7 +488,7 @@
         refreshExcel(){
 
 
-            alert(JSON.stringify(this.$store.getters.wastedetail));
+            // alert(JSON.stringify(this.$store.getters.wastedetail));
 
             //alert(typeof this.$store.getters.wastedetail);
             if (this.residues){

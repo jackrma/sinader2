@@ -24,7 +24,7 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
 
-              <v-switch class='py-4' v-model="checkbox"  label="Residuo exportado ?"> </v-switch>
+              <v-switch class='py-4' v-model="checkbox"  label="¿ Residuo exportado ?"> </v-switch>
 
           </v-toolbar-items>
           <v-spacer></v-spacer>
@@ -160,6 +160,7 @@
                                 item-text="name" 
                                 :rules = "generalRule"
                                 v-on:change="changeUnit"
+                                readonly
                                 return-object
                             ></v-select> 
                         </v-flex>
@@ -227,7 +228,7 @@
 
         cantidad:'',
         establishment:'',
-        unidad:'',
+        unidad:'Toneladas',
         destiny:'',
         residue:'',
         residue_name:'',
@@ -277,6 +278,9 @@
     },
     created(){
         var app = this;
+
+        
+
         this.initialize();
         EventBus.$once('saveCarrier', function(){  
             app.refreshCarrier();
@@ -289,7 +293,11 @@
     methods: {
         initialize(){
 
+           
+            // alert('initialize');
 
+            // alert(JSON.stringify(this.$store.getters.residue));
+            
 
             var app = this;
             axios.get('/api/unit')
@@ -349,6 +357,8 @@
 
                     //alert(JSON.stringify(this.residue_edit));
 
+
+
                     this.cantidad    = this.residue_edit.quantity;
                      
                     this.empresa     = this.residue_edit.empresa;
@@ -376,7 +386,7 @@
                     this.residue_id   = this.residue_edit.waste_id;
                     this.process_id   = this.residue_edit.process_id;
                     this.gestion_id   = this.residue_edit.manage_id;
-                    this.unit_id      = this.residue_edit.unit_id;
+                    this.unit_id      = 2;
 
 
                     
@@ -628,7 +638,7 @@
                     chapter_id: this.chapter_id,
                     subchapter_id: this.subchapter_id,
 
-                    unit_id: this.unit_id,
+                    unit_id: 2,
                     carrier_id: this.carrier_id,
                     carrier_name:this.carriername,
                     trasnport_date:this.carrier_date,
@@ -637,7 +647,11 @@
 
                 };
 
+
+
                 this.$store.commit('changeResidue', this.residue);
+
+                // alert(JSON.stringify(this.$store.getters.residue));
 
                 this.dialog = false;
 

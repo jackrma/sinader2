@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class LerWasteController extends Controller
 {
 
-	public function data($lerwaste_id){
-		$lerWaste = LerWaste::where('waste_id', $lerwaste_id)->get();
+	public function data($subchapter_id){
+		$lerWaste = LerWaste::where('subchapter_id', $subchapter_id)->get();
 		return response()->json($lerWaste);
 	}
 
