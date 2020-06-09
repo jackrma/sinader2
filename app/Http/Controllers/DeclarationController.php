@@ -306,7 +306,6 @@ class DeclarationController extends Controller
         $company = Company::where('id',$establishment->company_id)->get()->first();
 
 
-
         $declaration = $request->Input('declaration');
 
 
@@ -316,17 +315,20 @@ class DeclarationController extends Controller
             $declarationNew = new Declaration();
         }
         
+
+      
+
         $declarationNew->correlative    = $declaration['correlative'];       
         $declarationNew->correlative_dv = $declaration['correlative_dv']; 
         $declarationNew->type           = $declaration['type'];
         $declarationNew->period         = $declaration['period'];
 
-        $declaration->rut            = $company->rut . '-' . $company->dv;
-        $declaration->company        = $company->name;
-        $declaration->establishment  = $establishment->name;
-        $declaration->direccion      = $establishment->street . ' ' . $establishment->number;
-        $declaration->comuna         = $establishment->commune->name;
-        $declaration->region         = $establishment->region->name;
+        $declarationNew->rut            = $company->rut . '-' . $company->dv;
+        $declarationNew->company        = $company->name;
+        $declarationNew->establishment  = $establishment->name;
+        $declarationNew->direccion      = $establishment->street . ' ' . $establishment->number;
+        $declarationNew->comuna         = $establishment->commune->name;
+        $declarationNew->region         = $establishment->region->name;
 
         $declarationNew->status            = 'SINMOVIMIENTO';
         $declarationNew->establishment_id  = $user_establishment->establishment_id;

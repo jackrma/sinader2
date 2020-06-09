@@ -66,7 +66,7 @@
                         <v-icon>edit</v-icon>
                     </v-btn>
                 </td>
-                <td v-if="props.item.status=='CREADA'" >    
+                <td v-if="props.item.status=='CREADA' || props.item.status=='SINMOVIMIENTO' " >    
                      <v-btn icon  @click="toDelete(props.item)" color="white" >
                          <v-icon>delete</v-icon>
                      </v-btn>
@@ -90,7 +90,7 @@
 
   import { mapState } from 'vuex';  
   import Vue from 'vue';  
-  import { EventBus } from './../eventbus.js';
+  import { EventBus2 } from './../eventbus2.js';
 
  
   import DeclarationComponent  from './../components/DeclarationComponent';
@@ -120,11 +120,12 @@
     
 
     created () {
-        this.initialize();
         var app = this;
-        EventBus.$once('saveDeclaration', function(){   
+        EventBus2.$on('saveDeclaration', function(){   
             app.getdecalrations();
         });
+
+        this.initialize();
     },
     
     methods: {

@@ -2032,9 +2032,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
-/* harmony import */ var _components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewResidueIndComponent */ "./resources/js/components/NewResidueIndComponent.vue");
-/* harmony import */ var _components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/NewResidueMunComponent */ "./resources/js/components/NewResidueMunComponent.vue");
-/* harmony import */ var _components_UploadComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/UploadComponent */ "./resources/js/components/UploadComponent.vue");
+/* harmony import */ var _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../eventbus2.js */ "./resources/js/eventbus2.js");
+/* harmony import */ var _components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/NewResidueIndComponent */ "./resources/js/components/NewResidueIndComponent.vue");
+/* harmony import */ var _components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/NewResidueMunComponent */ "./resources/js/components/NewResidueMunComponent.vue");
+/* harmony import */ var _components_UploadComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../components/UploadComponent */ "./resources/js/components/UploadComponent.vue");
 //
 //
 //
@@ -2287,6 +2288,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2376,6 +2378,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createdeclaration: function createdeclaration() {
+      var app = this;
       var declaration = {
         correlative: this.declaration.correlative,
         correlative_dv: this.declaration.correlative_dv,
@@ -2395,17 +2398,18 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/api/declaration/store', {
           declaration: declaration
         }).then(function (resp) {
-          _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDeclaration', 'someValue');
+          _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__["EventBus2"].$emit('saveDeclaration', 'someValue');
+          app.dialog = false;
+          _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
         })["catch"](function (resp) {
           console.log(resp);
         });
-        this.dialog = false;
-        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
       } else {
         alert('No se han ingresado residuos');
       }
     },
     sinMovimiento: function sinMovimiento() {
+      var app = this;
       var declaration = {
         correlative: this.declaration.correlative,
         correlative_dv: this.declaration.correlative_dv,
@@ -2422,18 +2426,18 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/declaration/sinmovimiento', {
         declaration: declaration
       }).then(function (resp) {
-        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveDeclaration', 'someValue');
+        _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__["EventBus2"].$emit('saveDeclaration', 'someValue');
+        app.dialog = false;
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
       })["catch"](function (resp) {
         console.log(resp);
         alert("Error  :" + resp);
       });
-      this.dialog = false;
-      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
     },
     toNewResidue: function toNewResidue() {
       //alert(this.$store.getters.type);
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2443,7 +2447,7 @@ __webpack_require__.r(__webpack_exports__);
         instance.$mount();
         this.$refs.container.replaceChild(instance.$el);
       } else {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2460,7 +2464,7 @@ __webpack_require__.r(__webpack_exports__);
       alert('va:' + index);
 
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2470,7 +2474,7 @@ __webpack_require__.r(__webpack_exports__);
         instance.$mount();
         this.$refs.container.replaceChild(instance.$el);
       } else {
-        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+        var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueMunComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
         var instance = new ComponentReserv({
           store: this.$store,
           propsData: {
@@ -2513,7 +2517,7 @@ __webpack_require__.r(__webpack_exports__);
       this.residues.pop(item);
     },
     toUpload: function toUpload() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_UploadComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_UploadComponent__WEBPACK_IMPORTED_MODULE_6__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -2531,7 +2535,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     close: function close() {
-      dialog = false;
+      this.dialog = false;
       _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
     }
   }
@@ -3698,6 +3702,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
 /* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
 /* harmony import */ var _components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/SearchCompanyComponent */ "./resources/js/components/SearchCompanyComponent.vue");
+//
+//
+//
 //
 //
 //
@@ -6440,7 +6447,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _eventbus2_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus2.js */ "./resources/js/eventbus2.js");
 /* harmony import */ var _components_DeclarationComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/DeclarationComponent */ "./resources/js/components/DeclarationComponent.vue");
 //
 //
@@ -6566,11 +6573,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveDeclaration', function () {
+    _eventbus2_js__WEBPACK_IMPORTED_MODULE_2__["EventBus2"].$on('saveDeclaration', function () {
       app.getdecalrations();
     });
+    this.initialize();
   },
   methods: {
     initialize: function initialize() {
@@ -13190,7 +13197,7 @@ var render = function() {
                 [
                   _c(
                     "v-form",
-                    { ref: "form", attrs: { "lazy-validation": "" } },
+                    { ref: "form_ler", attrs: { "lazy-validation": "" } },
                     [
                       _c(
                         "v-layout",
@@ -13271,8 +13278,15 @@ var render = function() {
                           )
                         ],
                         1
-                      ),
-                      _vm._v(" "),
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-form",
+                    { ref: "form_exportado", attrs: { "lazy-validation": "" } },
+                    [
                       _vm.checkbox
                         ? _c(
                             "v-layout",
@@ -13357,8 +13371,18 @@ var render = function() {
                             ],
                             1
                           )
-                        : _vm._e(),
-                      _vm._v(" "),
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-form",
+                    {
+                      ref: "form_destinatario",
+                      attrs: { "lazy-validation": "" }
+                    },
+                    [
                       !_vm.checkbox
                         ? _c(
                             "v-layout",
@@ -16696,7 +16720,8 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            props.item.status == "CREADA"
+                            props.item.status == "CREADA" ||
+                            props.item.status == "SINMOVIMIENTO"
                               ? _c(
                                   "td",
                                   [
@@ -63284,6 +63309,23 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); // Ejemplo de u
 //         app.initialize();
 //     });
 //     EventBus.$emit('refreshDeclaration', 'someValue');
+
+/***/ }),
+
+/***/ "./resources/js/eventbus2.js":
+/*!***********************************!*\
+  !*** ./resources/js/eventbus2.js ***!
+  \***********************************/
+/*! exports provided: EventBus2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus2", function() { return EventBus2; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus2 = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 
 /***/ }),
 

@@ -258,6 +258,7 @@
   import { mapState } from 'vuex'; 
   
   import { EventBus } from './../eventbus.js';
+  import { EventBus2 } from './../eventbus2.js';
 
  
   import NewResidueIndComponent  from './../components/NewResidueIndComponent';
@@ -362,6 +363,7 @@
         },  
 
         createdeclaration(){
+            var app = this;
 
             var declaration = {
                 correlative: this.declaration.correlative,
@@ -381,13 +383,14 @@
             if(this.residues.length>0){
                 axios.post('/api/declaration/store', {declaration: declaration})
                     .then(function (resp) {    
-                        EventBus.$emit('saveDeclaration', 'someValue');
+                        EventBus2.$emit('saveDeclaration', 'someValue');
+                        app.dialog = false;
+                        EventBus.$off();
                     })
                     .catch(function (resp) {
                         console.log(resp);
                     });
-                this.dialog = false;
-                EventBus.$off();
+
             } else {
                 alert('No se han ingresado residuos');
             }
@@ -395,6 +398,8 @@
         },
 
         sinMovimiento(){
+
+            var app = this;
 
             var declaration = {
                 correlative: this.declaration.correlative,
@@ -413,14 +418,16 @@
 
             axios.post('/api/declaration/sinmovimiento', {declaration: declaration})
                 .then(function (resp) {    
-                    EventBus.$emit('saveDeclaration', 'someValue');
+                    EventBus2.$emit('saveDeclaration', 'someValue');
+                    app.dialog = false;
+                    EventBus.$off();
+
                 })
                 .catch(function (resp) {
                     console.log(resp);
                     alert("Error  :" + resp);                
                 });
-            this.dialog = false;
-            EventBus.$off();
+
 
         },
 
@@ -537,7 +544,7 @@
         },
 
         close (){
-            dialog = false
+            this.dialog = false;
             EventBus.$off();
         }
 

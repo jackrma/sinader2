@@ -30,7 +30,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-card-text>
-            <v-form ref="form"  lazy-validation>
+            <v-form ref="form_ler"  lazy-validation>
 
                     <v-layout>
                         <v-flex  xs4 class="px-1">
@@ -72,6 +72,8 @@
                         </v-flex>
                         
                     </v-layout>
+            </v-form>    
+            <v-form ref="form_exportado"  lazy-validation>    
                     <v-layout v-if="checkbox">
                         <v-flex xs3 class="px-1">
                             <!-- <v-text-field v-model="pais" label="País"></v-text-field> -->
@@ -102,7 +104,8 @@
 
                     </v-layout>
 
-
+            </v-form>
+            <v-form ref="form_destinatario"  lazy-validation>        
                     <v-layout v-if="! checkbox">
                         <v-flex  xs3 class="px-1">
 
