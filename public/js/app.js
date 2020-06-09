@@ -2349,7 +2349,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initialize: function initialize() {
-      this.$store.commit('changeIndexedit', -1);
+      // this.$store.commit('changeIndexedit', -1);
       this.company = this.$store.getters.company.name;
       this.rut = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
       this.establishment = this.$store.getters.establishment.name;
@@ -2400,6 +2400,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(resp);
         });
         this.dialog = false;
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
       } else {
         alert('No se han ingresado residuos');
       }
@@ -2427,6 +2428,7 @@ __webpack_require__.r(__webpack_exports__);
         alert("Error  :" + resp);
       });
       this.dialog = false;
+      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
     },
     toNewResidue: function toNewResidue() {
       //alert(this.$store.getters.type);
@@ -2452,9 +2454,10 @@ __webpack_require__.r(__webpack_exports__);
         this.$refs.container.replaceChild(instance.$el);
       }
     },
-    edit_item: function edit_item(item) {
+    edit_item: function edit_item(item, index) {
       //alert(JSON.stringify(item));
-      this.residues.pop(item); // this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+      this.$store.commit('changeIndexedit', index);
+      alert('va:' + index);
 
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
@@ -2481,14 +2484,14 @@ __webpack_require__.r(__webpack_exports__);
     refreshList: function refreshList() {
       // alert(JSON.stringify(this.$store.getters.residue));
       // 
-      // if(this.$store.getters.indexedit == -1){
-      //     alert("es nuevo");
-      this.residues.push(this.$store.getters.residue); // } else {
-      //     alert("es existente");
-      //     this.residues.splice(this.$store.getters.editindex, 1);
-      //     this.residues.push(this.$store.getters.residue);
-      //     this.$store.commit('changeIndexedit', -1);
-      // }
+      alert('llega:' + this.$store.getters.indexedit);
+
+      if (this.$store.getters.indexedit == -1) {
+        this.residues.push(this.$store.getters.residue);
+      } else {
+        this.residues.splice(this.$store.getters.indexedit, 1, this.$store.getters.residue);
+        this.$store.commit('changeIndexedit', -1);
+      }
     },
     refreshExcel: function refreshExcel() {
       // alert(JSON.stringify(this.$store.getters.wastedetail));
@@ -2526,6 +2529,10 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (resp) {
         console.log(resp);
       });
+    },
+    close: function close() {
+      dialog = false;
+      _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
     }
   }
 });
@@ -10952,14 +10959,7 @@ var render = function() {
                 [
                   _c(
                     "v-btn",
-                    {
-                      attrs: { icon: "", dark: "" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
+                    { attrs: { icon: "", dark: "" }, on: { click: _vm.close } },
                     [_c("v-icon", [_vm._v("close")])],
                     1
                   ),
@@ -11592,7 +11592,10 @@ var render = function() {
                                       attrs: { icon: "" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.edit_item(props.item)
+                                          return _vm.edit_item(
+                                            props.item,
+                                            props.index
+                                          )
                                         }
                                       }
                                     },
@@ -11622,7 +11625,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      3893474433
+                      265068723
                     )
                   })
                 : _vm._e(),
@@ -13145,7 +13148,11 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { icon: "", dark: "" },
-                      on: { click: _vm.saveResidue }
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
                     },
                     [_c("v-icon", [_vm._v("close")])],
                     1

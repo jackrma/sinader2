@@ -4,7 +4,7 @@
 
       <v-card>
         <v-toolbar dark color="main_green">
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click="close">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Nueva Declaración</v-toolbar-title>
@@ -204,7 +204,7 @@
 
             <td  class="justify-center layout px-0">
 
-                <v-btn icon  @click="edit_item(props.item)" >
+                <v-btn icon  @click="edit_item(props.item, props.index)" >
                     <v-icon>edit</v-icon>
                 </v-btn>
 
@@ -326,7 +326,7 @@
 
     methods: {
         initialize(){
-            this.$store.commit('changeIndexedit', -1);
+            // this.$store.commit('changeIndexedit', -1);
 
             this.company        = this.$store.getters.company.name;
             this.rut            = this.$store.getters.company.rut + '-' + this.$store.getters.company.digit;
@@ -387,6 +387,7 @@
                         console.log(resp);
                     });
                 this.dialog = false;
+                EventBus.$off();
             } else {
                 alert('No se han ingresado residuos');
             }
@@ -419,7 +420,7 @@
                     alert("Error  :" + resp);                
                 });
             this.dialog = false;
-
+            EventBus.$off();
 
         },
 
@@ -447,12 +448,12 @@
         },
 
 
-        edit_item(item){
+        edit_item(item, index){
 
             //alert(JSON.stringify(item));
-            this.residues.pop(item);
 
-            // this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+            this.$store.commit('changeIndexedit', index);    
+            alert('va:' + index);        
 
             if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal' ) {
                 var ComponentReserv = Vue.extend(NewResidueIndComponent)
@@ -475,15 +476,15 @@
         refreshList(){
             // alert(JSON.stringify(this.$store.getters.residue));
 // 
-            // if(this.$store.getters.indexedit == -1){
-            //     alert("es nuevo");
+            alert('llega:' + this.$store.getters.indexedit);
+
+            if(this.$store.getters.indexedit == -1){
                 this.residues.push(this.$store.getters.residue);
-            // } else {
-            //     alert("es existente");
-            //     this.residues.splice(this.$store.getters.editindex, 1);
-            //     this.residues.push(this.$store.getters.residue);
-            //     this.$store.commit('changeIndexedit', -1);
-            // }
+            } else {
+
+                this.residues.splice(this.$store.getters.indexedit, 1, this.$store.getters.residue);
+                this.$store.commit('changeIndexedit', -1);
+            }
         },  
 
         refreshExcel(){
@@ -533,6 +534,11 @@
                 .catch(function (resp) {
                     console.log(resp);
                 });
+        },
+
+        close (){
+            dialog = false
+            EventBus.$off();
         }
 
     }
