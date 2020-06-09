@@ -17,7 +17,7 @@
 
       <v-card>
         <v-toolbar dark color="main_green">
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click="saveResidue">
             <v-icon>close</v-icon>
           </v-btn>
           <v-toolbar-title>Agregar Residuo</v-toolbar-title>

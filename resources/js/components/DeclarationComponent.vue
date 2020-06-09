@@ -450,8 +450,9 @@
         edit_item(item){
 
             //alert(JSON.stringify(item));
+            this.residues.pop(item);
 
-            this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+            // this.$store.commit('changeIndexedit', this.residues.indexOf(item));
 
             if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal' ) {
                 var ComponentReserv = Vue.extend(NewResidueIndComponent)
@@ -474,15 +475,15 @@
         refreshList(){
             // alert(JSON.stringify(this.$store.getters.residue));
 // 
-            if(this.$store.getters.indexedit == -1){
-                alert("es nuevo");
+            // if(this.$store.getters.indexedit == -1){
+            //     alert("es nuevo");
                 this.residues.push(this.$store.getters.residue);
-            } else {
-                alert("es existente");
-                this.residues.splice(this.$store.getters.editindex, 1);
-                this.residues.push(this.$store.getters.residue);
-                this.$store.commit('changeIndexedit', -1);
-            }
+            // } else {
+            //     alert("es existente");
+            //     this.residues.splice(this.$store.getters.editindex, 1);
+            //     this.residues.push(this.$store.getters.residue);
+            //     this.$store.commit('changeIndexedit', -1);
+            // }
         },  
 
         refreshExcel(){

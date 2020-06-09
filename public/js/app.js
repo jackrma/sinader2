@@ -2454,7 +2454,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     edit_item: function edit_item(item) {
       //alert(JSON.stringify(item));
-      this.$store.commit('changeIndexedit', this.residues.indexOf(item));
+      this.residues.pop(item); // this.$store.commit('changeIndexedit', this.residues.indexOf(item));
 
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
@@ -2481,15 +2481,14 @@ __webpack_require__.r(__webpack_exports__);
     refreshList: function refreshList() {
       // alert(JSON.stringify(this.$store.getters.residue));
       // 
-      if (this.$store.getters.indexedit == -1) {
-        alert("es nuevo");
-        this.residues.push(this.$store.getters.residue);
-      } else {
-        alert("es existente");
-        this.residues.splice(this.$store.getters.editindex, 1);
-        this.residues.push(this.$store.getters.residue);
-        this.$store.commit('changeIndexedit', -1);
-      }
+      // if(this.$store.getters.indexedit == -1){
+      //     alert("es nuevo");
+      this.residues.push(this.$store.getters.residue); // } else {
+      //     alert("es existente");
+      //     this.residues.splice(this.$store.getters.editindex, 1);
+      //     this.residues.push(this.$store.getters.residue);
+      //     this.$store.commit('changeIndexedit', -1);
+      // }
     },
     refreshExcel: function refreshExcel() {
       // alert(JSON.stringify(this.$store.getters.wastedetail));
@@ -13146,11 +13145,7 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { icon: "", dark: "" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
+                      on: { click: _vm.saveResidue }
                     },
                     [_c("v-icon", [_vm._v("close")])],
                     1
