@@ -99,7 +99,7 @@
                         </v-flex>
 
                         <v-flex xs3 class="px-1">
-                            <v-text-field v-model="email" label="Email"></v-text-field>
+                            <v-text-field v-model="email" :rules = 'emailRule' label="Email"></v-text-field>
                         </v-flex>
 
                     </v-layout>
@@ -221,8 +221,8 @@
       return {
 
         generalRule: [v => !!v || 'Campo requerido'],
-
         numberRule: [v => v && /^\d+(\.\d+)?$/.test(v) || 'Debe ser numérico'],
+        emailRule: [(v) => !!v || "Campo requerido", (v) => /.+@.+\..+/.test(v) || "El E-mail debe ser valido"],
 
         receiver_name:'',
 
@@ -358,9 +358,7 @@
 
         setEdit(){
 
-                    //alert(JSON.stringify(this.residue_edit));
-
-
+                    //alert(JSON.stringify(this.residue_edit))
 
                     this.cantidad    = this.residue_edit.quantity;
                      
@@ -368,6 +366,7 @@
                     this.contacto    = this.residue_edit.contacto;
                     this.email       = this.residue_edit.email;
                     this.pais        = this.residue_edit.pais;
+                    this.country     = this.residue_edit.pais;
 
                     this.capitulo    = this.residue_edit.chapter;
                     
@@ -391,6 +390,12 @@
                     this.gestion_id   = this.residue_edit.manage_id;
                     this.unit_id      = 2;
 
+
+                     // alert(JSON.stringify(this.residue_edit));
+
+                    if(this.residue_edit.establishment=='Exportado'){
+                        this.checkbox=true;
+                    }
 
                     
 
@@ -604,14 +609,29 @@
 
         saveResidue(){
 
+            var okSave = false;
+            if(this.checkbox){
 
-            if (this.$refs.form.validate()){
+                if(this.$refs.form_ler.validate() && this.$refs.form_exportado.validate()){
+                    okSave = true;
+                }
+             } else {
+                if(this.$refs.form_ler.validate() && this.$refs.form_destinatario.validate()){
+                    okSave = true;
+                }                
+             }
+
+            if (okSave){
 
                 var company_name = this.receiver_name;
+                var processing_name = this.processing_name;
+                var gestion_name = this.gestion_name;
 
                 if(this.checkbox){
-                    establishment_name = '';
+                    this.establishment_name = 'Exportado';
                     company_name = this.country_selected.name + ' | ' + this.empresa;
+                    processing_name = 'Exportado';
+                    gestion_name = 'Exportado';
                 }        
 
 
@@ -624,8 +644,8 @@
                     establishment: this.establishment_name,
 
                     
-                    processing: this.processing_name,
-                    gestion: this.gestion_name,
+                    processing: processing_name,
+                    gestion: gestion_name,
                     pais: this.pais,
                     empresa: this.empresa,
                     contacto: this.contacto,

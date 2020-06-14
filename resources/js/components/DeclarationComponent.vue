@@ -460,7 +460,7 @@
             //alert(JSON.stringify(item));
 
             this.$store.commit('changeIndexedit', index);    
-            alert('va:' + index);        
+            // alert('va:' + index);        
 
             if(this.$store.getters.type=='GeneradorIndustrial' || this.$store.getters.type=='CentroAcopio' || this.$store.getters.type=='DestinatarioFinal' ) {
                 var ComponentReserv = Vue.extend(NewResidueIndComponent)
@@ -483,7 +483,7 @@
         refreshList(){
             // alert(JSON.stringify(this.$store.getters.residue));
 // 
-            alert('llega:' + this.$store.getters.indexedit);
+            // alert('llega:' + this.$store.getters.indexedit);
 
             if(this.$store.getters.indexedit == -1){
                 this.residues.push(this.$store.getters.residue);

@@ -2460,8 +2460,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     edit_item: function edit_item(item, index) {
       //alert(JSON.stringify(item));
-      this.$store.commit('changeIndexedit', index);
-      alert('va:' + index);
+      this.$store.commit('changeIndexedit', index); // alert('va:' + index);        
 
       if (this.$store.getters.type == 'GeneradorIndustrial' || this.$store.getters.type == 'CentroAcopio' || this.$store.getters.type == 'DestinatarioFinal') {
         var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewResidueIndComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
@@ -2488,8 +2487,7 @@ __webpack_require__.r(__webpack_exports__);
     refreshList: function refreshList() {
       // alert(JSON.stringify(this.$store.getters.residue));
       // 
-      alert('llega:' + this.$store.getters.indexedit);
-
+      // alert('llega:' + this.$store.getters.indexedit);
       if (this.$store.getters.indexedit == -1) {
         this.residues.push(this.$store.getters.residue);
       } else {
@@ -3924,6 +3922,11 @@ __webpack_require__.r(__webpack_exports__);
       numberRule: [function (v) {
         return v && /^\d+(\.\d+)?$/.test(v) || 'Debe ser numérico';
       }],
+      emailRule: [function (v) {
+        return !!v || "Campo requerido";
+      }, function (v) {
+        return /.+@.+\..+/.test(v) || "El E-mail debe ser valido";
+      }],
       receiver_name: '',
       checkbox: false,
       dialog: true,
@@ -4021,12 +4024,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     setEdit: function setEdit() {
-      //alert(JSON.stringify(this.residue_edit));
+      //alert(JSON.stringify(this.residue_edit))
       this.cantidad = this.residue_edit.quantity;
       this.empresa = this.residue_edit.empresa;
       this.contacto = this.residue_edit.contacto;
       this.email = this.residue_edit.email;
       this.pais = this.residue_edit.pais;
+      this.country = this.residue_edit.pais;
       this.capitulo = this.residue_edit.chapter;
       this.chapter_id = this.residue_edit.chapter_id;
       this.chapter_name = this.residue_edit.chapter;
@@ -4041,7 +4045,12 @@ __webpack_require__.r(__webpack_exports__);
       this.residue_id = this.residue_edit.waste_id;
       this.process_id = this.residue_edit.process_id;
       this.gestion_id = this.residue_edit.manage_id;
-      this.unit_id = 2;
+      this.unit_id = 2; // alert(JSON.stringify(this.residue_edit));
+
+      if (this.residue_edit.establishment == 'Exportado') {
+        this.checkbox = true;
+      }
+
       var app = this;
       app.subcapitulo = app.residue_edit.subchapter;
       axios.get('/api/lersubchapter/' + this.chapter_id).then(function (resp) {
@@ -4185,12 +4194,28 @@ __webpack_require__.r(__webpack_exports__);
       this.checkbox = true; // }
     },
     saveResidue: function saveResidue() {
-      if (this.$refs.form.validate()) {
+      var okSave = false;
+
+      if (this.checkbox) {
+        if (this.$refs.form_ler.validate() && this.$refs.form_exportado.validate()) {
+          okSave = true;
+        }
+      } else {
+        if (this.$refs.form_ler.validate() && this.$refs.form_destinatario.validate()) {
+          okSave = true;
+        }
+      }
+
+      if (okSave) {
         var company_name = this.receiver_name;
+        var processing_name = this.processing_name;
+        var gestion_name = this.gestion_name;
 
         if (this.checkbox) {
-          establishment_name = '';
+          this.establishment_name = 'Exportado';
           company_name = this.country_selected.name + ' | ' + this.empresa;
+          processing_name = 'Exportado';
+          gestion_name = 'Exportado';
         }
 
         this.residue = {
@@ -4200,8 +4225,8 @@ __webpack_require__.r(__webpack_exports__);
           sum: this.cantidad + ' ' + this.unidad.name,
           company: company_name,
           establishment: this.establishment_name,
-          processing: this.processing_name,
-          gestion: this.gestion_name,
+          processing: processing_name,
+          gestion: gestion_name,
           pais: this.pais,
           empresa: this.empresa,
           contacto: this.contacto,
@@ -4273,6 +4298,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/TransportComponent */ "./resources/js/components/TransportComponent.vue");
+/* harmony import */ var _components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/SearchCompanyComponent */ "./resources/js/components/SearchCompanyComponent.vue");
 //
 //
 //
@@ -4453,46 +4480,91 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    residue_edit: Object
+  },
   data: function data() {
     return {
       generalRule: [function (v) {
         return !!v || 'Campo requerido';
       }],
       numberRule: [function (v) {
-        return !!v || 'Campo requerido';
-      }, function (v) {
-        return v && /^[0-9]+$/.test(v) || 'Debe ser valor numérico';
+        return v && /^\d+(\.\d+)?$/.test(v) || 'Debe ser numérico';
       }],
+      emailRule: [function (v) {
+        return !!v || "Campo requerido";
+      }, function (v) {
+        return /.+@.+\..+/.test(v) || "El E-mail debe ser valido";
+      }],
+      receiver_name: '',
       checkbox: false,
       dialog: true,
-      cantidad: 0,
-      unidad: '',
+      cantidad: '',
+      establishment: '',
+      unidad: 'Toneladas',
       destiny: '',
       residue: '',
-      residuetext: '',
+      residue_name: '',
       capitulos: '',
+      capitulo: '',
       subcapitulos: '',
+      subcapitulo: '',
       residues: '',
-      company_selected: 1,
-      establishment_selected: 1,
-      residue_selected: '',
-      process_selected: '',
-      gestion_selected: '',
-      unit_selected: '',
-      pais: '',
+      company_id: '',
+      establishment_id: '',
+      establishment_name: '',
+      residue_id: '',
+      process_id: '',
+      gestion_id: '',
+      unit_id: '',
+      country_selected: '',
+      chapter_id: '',
+      chapter_name: '',
+      subchapter_id: '',
+      subchapter_name: '',
+      pais: 'Chile',
       empresa: '',
       contacto: '',
       email: '',
-      destinatarios: ['92176000-0 | Gerdau Aza SA', '92176000-0 | Gerdau Aza SA'],
-      establishments: ['12345 | Gerdau Aza Colina', '12345 | Gerdau Aza Colina'],
-      recolection_type: '',
-      recolection_selected: '',
-      recolection_types: '',
+      carrier: '',
+      carriername: '',
+      vehicleplate: '',
+      carrier_date: '',
+      tipos_recoleccion: '',
+      companies: [],
+      countries: [],
+      establishments: [],
       procesing: '',
       processings: '',
       gestion: '',
@@ -4501,10 +4573,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    var app = this;
     this.initialize();
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveCarrier', function () {
+      app.refreshCarrier();
+    });
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('selectReceiver', function () {
+      app.selectCompany();
+    });
   },
   methods: {
     initialize: function initialize() {
+      // alert('initialize');
+      // alert(JSON.stringify(this.$store.getters.residue));
       var app = this;
       axios.get('/api/unit').then(function (resp) {
         app.units = resp.data;
@@ -4522,7 +4603,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
       axios.get('/api/recolectiontype').then(function (resp) {
-        app.recolection_types = resp.data;
+        app.tipos_recoleccion = resp.data;
       })["catch"](function (resp) {
         console.log(resp);
       });
@@ -4531,9 +4612,113 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (resp) {
         console.log(resp);
       });
+      axios.get('/api/countries').then(function (resp) {
+        app.countries = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+
+      if (this.residue_edit) {
+        //alert(JSON.stringify(this.residue_edit));
+        this.setEdit();
+      }
+    },
+    setEdit: function setEdit() {
+      //alert(JSON.stringify(this.residue_edit))
+      this.cantidad = this.residue_edit.quantity;
+      this.empresa = this.residue_edit.empresa;
+      this.contacto = this.residue_edit.contacto;
+      this.email = this.residue_edit.email;
+      this.pais = this.residue_edit.pais;
+      this.country = this.residue_edit.pais;
+      this.capitulo = this.residue_edit.chapter;
+      this.chapter_id = this.residue_edit.chapter_id;
+      this.chapter_name = this.residue_edit.chapter;
+      this.subchapter_id = this.residue_edit.subchapter_id;
+      this.subchapter_name = this.residue_edit.subchapter;
+      this.company_id = this.residue_edit.company_id;
+      this.receiver_name = this.residue_edit.company;
+      this.carrier_id = this.residue_edit.carrier_id;
+      this.carriername = this.residue_edit.carrier_name;
+      this.vehicleplate = this.residue_edit.plate;
+      this.carrier_date = this.residue_edit.trasnport_date;
+      this.residue_id = this.residue_edit.waste_id;
+      this.process_id = this.residue_edit.process_id;
+      this.gestion_id = this.residue_edit.manage_id;
+      this.unit_id = 2; // alert(JSON.stringify(this.residue_edit));
+
+      if (this.residue_edit.establishment == 'Exportado') {
+        this.checkbox = true;
+      }
+
+      var app = this;
+      app.subcapitulo = app.residue_edit.subchapter;
+      axios.get('/api/lersubchapter/' + this.chapter_id).then(function (resp) {
+        app.subcapitulos = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+      axios.get('/api/lerwaste/' + this.residue_edit.subchapter_id).then(function (resp) {
+        app.residues = resp.data;
+        app.residue_name = app.residue_edit.waste;
+        app.residue = app.residue_edit.waste;
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+      axios.get('/api/unit/forid/' + this.residue_edit.unit_id).then(function (resp) {
+        app.unidad = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+
+      if (this.residue_edit.establishment_id) {
+        axios.get('/api/establishments/' + this.company_id).then(function (resp) {
+          app.establishments = resp.data;
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+        axios.get('/api/establishment/forid/' + this.residue_edit.establishment_id).then(function (resp) {
+          app.establishment_selected = resp.data;
+          app.establishment = app.establishment_selected.name;
+          app.establishment_name = app.establishment_selected.name;
+          app.establishment_id = app.establishment_selected.id;
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      }
+
+      if (this.residue_edit.process_id) {
+        axios.get('/api/processtype/forid/' + this.residue_edit.process_id).then(function (resp) {
+          app.process_selected = resp.data;
+          app.procesing = app.process_selected.name;
+          app.processing_name = app.process_selected.name;
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      }
+
+      if (this.residue_edit.manage_id) {
+        axios.get('/api/managetype/forid/' + this.residue_edit.manage_id).then(function (resp) {
+          app.gestion_selected = resp.data;
+          app.gestion = app.gestion_selected.name;
+          app.gestion_name = app.gestion_selected.name;
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      }
+
+      if (this.residue_edit.carrier_id) {
+        axios.get('/api/carrier/forid/' + this.residue_edit.carrier_id).then(function (resp) {
+          app.carrier = resp.data;
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      }
     },
     changeChapter: function changeChapter(chapter_selected) {
       var app = this;
+      this.chapter_id = chapter_selected.id;
+      this.chapter_name = chapter_selected.name;
       axios.get('/api/lersubchapter/' + chapter_selected.id).then(function (resp) {
         app.subcapitulos = resp.data;
         app.residues = [];
@@ -4543,6 +4728,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeSupChapter: function changeSupChapter(subchapter_selected) {
       var app = this;
+      this.subchapter_id = subchapter_selected.id;
+      this.subchapter_name = subchapter_selected.name;
       axios.get('/api/lerwaste/' + subchapter_selected.id).then(function (resp) {
         app.residues = resp.data;
       })["catch"](function (resp) {
@@ -4550,57 +4737,148 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     changeResidue: function changeResidue(residue_selected) {
+      this.residue_name = residue_selected.name;
+      this.residue_id = residue_selected.id;
       this.residue_selected = residue_selected;
-      this.residuetext = residue_selected.waste_code + ' | ' + residue_selected.name;
+    },
+    selectCompany: function selectCompany() {
+      this.company_id = this.$store.getters.receiver.id;
+      this.receiver_name = this.$store.getters.receiver.rut + '-' + this.$store.getters.receiver.digit + ' | ' + this.$store.getters.receiver.name;
+      this.changeCompany(this.$store.getters.receiver);
     },
     changeCompany: function changeCompany(company_selected) {
+      var app = this;
       this.company_selected = company_selected;
+      this.company_id = company_selected.id;
+      axios.get('/api/establishments/' + this.company_selected.id).then(function (resp) {
+        app.establishments = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
     },
     changeEstablishment: function changeEstablishment(establishment_selected) {
+      this.establishment_name = establishment_selected.name;
+      this.establishment_id = establishment_selected.id;
       this.establishment_selected = establishment_selected;
     },
     changeProcess: function changeProcess(process_selected) {
+      this.processing_name = process_selected.name;
+      this.process_id = process_selected.id;
       this.process_selected = process_selected;
     },
     changeGestion: function changeGestion(gestion_selected) {
+      this.gestion_name = gestion_selected.name;
+      this.gestion_id = gestion_selected.id;
       this.gestion_selected = gestion_selected;
     },
-    changeRecolection: function changeRecolection(recolection_selected) {
-      this.recolection_selected = recolection_selected;
+    changeCountry: function changeCountry(country_selected) {
+      this.pais = country_selected.name;
+      this.country_selected = country_selected;
     },
     changeUnit: function changeUnit(unit_selected) {
       this.unit_selected = unit_selected;
+      this.unit_id = unit_selected.id;
+    },
+    selectExport: function selectExport() {
+      this.company_selected = '';
+      this.establishment_selected = '';
+      this.process_selected = '';
+      this.gestion_selected = '';
+      this.receiver_name = '';
+      this.establishment = '';
+      this.processings = '';
+      this.gestion = ''; // if(this.checkbox){
+      //     this.checkbox=false;
+      // }else {
+
+      this.checkbox = true; // }
     },
     saveResidue: function saveResidue() {
-      if (this.$refs.form.validate()) {
+      var okSave = false;
+
+      if (this.checkbox) {
+        if (this.$refs.form_ler.validate() && this.$refs.form_exportado.validate()) {
+          okSave = true;
+        }
+      } else {
+        if (this.$refs.form_ler.validate() && this.$refs.form_destinatario.validate()) {
+          okSave = true;
+        }
+      }
+
+      if (okSave) {
+        var company_name = this.receiver_name;
+        var processing_name = this.processing_name;
+        var gestion_name = this.gestion_name;
+
+        if (this.checkbox) {
+          this.establishment_name = 'Exportado';
+          company_name = this.country_selected.name + ' | ' + this.empresa;
+          processing_name = 'Exportado';
+          gestion_name = 'Exportado';
+        }
+
         this.residue = {
-          waste: this.residuetext,
+          waste: this.residue_name,
+          chapter: this.chapter_name,
+          subchapter: this.subchapter_name,
           sum: this.cantidad + ' ' + this.unidad.name,
-          company: '92176000-0 | Gerdau Aza SA',
-          establishment: '12345 | Gerdau Aza Colina',
-          processing: this.procesing.name,
-          gestion: this.gestion.name,
+          company: company_name,
+          establishment: this.establishment_name,
+          processing: processing_name,
+          gestion: gestion_name,
           pais: this.pais,
           empresa: this.empresa,
           contacto: this.contacto,
           email: this.email,
-          recolection: this.recolection_selected.name,
-          // company_id: this.company_selected.id,
-          company_id: 1,
-          // establishment_id: this.establishment_selected.id,
-          establishment_id: 1,
-          process_id: this.process_selected.id,
-          manage_id: this.gestion_selected.id,
+          company_id: this.company_id,
+          establishment_id: this.establishment_id,
+          process_id: this.process_id,
+          manage_id: this.gestion_id,
           quantity: this.cantidad,
-          waste_id: this.residue_selected.id,
-          unit_id: this.unit_selected.id,
-          carrier_id: 1,
-          recolection_type: this.recolection_selected.id
+          waste_id: this.residue_id,
+          chapter_id: this.chapter_id,
+          subchapter_id: this.subchapter_id,
+          unit_id: 2,
+          carrier_id: this.carrier_id,
+          carrier_name: this.carriername,
+          trasnport_date: this.carrier_date,
+          plate: this.vehicleplate
         };
-        this.$store.commit('changeResidue', this.residue);
-        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
+        this.$store.commit('changeResidue', this.residue); // alert(JSON.stringify(this.$store.getters.residue));
+
         this.dialog = false;
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
       }
+    },
+    toTransport: function toTransport() {
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_TransportComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      var instance = new ComponentReserv({
+        store: this.$store,
+        propsData: {
+          source: ''
+        }
+      });
+      instance.$mount();
+      this.$refs.container.replaceChild(instance.$el);
+    },
+    refreshCarrier: function refreshCarrier() {
+      this.carrier_id = this.$store.getters.carrier.carrier_id;
+      this.carrier = this.$store.getters.carrier;
+      this.carriername = this.carrier.carriername;
+      this.vehicleplate = this.carrier.vehicleplate;
+      this.carrier_date = this.carrier.transport_date;
+    },
+    toSearch: function toSearch() {
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_SearchCompanyComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+      var instance = new ComponentReserv({
+        store: this.$store,
+        propsData: {
+          source: ''
+        }
+      });
+      instance.$mount();
+      this.$refs.container.replaceChild(instance.$el);
     }
   }
 });
@@ -13356,7 +13634,10 @@ var render = function() {
                                 { staticClass: "px-1", attrs: { xs3: "" } },
                                 [
                                   _c("v-text-field", {
-                                    attrs: { label: "Email" },
+                                    attrs: {
+                                      rules: _vm.emailRule,
+                                      label: "Email"
+                                    },
                                     model: {
                                       value: _vm.email,
                                       callback: function($$v) {
@@ -13687,7 +13968,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { width: "1000", persistent: "true" },
+          attrs: { width: "1200", persistent: "true" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -13701,12 +13982,48 @@ var render = function() {
             "v-card",
             [
               _c(
-                "v-card-title",
-                {
-                  staticClass: "headline grey lighten-2",
-                  attrs: { "primary-title": "" }
-                },
-                [_vm._v("\n          Agregar  Residuo\n        ")]
+                "v-toolbar",
+                { attrs: { dark: "", color: "main_green" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { icon: "", dark: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.dialog = false
+                        }
+                      }
+                    },
+                    [_c("v-icon", [_vm._v("close")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-toolbar-title", [_vm._v("Agregar Residuo")]),
+                  _vm._v(" "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-toolbar-items",
+                    [
+                      _c("v-switch", {
+                        staticClass: "py-4",
+                        attrs: { label: "¿ Residuo exportado ?" },
+                        model: {
+                          value: _vm.checkbox,
+                          callback: function($$v) {
+                            _vm.checkbox = $$v
+                          },
+                          expression: "checkbox"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-spacer")
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
@@ -13714,110 +14031,8 @@ var render = function() {
                 [
                   _c(
                     "v-form",
-                    { ref: "form", attrs: { "lazy-validation": "" } },
+                    { ref: "form_ler", attrs: { "lazy-validation": "" } },
                     [
-                      _c(
-                        "v-layout",
-                        [
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.destinatarios,
-                                  label: "Destinatario",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                model: {
-                                  value: _vm.destiny,
-                                  callback: function($$v) {
-                                    _vm.destiny = $$v
-                                  },
-                                  expression: "destiny"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.establishments,
-                                  label: "Establecimiento",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                model: {
-                                  value: _vm.establishment,
-                                  callback: function($$v) {
-                                    _vm.establishment = $$v
-                                  },
-                                  expression: "establishment"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.processings,
-                                  label: "Tipo de Tratamiento",
-                                  "item-text": "name",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeProcess },
-                                model: {
-                                  value: _vm.procesing,
-                                  callback: function($$v) {
-                                    _vm.procesing = $$v
-                                  },
-                                  expression: "procesing"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.gestions,
-                                  label: "Tipo de Gestión",
-                                  "item-text": "name",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeGestion },
-                                model: {
-                                  value: _vm.gestion,
-                                  callback: function($$v) {
-                                    _vm.gestion = $$v
-                                  },
-                                  expression: "gestion"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
                       _c(
                         "v-layout",
                         [
@@ -13897,7 +14112,218 @@ var render = function() {
                           )
                         ],
                         1
-                      ),
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-form",
+                    { ref: "form_exportado", attrs: { "lazy-validation": "" } },
+                    [
+                      _vm.checkbox
+                        ? _c(
+                            "v-layout",
+                            [
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.countries,
+                                      label: "Pais",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeCountry },
+                                    model: {
+                                      value: _vm.country,
+                                      callback: function($$v) {
+                                        _vm.country = $$v
+                                      },
+                                      expression: "country"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Empresa" },
+                                    model: {
+                                      value: _vm.empresa,
+                                      callback: function($$v) {
+                                        _vm.empresa = $$v
+                                      },
+                                      expression: "empresa"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { label: "Contacto" },
+                                    model: {
+                                      value: _vm.contacto,
+                                      callback: function($$v) {
+                                        _vm.contacto = $$v
+                                      },
+                                      expression: "contacto"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      rules: _vm.emailRule,
+                                      label: "Email"
+                                    },
+                                    model: {
+                                      value: _vm.email,
+                                      callback: function($$v) {
+                                        _vm.email = $$v
+                                      },
+                                      expression: "email"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-form",
+                    {
+                      ref: "form_destinatario",
+                      attrs: { "lazy-validation": "" }
+                    },
+                    [
+                      !_vm.checkbox
+                        ? _c(
+                            "v-layout",
+                            [
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      color: "main_green",
+                                      box: "",
+                                      placeholder: "Seleccionar",
+                                      readonly: "",
+                                      label: "Destinatario"
+                                    },
+                                    on: { click: _vm.toSearch },
+                                    model: {
+                                      value: _vm.receiver_name,
+                                      callback: function($$v) {
+                                        _vm.receiver_name = $$v
+                                      },
+                                      expression: "receiver_name"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.establishments,
+                                      "item-text": "name",
+                                      label: "Establecimiento",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeEstablishment },
+                                    model: {
+                                      value: _vm.establishment,
+                                      callback: function($$v) {
+                                        _vm.establishment = $$v
+                                      },
+                                      expression: "establishment"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.processings,
+                                      label: "Tipo de Tratamiento",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeProcess },
+                                    model: {
+                                      value: _vm.procesing,
+                                      callback: function($$v) {
+                                        _vm.procesing = $$v
+                                      },
+                                      expression: "procesing"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-1", attrs: { xs3: "" } },
+                                [
+                                  _c("v-select", {
+                                    attrs: {
+                                      items: _vm.gestions,
+                                      label: "Tipo de Gestión",
+                                      "item-text": "name",
+                                      "return-object": ""
+                                    },
+                                    on: { change: _vm.changeGestion },
+                                    model: {
+                                      value: _vm.gestion,
+                                      callback: function($$v) {
+                                        _vm.gestion = $$v
+                                      },
+                                      expression: "gestion"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "v-layout",
@@ -13908,6 +14334,7 @@ var render = function() {
                             [
                               _c("v-text-field", {
                                 attrs: {
+                                  placeholder: "999,99",
                                   rules: _vm.numberRule,
                                   type: "number",
                                   label: "Cantidad"
@@ -13934,6 +14361,7 @@ var render = function() {
                                   label: "Unidad de Medida",
                                   "item-text": "name",
                                   rules: _vm.generalRule,
+                                  readonly: "",
                                   "return-object": ""
                                 },
                                 on: { change: _vm.changeUnit },
@@ -13952,44 +14380,85 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c(
-                        "v-layout",
-                        [
-                          _c(
-                            "v-flex",
-                            { staticClass: "px-1", attrs: { xs3: "" } },
+                      this.$store.getters.type == "CentroAcopio" ||
+                      this.$store.getters.type == "GeneradorIndustrial" ||
+                      this.$store.getters.type == "DestinatarioFinal"
+                        ? _c(
+                            "v-layout",
                             [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.recolection_types,
-                                  "item-text": "name",
-                                  label: "Tipo Recolección",
-                                  rules: _vm.generalRule,
-                                  "return-object": ""
-                                },
-                                on: { change: _vm.changeRecolection },
-                                model: {
-                                  value: _vm.recolection_type,
-                                  callback: function($$v) {
-                                    _vm.recolection_type = $$v
-                                  },
-                                  expression: "recolection_type"
-                                }
-                              })
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-2", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      color: "main_green",
+                                      box: "",
+                                      placeholder: "Seleccionar",
+                                      readonly: "",
+                                      label: "Empresa Trasnporte"
+                                    },
+                                    on: { click: _vm.toTransport },
+                                    model: {
+                                      value: _vm.carriername,
+                                      callback: function($$v) {
+                                        _vm.carriername = $$v
+                                      },
+                                      expression: "carriername"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { staticClass: "px-2", attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      readonly: "",
+                                      label: "Fecha de Transporte"
+                                    },
+                                    model: {
+                                      value: _vm.carrier_date,
+                                      callback: function($$v) {
+                                        _vm.carrier_date = $$v
+                                      },
+                                      expression: "carrier_date"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs3: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: { readonly: "", label: "Patente" },
+                                    model: {
+                                      value: _vm.vehicleplate,
+                                      callback: function($$v) {
+                                        _vm.vehicleplate = $$v
+                                      },
+                                      expression: "vehicleplate"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
                             ],
                             1
                           )
-                        ],
-                        1
-                      )
+                        : _vm._e()
                     ],
                     1
                   )
                 ],
                 1
               ),
-              _vm._v(" "),
-              _c("v-divider"),
               _vm._v(" "),
               _c(
                 "v-card-actions",
@@ -13999,28 +14468,18 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
-                      attrs: { icon: "", color: "white" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
-                    [_c("v-icon", [_vm._v("close")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { icon: "", color: "white" },
+                      staticClass: "ma-2 white--text",
+                      attrs: { color: "main_green" },
                       on: {
                         click: function($event) {
                           return _vm.saveResidue()
                         }
                       }
                     },
-                    [_c("v-icon", [_vm._v("save")])],
+                    [
+                      _vm._v("\n                GUARDAR\n                "),
+                      _c("v-icon", { attrs: { right: "" } }, [_vm._v("save")])
+                    ],
                     1
                   )
                 ],
