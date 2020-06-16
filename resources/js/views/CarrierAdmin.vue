@@ -8,15 +8,21 @@
         vertical
       ></v-divider>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="500px" persistent="true">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
+          <v-btn color="secondary_green" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
         </template>
         <v-card>
-          <v-card-title>
+          <!--v-card-title-->
+          <v-toolbar dark color="main_green">
+            <v-btn icon dark @click="dialog = false">
+              <v-icon>close</v-icon>
+            </v-btn>
             <!-- <span class="hidden-md-and-down">SINADER</span> -->
-            <span  color="main_green" dark class="headline">{{ formTitle }}</span>
-          </v-card-title>
+            <v-toolbar-title>
+              <span  color="main_green" dark class="headline">{{ formTitle }}</span>
+            </v-toolbar-title>
+          </v-toolbar>
 
           <v-card-text>
             <v-container grid-list-md>
@@ -34,8 +40,12 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar</v-btn>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Grabar</v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar
+              <v-icon>close</v-icon>
+            </v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Guardar
+              <v-icon right>save</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -68,13 +78,11 @@
 </template>
 
 <script>
-
   import Vue from 'vue';  
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex'; 
   
   import { EventBus } from './../eventbus.js'
-
   export default {
     data: () => ({
       dialog: false,
@@ -104,29 +112,24 @@
         address: ''
       }
     }),
-
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'Nuevo Registro' : 'Editar Registro'
       }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
       }
     },
-
     created () {
       this.initialize()
       this.getcarriers();
     },
-
     methods: {
       initialize () {
         this.carriers = []
       },
-
       getcarriers(){
           var app = this;
           axios.get('/api/carrier')
@@ -139,23 +142,17 @@
                   alert("Error carrier/index :" + resp);
               });
       },
-
       edit_item (item) {
         this.editedIndex = this.carriers.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-
-
       delete_item(item){
         var app = this;
         const index = this.carriers.indexOf(item)
-
         const carrierid = this.carriers[index]["id"];
         
         alert(this.carriers[index]["id"]);
-
-
         if (confirm('¿Está seguro de eliminar el registro?')){
           
           axios.post('/api/carrier/delete/'+carrierid)
@@ -170,7 +167,6 @@
             alert("no hay nada que borrar")
           }
       },
-
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -178,11 +174,8 @@
           this.editedIndex = -1
         }, 300)
       },
-
       toSave() {
-
         var app = this;
-
         if (this.editedIndex > -1) {
           Object.assign(this.carriers[this.editedIndex], this.editedItem)
         } 

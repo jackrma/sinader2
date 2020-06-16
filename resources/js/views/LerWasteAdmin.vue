@@ -8,25 +8,67 @@
         vertical
       ></v-divider>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="500px" persistent="true">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
+          <v-btn color="secondary-gree" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
         </template>
         <v-card>
-          <v-card-title>
+          <!--v-card-title-->
+          <v-toolbar dark color="main_green">
+            <v-btn icon dark @click="dialog = false">
+              <v-icon>close</v-icon>
+            </v-btn>
             <!-- <span class="hidden-md-and-down">SINADER</span> -->
-            <span  color="main_green" dark class="headline">{{ formTitle }}</span>
-          </v-card-title>
+            <v-toolbar-title>
+              <span  color="main_green" dark class="headline">{{ formTitle }}</span>
+            </v-toolbar-title>
+          </v-toolbar>
 
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 class="px-2">
-                  <v-text-field v-model="editedItem.waste_number" label="Número de Sub Capítulo"></v-text-field>
-                  <v-text-field v-model="editedItem.subcharper_id" label="Id Sub Capítulo"></v-text-field>
+                  <v-text-field v-model="editedItem.waste_number" label="Número de Residuo"></v-text-field>
                   <v-textarea v-model="editedItem.name" label="Nombre"></v-textarea>
-                  <v-text-field v-model="editedItem.waste_code" label="Código Residuo"></v-text-field>
-                  <v-text-field v-model="editedItem.type_id" label="Tipo de Residuo"></v-text-field>                  
+                  <!--v-text-field v-model="editedItem.subchapter_id" label="Id Sub Capítulo"></v-text-field-->
+<!--                   <v-select
+                      :items="subcapitulos"
+                      v-model="editedItem.subchapter_id"
+                      label="Id Sub Capítulo"
+                      :rules = "generalRule"
+                      item-text="name" 
+                      v-on:change="changeSubChapter"
+                      return-object
+                  ></v-select> -->
+                  <v-select
+                    v-model="editedItem.subchapter_id"
+                    label="Sub Capítulo"  
+                    :items="subcapitulos"
+                    item-text="name"
+                    item-value="id"
+                    v-on:change="changeSubChapter"
+                    return-object
+                  ></v-select>
+                  <v-text-field v-model="editedItem.waste_code" label="Código Residuo" readonly=true></v-text-field>
+                  <!--v-text-field v-model="editedItem.type_id" label="Tipo de Residuo"></v-text-field-->
+<!--                   <v-select
+                      :items="tiporesiduos"
+                      v-model="editedItem.type_id"
+                      label="Tipo de Residuo"
+                      :rules = "generalRule"
+                      item-text="name" 
+                      v-on:change="changeWasteType"
+                      return-object
+                  ></v-select> -->
+                  <v-select
+                    v-model="editedItem.type_id"
+                    label="Tipo de Residuo"  
+                    :items="tiporesiduos"
+                    item-text="name"
+                    item-value="id"
+                    v-on:change="changeWasteType"
+                    return-object
+                  ></v-select>
                   <v-text-field v-model="editedItem.active" label="Activo"></v-text-field>
                 </v-flex>
               </v-layout>
@@ -35,8 +77,12 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar</v-btn>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Grabar</v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar
+                <v-icon>close</v-icon>
+            </v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Grabar
+                <v-icon>save</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -72,13 +118,11 @@
 </template>
 
 <script>
-
   import Vue from 'vue';  
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex'; 
   
   import { EventBus } from './../eventbus.js'
-
   export default {
     data: () => ({
       dialog: false,
@@ -96,48 +140,63 @@
         { text: 'Activo', value: 'active' },
         { text: 'Acciones', value: 'actions' },
       ],
+      subcapitulos: '',
+      tiporesiduos: '',
       lerwaste: [],
       editedIndex: -1,
       editedItem: {
         waste_number: 0,
-        subchapter_id: 0,
+        subchapter_id: '',
         name: '',
         waste_code: 0,
-        type_id: 0,
+        type_id: '',
         active: 0
       },
       defaultItem: {
         waste_number: 0,
-        subchapter_id: 0,
+        subchapter_id: '',
         name: '',
         waste_code: 0,
-        type_id: 0,
+        type_id: '',
         active: 0
       }
     }),
-
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'Nuevo Registro' : 'Editar Registro'
       }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
       }
     },
-
     created () {
       this.initialize()
       this.getlerwaste();
     },
-
     methods: {
       initialize () {
         this.lerwaste = []
+        var app = this;
+        
+        axios.get('/api/lersubchapter')
+          .then(function (resp) {    
+            app.subcapitulos = resp.data;
+        })
+          .catch(function (resp) {
+            console.log(resp);
+            alert("Error subchapter :" + resp);
+        });
+        axios.get('/api/wastetype')
+          .then(function (resp) {    
+            app.tiporesiduos = resp.data;
+        })
+          .catch(function (resp) {
+            console.log(resp);
+            alert("Error tiporesiduos :" + resp);
+        });
       },
-
       getlerwaste(){
           var app = this;
           axios.get('/api/lerwaste')
@@ -150,23 +209,18 @@
                   alert("Error lerwaste/index :" + resp);
               });
       },
-
       edit_item (item) {
         this.editedIndex = this.lerwaste.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        //alert('Subcapítulo :' + this.editedItem.subchapter_id)
         this.dialog = true
       },
-
-
       delete_item(item){
         var app = this;
         const index = this.lerwaste.indexOf(item)
-
         const lerwasteid = this.lerwaste[index]["id"];
         
         alert(this.lerwaste[index]["id"]);
-
-
         if (confirm('¿Está seguro de eliminar el registro?')){
           
           axios.post('/api/lerwaste/delete/'+lerwasteid)
@@ -181,7 +235,16 @@
             alert("no hay nada que borrar")
           }
       },
-
+      changeSubChapter(subchapter_selected){
+          
+          this.subchapter_id = subchapter_selected.id;
+          this.subchapter_name = subchapter_selected.name;
+      },
+      changeWasteType(wastetype_selected){
+          
+          this.type_id = wastetype_selected.id;
+          this.stype_name = wastetype_selected.name;
+      },
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -189,11 +252,8 @@
           this.editedIndex = -1
         }, 300)
       },
-
       toSave() {
-
         var app = this;
-
         if (this.editedIndex > -1) {
           Object.assign(this.lerwaste[this.editedIndex], this.editedItem)
         } 

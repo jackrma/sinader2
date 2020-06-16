@@ -127,4 +127,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/lerwaste/store', 'LerWasteController@store');
 	Route::post('/lerwaste/delete/{id}', 'LerWasteController@delete');
 
+    Route::get('/wastetype', 'WasteTypeController@index');
+	Route::post('/wastetype/data', 'WasteTypeController@data');
+
+    Route::get('/activeline', 'ActiveLineController@index');
+	Route::post('/activeline/data', 'ActiveLineController@data');
 });

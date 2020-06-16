@@ -8,23 +8,46 @@
         vertical
       ></v-divider>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="500px" persistent="true">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
+          <v-btn color="secondary-green" dark class="mb-2" v-on="on">Nuevo Registro</v-btn>
         </template>
         <v-card>
-          <v-card-title>
+          <!--v-card-title-->
+          <v-toolbar dark color="main_green">
+            <v-btn icon dark @click="dialog = false">
+              <v-icon>close</v-icon>
+            </v-btn>
             <!-- <span class="hidden-md-and-down">SINADER</span> -->
-            <span  color="main_green" dark class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
+            <v-toolbar-title>
+              <span  color="main_green" dark class="headline">{{ formTitle }}</span>
+            </v-toolbar-title>
+          </v-toolbar>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 class="px-2">
                   <v-text-field v-model="editedItem.subchapter_number" label="Número de Sub Capítulo"></v-text-field>
-                  <v-textarea v-model="editedItem.name" label="Nombre"></v-textarea>
-                  <v-text-field v-model="editedItem.charper_id" label="Id Capítulo"></v-text-field>
+                  <v-textarea v-model="editedItem.name" label="Nombre"></v-textarea> 
+                  <!--v-text-field v-model="editedItem.chapter_id" label="Id Capitulo" readonly="true"></v-text-field-->
+<!--                     <v-select
+                      :items="capitulos"
+                      v-model="editedItem.chapter_id"
+                      label="Id Capitulo"
+                      :rules = "generalRule"
+                      item-text="name"   
+                      v-on:change="changeChapter"
+                      return-object
+                  ></v-select> -->
+                  <v-select
+                    v-model="editedItem.chapter_id"
+                    label="Capítulo"  
+                    :items="capitulos"
+                    item-text="name"
+                    item-value="id"
+                    readonly=true
+                    return-object
+                  ></v-select>
                   <v-text-field v-model="editedItem.active" label="Activo"></v-text-field>
                 </v-flex>
               </v-layout>
@@ -33,9 +56,14 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar</v-btn>
-            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Grabar</v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="close">Cancelar
+                <v-icon>close</v-icon>
+            </v-btn>
+            <v-btn class="ma-2 white--text"  color="main_green" @click="toSave()">Grabar
+                <v-icon>save</v-icon>
+            </v-btn>
           </v-card-actions>
+
         </v-card>
       </v-dialog>
     </v-toolbar>
@@ -43,6 +71,7 @@
       :headers="headers"
       :items="lersubchapters"
       class="elevation-1"
+
     >
       <template v-slot:items="props">
         <td>{{ props.item.subchapter_number }}</td>
@@ -68,15 +97,14 @@
 </template>
 
 <script>
-
   import Vue from 'vue';  
   import Vuex from 'vuex'; 
   import { mapState } from 'vuex'; 
   
   import { EventBus } from './../eventbus.js'
-
   export default {
     data: () => ({
+      generalRule: [v => !!v || 'Campo requerido'],
       dialog: false,
       headers: [
         {
@@ -90,7 +118,8 @@
         { text: 'Activo', value: 'active' },
         { text: 'Acciones', value: 'actions' },
       ],
-      lersubchapters: [],
+      //capitulos: '',
+      lersubchapters: '',
       editedIndex: -1,
       editedItem: {
         subchapter_number: 0,
@@ -105,27 +134,38 @@
         active: 0
       }
     }),
-
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'Nuevo Registro' : 'Editar Registro'
       }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
       }
     },
-
     created () {
       this.initialize()
       this.getlersubchapters();
     },
-
     methods: {
       initialize () {
         this.lersubchapters = []
+        var app = this;
+        
+        axios.get('/api/lerchapter')
+          .then(function (resp) {    
+          app.capitulos = resp.data;
+        })
+        .catch(function (resp) {
+          console.log(resp);
+          alert("Error chapter :" + resp);
+        });
+      },
+
+      changeChapter(chapter_selected){
+        this.chapter_id = chapter_selected.id;
+        //this.chapter_name = chapter_selected.name;    
       },
 
       getlersubchapters(){
@@ -140,23 +180,18 @@
                   alert("Error lersubchapter/index :" + resp);
               });
       },
-
       edit_item (item) {
         this.editedIndex = this.lersubchapters.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        //alert("Capitulo " + item)
         this.dialog = true
       },
-
-
       delete_item(item){
         var app = this;
         const index = this.lersubchapters.indexOf(item)
-
         const lersubchapterid = this.lersubchapters[index]["id"];
         
         alert(this.lersubchapters[index]["id"]);
-
-
         if (confirm('¿Está seguro de eliminar el registro?')){
           
           axios.post('/api/lersubchapter/delete/'+lersubchapterid)
@@ -171,7 +206,6 @@
             alert("no hay nada que borrar")
           }
       },
-
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -179,11 +213,8 @@
           this.editedIndex = -1
         }, 300)
       },
-
       toSave() {
-
         var app = this;
-
         if (this.editedIndex > -1) {
           Object.assign(this.lersubchapters[this.editedIndex], this.editedItem)
         } 
