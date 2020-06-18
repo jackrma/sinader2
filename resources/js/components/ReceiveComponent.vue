@@ -10,7 +10,7 @@
           <v-toolbar-title>Recepción de residuos no peligrosos</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn flat class='white--text'  @click="dialog = false">Rechazar</v-btn>
+            <v-btn flat class='white--text'  @click="rejection()">Rechazar</v-btn>
             
           </v-toolbar-items>
         </v-toolbar>
@@ -114,7 +114,6 @@
   
   import { EventBus } from './../eventbus.js';
 
- 
   import DiscrepancyComponent  from './../components/DiscrepancyComponent';
   import TraceabilityComponent  from './../components/TraceabilityComponent';
 
@@ -163,7 +162,6 @@
     methods: {
         initialize(){
 
-        
             this.folio = this.declaration_edit.correlative + '-' + this.declaration_edit.correlative_dv;
             this.correlative    = this.declaration_edit.correlative; 
             this.company        = this.declaration_edit.company;
@@ -180,7 +178,7 @@
         refreshList(){
             var app = this;
             var params = {
-                declaration_id: this.declaration_edit.declaration_id,
+                declaration_id: this.declaration_edit.id,
                 establishment_id: this.$store.getters.establishment.id,
             }
 
@@ -220,8 +218,45 @@
         },
         receive(){
             alert('Esta Declaración se dará por recibida en su totalidad')
+
+            var params = {
+                'declaration_id': this.declaration_edit.id,
+                'status': 'ACEPTADA',
+            }
+
+            axios.post('/api/declaration/changestatus', params)
+                    .then(function (resp) {    
+                        //alert(JSON.stringify(resp.data));  
+                        EventBus.$emit('changestatus', 'someValue');              
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                    }); 
+
+            this.dialog = false;
+        },
+
+        rejection(){
+            alert('Esta Declaración será rechazada en su totalidad')
+            var params = {
+                'declaration_id': this.declaration_edit.id,
+                'status': 'RECHAZADA',
+            }
+
+            axios.post('/api/declaration/changestatus', params)
+                    .then(function (resp) {    
+                        //alert(JSON.stringify(resp.data)); 
+                        EventBus.$emit('changestatus', 'someValue');               
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                    }); 
+
+
+
             this.dialog = false;
         }
+
 
 
     }

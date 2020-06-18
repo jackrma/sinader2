@@ -147,6 +147,7 @@
 
                         <v-flex xs3 class="px-1">
                             <v-select
+                                readonly
                                 :items="units"
                                 v-model="unidad"
                                 label="Unidad de Medida"
@@ -220,7 +221,7 @@
 
         cantidad:'',
         establishment:'',
-        unidad:'',
+        unidad:'Toneladas',
         destiny:'',
         residue:'',
         residue_name:'',
@@ -539,25 +540,6 @@
             this.unit_id = unit_selected.id;
         },
 
-        selectExport(){
-            this.company_selected        = '';
-            this.establishment_selected  = '';
-            this.process_selected        = '';
-            this.gestion_selected        = '';  
-
-            this.receiver_name = ''; 
-            this.establishment = ''; 
-            this.processings   = ''; 
-            this.gestion       = ''; 
-
-            // if(this.checkbox){
-            //     this.checkbox=false;
-            // }else {
-                this.checkbox=true;
-            // }
-            
-        },
-
 
 
         saveResidue(){
@@ -565,12 +547,7 @@
 
             if (this.$refs.form.validate()){
 
-                var company_name = this.receiver_name;
-
-                if(this.checkbox){
-                    establishment_name = '';
-                    company_name = this.country_selected.name + ' | ' + this.empresa;
-                }        
+                var company_name = this.receiver_name;     
 
 
                 this.residue = {
@@ -582,24 +559,25 @@
                     establishment: this.$store.getters.establishment.name,
 
                     
-                    processing: this.processing_name,
-                    gestion: this.gestion_name,
+                    processing: 'Valorización',
+                    gestion: 'Valorización',
                     pais: this.pais,
                     empresa: this.empresa,
                     contacto: this.contacto,
                     email: this.email,
 
+
                     company_id: this.$store.getters.company.id,
                     establishment_id: this.$store.getters.establishment.id ,
-                    process_id: this.process_id,
-                    manage_id: this.gestion_id,
+                    process_id: 2,
+                    manage_id: 2,
                     quantity: this.cantidad,
 
                     waste_id: this.residue_id,
                     chapter_id: this.chapter_id,
                     subchapter_id: this.subchapter_id,
 
-                    unit_id: this.unit_id,
+                    unit_id: 2,
                     carrier_id: this.carrier_id,
                     carrier_name:this.carriername,
                     trasnport_date:this.carrier_date,

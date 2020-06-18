@@ -376,6 +376,7 @@
                 region: this.region,
                 type: this.type,
                 period: this.period,
+                generator:'REGISTERED',
                 carrier: 0,
                 waste_detail: this.residues,
             }

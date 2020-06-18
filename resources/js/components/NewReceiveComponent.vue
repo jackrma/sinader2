@@ -200,7 +200,7 @@
 
             <td  class="justify-center layout px-0">
 
-                <v-btn icon  @click="edit_item(props.item)" >
+                <v-btn icon  @click="edit_item(props.item, props.index)" >
                     <v-icon>edit</v-icon>
                 </v-btn>
 
@@ -253,9 +253,10 @@
   import { mapState } from 'vuex';  
   
   import { EventBus } from './../eventbus.js';
+  import { EventBus2 } from './../eventbus2.js';
 
  
-  import NewResidueIndComponent  from './../components/NewReceiveResidueComponent';
+  import NewReceiveResidueComponent  from './../components/NewReceiveResidueComponent';
   import UploadComponent  from './../components/UploadComponent';
   
 
@@ -278,7 +279,7 @@
 
         correlative:'',
         company:'',
-        rut:'',
+        rut:'11333777-9',
         establishment:'',
         address:'',
         commune:'',
@@ -307,8 +308,10 @@
     
     created () {
         this.initialize();
+
+
         var app = this;
-        EventBus.$once('saveResidues', function(){   
+        EventBus.$on('saveResidues', function(){   
             app.refreshList();
         });
 
@@ -316,23 +319,29 @@
 
     methods: {
         initialize(){
-            this.$store.commit('changeIndexedit', -1);
-
-
+           //this.$store.commit('changeIndexedit', -1);
             
             var app = this;
 
-            if(this.declaration_edit){
-                app.declaration = app.declaration_edit;
-                app.correlative = app.declaration_edit.correlative + '-' + app.declaration_edit.correlative_dv;     
 
-                axios.get('/api/waste_details/'+app.declaration.id)
+            if(this.declaration_edit){
+
+                app.declaration = app.declaration_edit;
+                app.correlative = app.declaration_edit.correlative + '-' + app.declaration_edit.correlative_dv;  
+                app.company     = app.declaration_edit.company;
+                app.address     = app.declaration_edit.direccion;
+                app.commune     = app.declaration_edit.comuna;
+                app.region      = app.declaration_edit.region;
+
+
+                axios.get('/api/waste_details/'+app.declaration_edit.id)
                     .then(function (resp) {    
                         app.residues = resp.data;
                     })
                     .catch(function (resp) {
                         console.log(resp);
                     }); 
+
 
             } else {
                 axios.post('/api/declaration/create')
@@ -349,7 +358,7 @@
 
         searchSii(){
 
-            alert('Validación SII, pendiente, presione nuevamente para simular')
+            alert('Validación SII, pendiente')
 
             var app = this;
             axios.get('/api/company/search_sii/'+this.rut)
@@ -376,34 +385,39 @@
 
         createdeclaration(){
 
-            // var declaration = {
-            //     correlative: this.declaration.correlative,
-            //     correlative_dv: this.declaration.correlative_dv,
-            //     rut: this.rut,
-            //     company: this.company,
-            //     establishment: this.establishment,
-            //     direccion: this.address,
-            //     comuna: this.commune,
-            //     region: this.region,
-            //     type: this.type,
-            //     period: this.period,
-            //     carrier: 0,
-            //     waste_detail: this.residues,
-            // }
+            var app=this;
 
-            // if(this.residues.length>0){
-            //     axios.post('/api/declaration/store', {declaration: declaration})
-            //         .then(function (resp) {    
-            //             EventBus.$emit('saveDeclaration', 'someValue');
-            //         })
-            //         .catch(function (resp) {
-            //             console.log(resp);
-            //             alert("Error declaration/store :" + resp);
-            //         });
-            //     this.dialog = false;
-            // } else {
-            //     alert('No se han ingresado residuos');
-            // }
+            var declaration = {
+                correlative: this.declaration.correlative,
+                correlative_dv: this.declaration.correlative_dv,
+                rut: this.rut,
+                company: this.company,
+                establishment: this.establishment,
+                direccion: this.address,
+                comuna: this.commune,
+                region: this.region,
+                type: this.type,
+                period: this.period,
+                generator:'UNREGISTERED',
+                carrier: 0,
+                waste_detail: this.residues,
+            }
+
+            if(this.residues.length>0){
+
+                axios.post('/api/declaration/store', {declaration: declaration})
+                    .then(function (resp) {    
+                        EventBus2.$emit('saveDeclaration', 'someValue');
+                        app.dialog = false;
+                        EventBus.$off();
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                    });
+
+            } else {
+                alert('No se han ingresado residuos');
+            }
 
         },
 
@@ -411,43 +425,35 @@
 
         toNewResidue (){
 
-                var ComponentReserv = Vue.extend(NewResidueIndComponent)
-                var instance = new ComponentReserv({store: this.$store, propsData: {
-                source: '', 
+                var ComponentReserv = Vue.extend(NewReceiveResidueComponent)
+                var instance = new ComponentReserv({store: this.$store, propsData: { 
                 }});
                 instance.$mount();
                 this.$refs.container.replaceChild(instance.$el);
-
-
         },
 
 
-        edit_item(item){
-
-            //alert(JSON.stringify(item));
-
-            this.$store.commit('changeIndexedit', this.residues.indexOf(item));
-
-                var ComponentReserv = Vue.extend(NewResidueIndComponent)
-                var instance = new ComponentReserv({store: this.$store, propsData: {
-                residue_edit: item, 
-                }});
-                instance.$mount();
-                this.$refs.container.replaceChild(instance.$el);
+        edit_item(item, index){
+            
+            this.$store.commit('changeIndexedit', index);   
+            
+            var ComponentReserv = Vue.extend(NewReceiveResidueComponent)
+            var instance = new ComponentReserv({store: this.$store, propsData: {
+            residue_edit: item, 
+            }});
+            instance.$mount();
+            this.$refs.container.replaceChild(instance.$el);
 
 
         },
 
         refreshList(){
-           // alert(JSON.stringify(this.$store.getters.residue));
 
             if(this.$store.getters.indexedit == -1){
-                //alert("es nuevo");
                 this.residues.push(this.$store.getters.residue);
             } else {
-                //alert("es existente");
-                this.residues.splice(this.$store.getters.editindex, 1);
-                this.residues.push(this.$store.getters.residue);
+
+                this.residues.splice(this.$store.getters.indexedit, 1, this.$store.getters.residue);
                 this.$store.commit('changeIndexedit', -1);
             }
 

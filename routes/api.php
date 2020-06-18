@@ -87,12 +87,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/declarations/admin', 'DeclarationController@indexAdmin');
 
     Route::get('/declarations/forreceiver/{receiver_id}', 'DeclarationController@forreceiver');
+    Route::get('/declarations/forreceivergennn/{receiver_id}', 'DeclarationController@forreceiverGenNN');
+
     Route::get('/declaration/{declaration_id}', 'DeclarationController@declaration');
     Route::post('/declaration/create', 'DeclarationController@create');
 	Route::post('/declaration/store', 'DeclarationController@store');
 	Route::post('/declaration/sinmovimiento', 'DeclarationController@sinMovimento');
 	Route::post('/declaration/delete/{declaration_id}', 'DeclarationController@delete');
 	Route::post('/declaration/savetraceability','DeclarationController@savetraceability');
+	Route::post('/declaration/changestatus','DeclarationController@changeStatus');
 
 	Route::post('/declaration/upload','DeclarationController@upload');
 

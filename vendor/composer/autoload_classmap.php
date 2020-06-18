@@ -16,6 +16,7 @@ return array(
     'App\\DeclarationType' => $baseDir . '/app/DeclarationType.php',
     'App\\Establishment' => $baseDir . '/app/Establishment.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Exports\\EstablishmentExport' => $baseDir . '/app/Exports/EstablishmentExport.php',
     'App\\Http\\Controllers\\ActiveLineController' => $baseDir . '/app/Http/Controllers/ActiveLineController.php',
     'App\\Http\\Controllers\\ApiUserController' => $baseDir . '/app/Http/Controllers/ApiUserController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',

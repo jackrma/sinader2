@@ -2390,6 +2390,7 @@ __webpack_require__.r(__webpack_exports__);
         region: this.region,
         type: this.type,
         period: this.period,
+        generator: 'REGISTERED',
         carrier: 0,
         waste_detail: this.residues
       };
@@ -2708,8 +2709,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
-/* harmony import */ var _components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewReceiveResidueComponent */ "./resources/js/components/NewReceiveResidueComponent.vue");
-/* harmony import */ var _components_UploadComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/UploadComponent */ "./resources/js/components/UploadComponent.vue");
+/* harmony import */ var _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../eventbus2.js */ "./resources/js/eventbus2.js");
+/* harmony import */ var _components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/NewReceiveResidueComponent */ "./resources/js/components/NewReceiveResidueComponent.vue");
+/* harmony import */ var _components_UploadComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/UploadComponent */ "./resources/js/components/UploadComponent.vue");
 //
 //
 //
@@ -2957,6 +2959,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2978,7 +2981,7 @@ __webpack_require__.r(__webpack_exports__);
       modal: false,
       correlative: '',
       company: '',
-      rut: '',
+      rut: '11333777-9',
       establishment: '',
       address: '',
       commune: '',
@@ -3004,19 +3007,23 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.initialize();
     var app = this;
-    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$once('saveResidues', function () {
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('saveResidues', function () {
       app.refreshList();
     });
   },
   methods: {
     initialize: function initialize() {
-      this.$store.commit('changeIndexedit', -1);
+      //this.$store.commit('changeIndexedit', -1);
       var app = this;
 
       if (this.declaration_edit) {
         app.declaration = app.declaration_edit;
         app.correlative = app.declaration_edit.correlative + '-' + app.declaration_edit.correlative_dv;
-        axios.get('/api/waste_details/' + app.declaration.id).then(function (resp) {
+        app.company = app.declaration_edit.company;
+        app.address = app.declaration_edit.direccion;
+        app.commune = app.declaration_edit.comuna;
+        app.region = app.declaration_edit.region;
+        axios.get('/api/waste_details/' + app.declaration_edit.id).then(function (resp) {
           app.residues = resp.data;
         })["catch"](function (resp) {
           console.log(resp);
@@ -3031,7 +3038,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     searchSii: function searchSii() {
-      alert('Validación SII, pendiente, presione nuevamente para simular');
+      alert('Validación SII, pendiente');
       var app = this;
       axios.get('/api/company/search_sii/' + this.rut).then(function (resp) {
         app.generator = resp.data;
@@ -3045,49 +3052,50 @@ __webpack_require__.r(__webpack_exports__);
         alert("Error generatorSII :" + resp);
       });
     },
-    createdeclaration: function createdeclaration() {// var declaration = {
-      //     correlative: this.declaration.correlative,
-      //     correlative_dv: this.declaration.correlative_dv,
-      //     rut: this.rut,
-      //     company: this.company,
-      //     establishment: this.establishment,
-      //     direccion: this.address,
-      //     comuna: this.commune,
-      //     region: this.region,
-      //     type: this.type,
-      //     period: this.period,
-      //     carrier: 0,
-      //     waste_detail: this.residues,
-      // }
-      // if(this.residues.length>0){
-      //     axios.post('/api/declaration/store', {declaration: declaration})
-      //         .then(function (resp) {    
-      //             EventBus.$emit('saveDeclaration', 'someValue');
-      //         })
-      //         .catch(function (resp) {
-      //             console.log(resp);
-      //             alert("Error declaration/store :" + resp);
-      //         });
-      //     this.dialog = false;
-      // } else {
-      //     alert('No se han ingresado residuos');
-      // }
+    createdeclaration: function createdeclaration() {
+      var app = this;
+      var declaration = {
+        correlative: this.declaration.correlative,
+        correlative_dv: this.declaration.correlative_dv,
+        rut: this.rut,
+        company: this.company,
+        establishment: this.establishment,
+        direccion: this.address,
+        comuna: this.commune,
+        region: this.region,
+        type: this.type,
+        period: this.period,
+        generator: 'UNREGISTERED',
+        carrier: 0,
+        waste_detail: this.residues
+      };
+
+      if (this.residues.length > 0) {
+        axios.post('/api/declaration/store', {
+          declaration: declaration
+        }).then(function (resp) {
+          _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__["EventBus2"].$emit('saveDeclaration', 'someValue');
+          app.dialog = false;
+          _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$off();
+        })["catch"](function (resp) {
+          console.log(resp);
+        });
+      } else {
+        alert('No se han ingresado residuos');
+      }
     },
     toNewResidue: function toNewResidue() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
-        propsData: {
-          source: ''
-        }
+        propsData: {}
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
     },
-    edit_item: function edit_item(item) {
-      //alert(JSON.stringify(item));
-      this.$store.commit('changeIndexedit', this.residues.indexOf(item));
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    edit_item: function edit_item(item, index) {
+      this.$store.commit('changeIndexedit', index);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_NewReceiveResidueComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -3098,14 +3106,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.container.replaceChild(instance.$el);
     },
     refreshList: function refreshList() {
-      // alert(JSON.stringify(this.$store.getters.residue));
       if (this.$store.getters.indexedit == -1) {
-        //alert("es nuevo");
         this.residues.push(this.$store.getters.residue);
       } else {
-        //alert("es existente");
-        this.residues.splice(this.$store.getters.editindex, 1);
-        this.residues.push(this.$store.getters.residue);
+        this.residues.splice(this.$store.getters.indexedit, 1, this.$store.getters.residue);
         this.$store.commit('changeIndexedit', -1);
       }
     },
@@ -3113,7 +3117,7 @@ __webpack_require__.r(__webpack_exports__);
       this.residues.pop(item);
     },
     toUpload: function toUpload() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_UploadComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_0___default.a.extend(_components_UploadComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -3346,6 +3350,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3369,7 +3374,7 @@ __webpack_require__.r(__webpack_exports__);
       dialog: true,
       cantidad: '',
       establishment: '',
-      unidad: '',
+      unidad: 'Toneladas',
       destiny: '',
       residue: '',
       residue_name: '',
@@ -3596,29 +3601,9 @@ __webpack_require__.r(__webpack_exports__);
       this.unit_selected = unit_selected;
       this.unit_id = unit_selected.id;
     },
-    selectExport: function selectExport() {
-      this.company_selected = '';
-      this.establishment_selected = '';
-      this.process_selected = '';
-      this.gestion_selected = '';
-      this.receiver_name = '';
-      this.establishment = '';
-      this.processings = '';
-      this.gestion = ''; // if(this.checkbox){
-      //     this.checkbox=false;
-      // }else {
-
-      this.checkbox = true; // }
-    },
     saveResidue: function saveResidue() {
       if (this.$refs.form.validate()) {
         var company_name = this.receiver_name;
-
-        if (this.checkbox) {
-          establishment_name = '';
-          company_name = this.country_selected.name + ' | ' + this.empresa;
-        }
-
         this.residue = {
           waste: this.residue_name,
           chapter: this.chapter_name,
@@ -3626,21 +3611,21 @@ __webpack_require__.r(__webpack_exports__);
           sum: this.cantidad + ' ' + this.unidad.name,
           company: this.$store.getters.company.name,
           establishment: this.$store.getters.establishment.name,
-          processing: this.processing_name,
-          gestion: this.gestion_name,
+          processing: 'Valorización',
+          gestion: 'Valorización',
           pais: this.pais,
           empresa: this.empresa,
           contacto: this.contacto,
           email: this.email,
           company_id: this.$store.getters.company.id,
           establishment_id: this.$store.getters.establishment.id,
-          process_id: this.process_id,
-          manage_id: this.gestion_id,
+          process_id: 2,
+          manage_id: 2,
           quantity: this.cantidad,
           waste_id: this.residue_id,
           chapter_id: this.chapter_id,
           subchapter_id: this.subchapter_id,
-          unit_id: this.unit_id,
+          unit_id: 2,
           carrier_id: this.carrier_id,
           carrier_name: this.carriername,
           trasnport_date: this.carrier_date,
@@ -4245,8 +4230,7 @@ __webpack_require__.r(__webpack_exports__);
           trasnport_date: this.carrier_date,
           plate: this.vehicleplate
         };
-        this.$store.commit('changeResidue', this.residue); // alert(JSON.stringify(this.$store.getters.residue));
-
+        this.$store.commit('changeResidue', this.residue);
         this.dialog = false;
         _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('saveResidues', 'someValue');
       }
@@ -5498,7 +5482,7 @@ __webpack_require__.r(__webpack_exports__);
     refreshList: function refreshList() {
       var app = this;
       var params = {
-        declaration_id: this.declaration_edit.declaration_id,
+        declaration_id: this.declaration_edit.id,
         establishment_id: this.$store.getters.establishment.id //alert(JSON.stringify(params));    
 
       };
@@ -5534,6 +5518,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     receive: function receive() {
       alert('Esta Declaración se dará por recibida en su totalidad');
+      var params = {
+        'declaration_id': this.declaration_edit.id,
+        'status': 'ACEPTADA'
+      };
+      axios.post('/api/declaration/changestatus', params).then(function (resp) {
+        //alert(JSON.stringify(resp.data));  
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('changestatus', 'someValue');
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+      this.dialog = false;
+    },
+    rejection: function rejection() {
+      alert('Esta Declaración será rechazada en su totalidad');
+      var params = {
+        'declaration_id': this.declaration_edit.id,
+        'status': 'RECHAZADA'
+      };
+      axios.post('/api/declaration/changestatus', params).then(function (resp) {
+        //alert(JSON.stringify(resp.data)); 
+        _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$emit('changestatus', 'someValue');
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
       this.dialog = false;
     }
   }
@@ -9110,11 +9118,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_ReceiveComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../components/ReceiveComponent */ "./resources/js/components/ReceiveComponent.vue");
-/* harmony import */ var _components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../components/NewReceiveComponent */ "./resources/js/components/NewReceiveComponent.vue");
-//
-//
-//
+/* harmony import */ var _eventbus_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../eventbus.js */ "./resources/js/eventbus.js");
+/* harmony import */ var _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../eventbus2.js */ "./resources/js/eventbus2.js");
+/* harmony import */ var _components_ReceiveComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../components/ReceiveComponent */ "./resources/js/components/ReceiveComponent.vue");
+/* harmony import */ var _components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../components/NewReceiveComponent */ "./resources/js/components/NewReceiveComponent.vue");
 //
 //
 //
@@ -9202,7 +9209,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
- // import { EventBus } from './../eventbus.js';
+
+
 
 
 
@@ -9228,16 +9236,21 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Estado',
         value: ''
       }, {
-        text: 'Certificado',
-        value: ''
-      }, {
         text: 'Accion',
         value: ''
       }],
-      declarations: []
+      declarations: [],
+      receivenn: []
     };
   },
   created: function created() {
+    var app = this;
+    _eventbus_js__WEBPACK_IMPORTED_MODULE_2__["EventBus"].$on('changestatus', function () {
+      app.getdecalrations();
+    });
+    _eventbus2_js__WEBPACK_IMPORTED_MODULE_3__["EventBus2"].$on('save', function () {
+      app.getdecalrations();
+    });
     this.initialize();
   },
   methods: {
@@ -9252,9 +9265,15 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
         alert("Error declarations/index :" + resp);
       });
+      axios.get('/api/declarations/forreceivergennn/' + this.$store.getters.establishment.id).then(function (resp) {
+        app.receivenn = resp.data;
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Error declarations/index :" + resp);
+      });
     },
     toReceive: function toReceive($declaration) {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_ReceiveComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
         propsData: {
@@ -9265,12 +9284,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs.container.replaceChild(instance.$el);
     },
     toNewReceive: function toNewReceive() {
-      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+      var ComponentReserv = vue__WEBPACK_IMPORTED_MODULE_1___default.a.extend(_components_NewReceiveComponent__WEBPACK_IMPORTED_MODULE_5__["default"]);
       var instance = new ComponentReserv({
         store: this.$store,
-        propsData: {
-          source: ''
-        }
+        propsData: {}
       });
       instance.$mount();
       this.$refs.container.replaceChild(instance.$el);
@@ -9667,7 +9684,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.redondeado {\r\n  border-radius: 5px;\n}\n.welcome_disclaimer {\r\n  text-align: justify;\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.padded {\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.welcome_icon {\r\n  min-width: 50px;\r\n  max-width: 150px;\n}\n.sitio_de_interes {\r\n  min-width: 40px;\r\n  max-width: 100px;\r\n  margin: auto;\n}\r\n", ""]);
+exports.push([module.i, "\n.redondeado {\n  border-radius: 5px;\n}\n.welcome_disclaimer {\n  text-align: justify;\n  padding-left: 4%;\n  padding-right: 4%;\n}\n.padded {\n  padding-left: 4%;\n  padding-right: 4%;\n}\n.welcome_icon {\n  min-width: 50px;\n  max-width: 150px;\n}\n.sitio_de_interes {\n  min-width: 40px;\n  max-width: 100px;\n  margin: auto;\n}\n", ""]);
 
 // exports
 
@@ -13030,7 +13047,10 @@ var render = function() {
                                       attrs: { icon: "" },
                                       on: {
                                         click: function($event) {
-                                          return _vm.edit_item(props.item)
+                                          return _vm.edit_item(
+                                            props.item,
+                                            props.index
+                                          )
                                         }
                                       }
                                     },
@@ -13060,7 +13080,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      3490511335
+                      2683351701
                     )
                   })
                 : _vm._e(),
@@ -13424,6 +13444,7 @@ var render = function() {
                             [
                               _c("v-select", {
                                 attrs: {
+                                  readonly: "",
                                   items: _vm.units,
                                   label: "Unidad de Medida",
                                   "item-text": "name",
@@ -15318,7 +15339,7 @@ var render = function() {
                           attrs: { flat: "" },
                           on: {
                             click: function($event) {
-                              _vm.dialog = false
+                              return _vm.rejection()
                             }
                           }
                         },
@@ -16877,7 +16898,7 @@ var render = function() {
           _c("router-link", { attrs: { to: { name: "home" } } }, [
             _vm._v("Home")
           ]),
-          _vm._v(" |\r\n            "),
+          _vm._v(" |\n            "),
           _c("router-link", { attrs: { to: { name: "hello" } } }, [
             _vm._v("Hello World")
           ])
@@ -17286,7 +17307,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Nueva declaración\r\n                    "
+                            "\n                    Nueva declaración\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("add")
@@ -17359,7 +17380,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                    Certificado        \r\n                "
+                                  "\n                    Certificado        \n                "
                                 )
                               ]
                             ),
@@ -17885,7 +17906,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                    Certificado        \r\n                "
+                                  "\n                    Certificado        \n                "
                                 )
                               ]
                             ),
@@ -19019,7 +19040,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19096,7 +19117,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19273,7 +19294,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19350,7 +19371,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19531,7 +19552,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19608,7 +19629,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19787,7 +19808,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19864,7 +19885,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19970,14 +19991,10 @@ var render = function() {
                               _vm._v(_vm._s(props.item.status))
                             ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.certificate))
-                            ]),
-                            _vm._v(" "),
                             _c(
                               "td",
                               [
-                                props.item.status == "ENVIADO"
+                                props.item.status == "CREADA"
                                   ? _c(
                                       "v-btn",
                                       {
@@ -20083,14 +20100,10 @@ var render = function() {
                               _vm._v(_vm._s(props.item.status))
                             ]),
                             _vm._v(" "),
-                            _c("td", { staticClass: "text-xs-right" }, [
-                              _vm._v(_vm._s(props.item.certificate))
-                            ]),
-                            _vm._v(" "),
                             _c(
                               "td",
                               [
-                                props.item.status == "ENVIADO"
+                                props.item.status == "CREADA"
                                   ? _c(
                                       "v-btn",
                                       {
@@ -20099,22 +20112,11 @@ var render = function() {
                                           color: "main_green",
                                           dark: ""
                                         },
-                                        on: { click: _vm.toReceive }
-                                      },
-                                      [_vm._v("Editar")]
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                props.item.status != "ENVIADO"
-                                  ? _c(
-                                      "v-btn",
-                                      {
-                                        attrs: {
-                                          small: "",
-                                          color: "main_green",
-                                          dark: ""
-                                        },
-                                        on: { click: _vm.toReceive }
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.toReceive(props.item)
+                                          }
+                                        }
                                       },
                                       [_vm._v("Editar")]
                                     )
@@ -65489,8 +65491,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbook/sinader/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbook/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

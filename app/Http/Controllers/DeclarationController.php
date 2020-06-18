@@ -46,7 +46,49 @@ class DeclarationController extends Controller
 
 
     public function forreceiver($receiver_id){
-        $declarations = Declaration::join('waste_details','declarations.id',"=",'waste_details.declaration_id')->where('waste_details.establishment_id',$receiver_id)->get();
+        Info("******* declarations for receiver **********");
+        Info($receiver_id);
+
+        $declarations = Declaration::select(
+            'declarations.id',
+            'declarations.correlative', 
+            'declarations.correlative_dv',
+            'declarations.period',
+            'declarations.created_at',
+            'declarations.establishment',
+            'declarations.status',
+            'declarations.company',
+            'declarations.rut',
+            'declarations.establishment',
+            'declarations.direccion',
+            'declarations.comuna',
+            'declarations.region'
+            )->distinct()->join('waste_details','declarations.id',"=",'waste_details.declaration_id')->where('waste_details.establishment_id',$receiver_id)->where('generator','REGISTERED')->get();
+
+        return response()->json($declarations);   
+    }
+
+
+    public function forreceiverGenNN($receiver_id){
+        Info("******* declarations for receiver **********");
+        Info($receiver_id);
+
+        $declarations = Declaration::select(
+            'declarations.id',
+            'declarations.correlative', 
+            'declarations.correlative_dv',
+            'declarations.period',
+            'declarations.created_at',
+            'declarations.establishment',
+            'declarations.status',
+            'declarations.company',
+            'declarations.rut',
+            'declarations.establishment',
+            'declarations.direccion',
+            'declarations.comuna',
+            'declarations.region'
+            )->distinct()->join('waste_details','declarations.id',"=",'waste_details.declaration_id')->where('waste_details.establishment_id',$receiver_id)->where('generator','UNREGISTERED')->get();
+
         return response()->json($declarations);   
     }
 
@@ -116,6 +158,7 @@ class DeclarationController extends Controller
         $declarationNew->direccion      = $declaration['direccion'];
         $declarationNew->comuna         = $declaration['comuna'];
         $declarationNew->region         = $declaration['region'];
+        $declarationNew->generator      = $declaration['generator'];
  
         $declarationNew->status            = 'CREADA';
         $declarationNew->establishment_id  = $user_establishment->establishment_id;
@@ -292,6 +335,24 @@ class DeclarationController extends Controller
         $declaration = Declaration::where('id',$declaration_id)->get()->first();
         $declaration->status = 'ENVIADA';
         $declaration->save();
+        
+        return response()->json($declaration);
+    }
+
+
+    public function changeStatus(Request $request)
+    {
+
+        Info($request);
+
+        $declaration_id = $request->input('declaration_id');
+        $status = $request->input('status');
+
+        $declaration = Declaration::where('id',$declaration_id)->get()->first();
+        if($declaration){
+            $declaration->status = $status;
+            $declaration->save();
+        }
         
         return response()->json($declaration);
     }

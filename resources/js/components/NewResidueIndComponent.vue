@@ -674,8 +674,6 @@
 
                 this.$store.commit('changeResidue', this.residue);
 
-                // alert(JSON.stringify(this.$store.getters.residue));
-
                 this.dialog = false;
 
                 EventBus.$emit('saveResidues', 'someValue'); 

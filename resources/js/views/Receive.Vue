@@ -24,10 +24,9 @@
         <td class="text-xs-right">{{ props.item.created_at }}</td>
         <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
-        <td class="text-xs-right">{{ props.item.certificate }}</td>
 
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive(props.item)" color="main_green" dark>Recepcionar</v-btn>
+            <v-btn  v-if="props.item.status=='CREADA'" small @click="toReceive(props.item)" color="main_green" dark>Recepcionar</v-btn>
 
         </td>   
       </template>
@@ -69,12 +68,10 @@
         <td class="text-xs-right">{{ props.item.created_at }}</td>
         <td class="text-xs-right">{{ props.item.establishment }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
-        <td class="text-xs-right">{{ props.item.certificate }}</td>
+
 
         <td> 
-            <v-btn  v-if="props.item.status=='ENVIADO'" small @click="toReceive" color="main_green" dark>Editar</v-btn>
- 
-             <v-btn  v-if="props.item.status!='ENVIADO'" small @click="toReceive" color="main_green" dark>Editar</v-btn>
+            <v-btn  v-if="props.item.status=='CREADA'" small @click="toReceive(props.item)" color="main_green" dark>Editar</v-btn>
         </td>   
       </template>
     </v-data-table>
@@ -91,7 +88,8 @@
 
   import { mapState } from 'vuex';  
   import Vue from 'vue';  
-  // import { EventBus } from './../eventbus.js';
+  import { EventBus } from './../eventbus.js';
+  import { EventBus2 } from './../eventbus2.js';
 
  
   import DeclarationComponent  from './../components/ReceiveComponent';
@@ -111,17 +109,23 @@
             { text: 'Fecha', value: '' },
             { text: 'Establecimiento', value:''},
             { text: 'Estado', value: '' },
-            { text: 'Certificado', value: '' },
             { text: 'Accion', value: '' },
         ],
-        declarations: [
- 
-        ],
+        declarations: [],
+        receivenn:[],
 
         }),
     
 
     created () {
+        var app = this;
+        EventBus.$on('changestatus', function(){ 
+            app.getdecalrations();
+        });
+        EventBus2.$on('save', function(){ 
+            app.getdecalrations();
+        });
+
         this.initialize();
     },
     
@@ -141,11 +145,21 @@
                     console.log(resp);
                     alert("Error declarations/index :" + resp);
                 });
+
+            axios.get('/api/declarations/forreceivergennn/' + this.$store.getters.establishment.id)
+                .then(function (resp) {    
+                    app.receivenn = resp.data;
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Error declarations/index :" + resp);
+                });
+
         },
 
 
         toReceive ($declaration){
-            var ComponentReserv = Vue.extend(DeclarationComponent)
+            var ComponentReserv = Vue.extend(NewReceiveComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
             declaration_edit: $declaration,
              
@@ -158,7 +172,6 @@
         toNewReceive (){
             var ComponentReserv = Vue.extend(NewReceiveComponent)
             var instance = new ComponentReserv({store: this.$store, propsData: {
-            source: '',
              
           }});
             instance.$mount();

@@ -646,6 +646,7 @@ class ComposerStaticInit790232e63a9d157168d0582fe9a37c6c
         'App\\DeclarationType' => __DIR__ . '/../..' . '/app/DeclarationType.php',
         'App\\Establishment' => __DIR__ . '/../..' . '/app/Establishment.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Exports\\EstablishmentExport' => __DIR__ . '/../..' . '/app/Exports/EstablishmentExport.php',
         'App\\Http\\Controllers\\ActiveLineController' => __DIR__ . '/../..' . '/app/Http/Controllers/ActiveLineController.php',
         'App\\Http\\Controllers\\ApiUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiUserController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
