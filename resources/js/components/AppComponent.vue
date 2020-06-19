@@ -189,7 +189,7 @@
                             { icon: 'declaration', text: 'Generadores Municipales', link: '/listadminmun' },
                             { icon: 'declaration', text: 'Generadores Industriales', link: '/listadminind' },
                             { icon: 'declaration', text: 'Destinatarios', link: '/listadmindf' },
-                            { icon: 'declaration', text: 'Centro de Acopio', link: '/listadminca' },
+                            { icon: 'declaration', text: 'I.R.A.R.', link: '/listadminca' },
                             { icon: 'declaration', text: 'Mantenedor de empresas transportistas', link: '/carrieradmin' },
                             { icon: 'declaration', text: 'Mantenedor de autorizaciones sanitarias transportes', link: '/' },
                             { icon: 'declaration', text: 'Mantenedor de transportes (patentes)', link: '/vehicleadmin' },

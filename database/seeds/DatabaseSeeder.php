@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 
   	App\User::create(['name'=> 'Maritza Barrera', 'email'=>'maritza@gmail.com', 'password'=>'prueba']);
 
-    App\Establishment::create(["name"=>"Centro de Acopio","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'CentroAcopio']);
+    App\Establishment::create(["name"=>"I.R.A.R.","commune_id"=> 13504,"company_id"=> 1,"ciiu_id"=> "C1110","region_id"=>13,"retc_code"=> 1, 'type'=>'CentroAcopio']);
 
     App\UserEstablishment::create(["user_id"=>3, "establishment_id" => 3, "retc_id" => 119010]);
 
@@ -902,7 +902,7 @@ class DatabaseSeeder extends Seeder
 	App\LerSubChapter::create(['subchapter_number'=> 3 ,'name'=>'03 | Otros residuos municipales','chapter_id'=> 20 ,'active'=> 1 ]);
 
 	App\ManageType::truncate();
-	App\ManageType::create(['id' => 1 , 'name' => 'Centro de Acopio']);
+	App\ManageType::create(['id' => 1 , 'name' => 'I.R.A.R.']);
 	App\ManageType::create(['id' => 2 , 'name' => 'Valorización']);
 	App\ManageType::create(['id' => 3 , 'name' => 'Eliminación']);
 
@@ -953,7 +953,7 @@ class DatabaseSeeder extends Seeder
 	App\ProcessType::create(['id'=> 32 , 'name'=> 'Recepción de Lodos en PTAS']);
 	App\ProcessType::create(['id'=> 33 , 'name'=> 'Depósito de Seguridad']);
 	App\ProcessType::create(['id'=> 34 , 'name'=> 'Reducción de Recursos Hidrobiológicos']);
-	App\ProcessType::create(['id'=> 35 , 'name'=> 'Pretratamiento (Centro de Acopio)']);
+	App\ProcessType::create(['id'=> 35 , 'name'=> 'Pretratamiento (I.R.A.R.)']);
 	App\ProcessType::create(['id'=> 36 , 'name'=> 'Pretratamiento de papel, cartón y productos de papel']);
 	App\ProcessType::create(['id'=> 37 , 'name'=> 'Pretratamiento vidrio']);
 	App\ProcessType::create(['id'=> 38 , 'name'=> 'Pretratamiento de ropa']);
