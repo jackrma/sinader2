@@ -35,6 +35,7 @@ class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation, Skips
                 'carrier' => $row['rut_transportista'],
                 'plate' => $row['patente'],
                 'date' => $row['fecha'],
+                'manage' => $row['gestion']
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage(), $row);
@@ -57,7 +58,8 @@ class MonthWasteImport implements ToModel, WithHeadingRow, WithValidation, Skips
             'cantidad' => 'required',
             'rut_transportista' => 'required',
             'patente' => 'required',
-            'fecha' => 'required'
+            'fecha' => 'required',
+            'gestion' => 'required'
 
         ];
     }

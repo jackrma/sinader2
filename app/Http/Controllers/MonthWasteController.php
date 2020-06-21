@@ -66,6 +66,7 @@ class MonthWasteController extends Controller
             $waste_detail->unit_id          = 1;
             $waste_detail->carrier_id       = $carrier->carrier_id;
             $waste_detail->plate            = $waste['plate'];
+            $waste_detail->manage_id        = $waste['manage'];
 
             $waste_detail->save();
 

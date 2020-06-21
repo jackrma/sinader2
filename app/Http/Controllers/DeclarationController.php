@@ -10,6 +10,7 @@ use App\WasteDetail;
 use App\Company;
 use App\MonthWaste;
 use App\ProcessType;
+use App\ManageType;
 use App\Carrier;
 use App\Vehicle;
 use App\LerWaste;
@@ -491,6 +492,7 @@ class DeclarationController extends Controller
             $company = Company::where('rut', $rut_company)->first();
             $establishment = Establishment::where('retc_code', $waste['entablishment'])->first();
             $process = ProcessType::where('id', $waste['process'])->first();
+            $manage = ManageType::where('id', $waste['manage'])->first();
             $carrier = Carrier::where('rut', $rut_carrier )->first();
             $vehicle = Vehicle::where('plate', $waste['plate'])->first();
             $ler_waste = LerWaste::where('waste_code', $waste['ler'])->first();
@@ -561,6 +563,14 @@ class DeclarationController extends Controller
             }
 
             $waste_detail[$ind]['plate']            = $waste['plate'];
+
+             if($manage){
+                $waste_detail[$ind]['manage_id']   = $manage->id;
+                $waste_detail[$ind]['gestion']   = $manage->name;
+            }else{
+                $errors[] = "Linea ".$line.": gestión no existe";
+            }
+
 
             $ind++;
 
