@@ -25,19 +25,19 @@
         <v-card-text>
             <v-layout>
                 <v-flex  xs12 class="px-1">
-                    <v-text-field  v-model="rut" label="Rut Empresa o Persona Natural"></v-text-field>
+                    <v-text-field ref="rut" v-model="rut" :rules='rutRule' @change='validateRut' label="Rut Empresa o Persona Natural"></v-text-field>
                 </v-flex>
             </v-layout>    
                         
             <v-layout>
                 <v-flex  xs12 class="px-1">
-                    <v-text-field  v-model="name" label="Nombre Empresa o Persona Natural"></v-text-field>
+                    <v-text-field rules='notnullRule' v-model="name" label="Nombre Empresa o Persona Natural"></v-text-field>
                 </v-flex>
             </v-layout>   
 
             <v-layout>
                 <v-flex  xs12 class="px-1">
-                    <v-text-field  v-model="plate" label="Patente"></v-text-field>
+                    <v-text-field rules='notnullRule' v-model="plate" label="Patente"></v-text-field>
                 </v-flex>
             </v-layout> 
 
@@ -67,6 +67,9 @@
   export default {
     data () {
       return {
+        notnullRule: [(v) => !!v || "Campo requerido"],
+        rutRule: [(v) => !!v || "Campo requerido", (v) => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || "Formato incorrecto"],
+
         checkbox:false,
         dialog: true,
         rut:'',
@@ -82,6 +85,44 @@
     methods: {
         initialize(){
             alert('Validación SII, pendiente')
+        },
+
+        validateRut (rutCompleto) {
+            var app = this;
+            if (/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto )){
+                var tmp     = rutCompleto.split('-');
+                var digv    = tmp[1]; 
+                var rut     = tmp[0];
+                if ( digv == 'K' ) digv = 'k' ;
+                if  (this.dv(rut) != digv ){
+                    alert('Rut Incorrecto');
+                    this.rut = '';
+                    this.$refs.rut.focus();
+                }
+            }
+        },
+        dv (T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'k';
+        },
+
+        save(){
+            var tranport = {    
+            rut: this.rut,  
+            name : this.name, 
+            plate: this.plate, 
+            }
+
+            axios.post('/api//carrier/savenotregistered', transport)
+                .then(function (resp) {    
+                    EventBus.$emit('saveTransport', 'someValue');
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                });
+            this.dialog = false;
         }
     }
   }

@@ -5278,6 +5278,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      notnullRule: [function (v) {
+        return !!v || "Campo requerido";
+      }],
+      rutRule: [function (v) {
+        return !!v || "Campo requerido";
+      }, function (v) {
+        return /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || "Formato incorrecto";
+      }],
       checkbox: false,
       dialog: true,
       rut: '',
@@ -5291,6 +5299,45 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       alert('Validación SII, pendiente');
+    },
+    validateRut: function validateRut(rutCompleto) {
+      var app = this;
+
+      if (/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
+        var tmp = rutCompleto.split('-');
+        var digv = tmp[1];
+        var rut = tmp[0];
+        if (digv == 'K') digv = 'k';
+
+        if (this.dv(rut) != digv) {
+          alert('Rut Incorrecto');
+          this.rut = '';
+          this.$refs.rut.focus();
+        }
+      }
+    },
+    dv: function dv(T) {
+      var M = 0,
+          S = 1;
+
+      for (; T; T = Math.floor(T / 10)) {
+        S = (S + T % 10 * (9 - M++ % 6)) % 11;
+      }
+
+      return S ? S - 1 : 'k';
+    },
+    save: function save() {
+      var tranport = {
+        rut: this.rut,
+        name: this.name,
+        plate: this.plate
+      };
+      axios.post('/api//carrier/savenotregistered', transport).then(function (resp) {
+        EventBus.$emit('saveTransport', 'someValue');
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+      this.dialog = false;
     }
   }
 });
@@ -9684,7 +9731,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.redondeado {\r\n  border-radius: 5px;\n}\n.welcome_disclaimer {\r\n  text-align: justify;\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.padded {\r\n  padding-left: 4%;\r\n  padding-right: 4%;\n}\n.welcome_icon {\r\n  min-width: 50px;\r\n  max-width: 150px;\n}\n.sitio_de_interes {\r\n  min-width: 40px;\r\n  max-width: 100px;\r\n  margin: auto;\n}\r\n", ""]);
+exports.push([module.i, "\n.redondeado {\n  border-radius: 5px;\n}\n.welcome_disclaimer {\n  text-align: justify;\n  padding-left: 4%;\n  padding-right: 4%;\n}\n.padded {\n  padding-left: 4%;\n  padding-right: 4%;\n}\n.welcome_icon {\n  min-width: 50px;\n  max-width: 150px;\n}\n.sitio_de_interes {\n  min-width: 40px;\n  max-width: 100px;\n  margin: auto;\n}\n", ""]);
 
 // exports
 
@@ -15157,7 +15204,12 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs12: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Rut Empresa o Persona Natural" },
+                            ref: "rut",
+                            attrs: {
+                              rules: _vm.rutRule,
+                              label: "Rut Empresa o Persona Natural"
+                            },
+                            on: { change: _vm.validateRut },
                             model: {
                               value: _vm.rut,
                               callback: function($$v) {
@@ -15182,6 +15234,7 @@ var render = function() {
                         [
                           _c("v-text-field", {
                             attrs: {
+                              rules: "notnullRule",
                               label: "Nombre Empresa o Persona Natural"
                             },
                             model: {
@@ -15207,7 +15260,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs12: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Patente" },
+                            attrs: { rules: "notnullRule", label: "Patente" },
                             model: {
                               value: _vm.plate,
                               callback: function($$v) {
@@ -16898,7 +16951,7 @@ var render = function() {
           _c("router-link", { attrs: { to: { name: "home" } } }, [
             _vm._v("Home")
           ]),
-          _vm._v(" |\r\n            "),
+          _vm._v(" |\n            "),
           _c("router-link", { attrs: { to: { name: "hello" } } }, [
             _vm._v("Hello World")
           ])
@@ -17307,7 +17360,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Nueva declaración\r\n                    "
+                            "\n                    Nueva declaración\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("add")
@@ -17380,7 +17433,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                    Certificado        \r\n                "
+                                  "\n                    Certificado        \n                "
                                 )
                               ]
                             ),
@@ -17906,7 +17959,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                    Certificado        \r\n                "
+                                  "\n                    Certificado        \n                "
                                 )
                               ]
                             ),
@@ -19040,7 +19093,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19117,7 +19170,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19294,7 +19347,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19371,7 +19424,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19552,7 +19605,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19629,7 +19682,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -19808,7 +19861,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\r\n                    Exportar Excel\r\n                    "
+                            "\n                    Exportar Excel\n                    "
                           ),
                           _c("v-icon", { attrs: { right: "" } }, [
                             _vm._v("cloud_download")
@@ -19885,7 +19938,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "Desactivar\r\n                        "
+                                      "Desactivar\n                        "
                                     ),
                                     _c("v-icon", [_vm._v("close")])
                                   ],
@@ -65491,8 +65544,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Lenovo\Projects\sinader\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/macbook/sinader/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/macbook/sinader/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
