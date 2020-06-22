@@ -5278,6 +5278,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      notnullRule: [function (v) {
+        return !!v || "Campo requerido";
+      }],
+      rutRule: [function (v) {
+        return !!v || "Campo requerido";
+      }, function (v) {
+        return /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || "Formato incorrecto";
+      }],
       checkbox: false,
       dialog: true,
       rut: '',
@@ -5291,6 +5299,45 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     initialize: function initialize() {
       alert('Validación SII, pendiente');
+    },
+    validateRut: function validateRut(rutCompleto) {
+      var app = this;
+
+      if (/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
+        var tmp = rutCompleto.split('-');
+        var digv = tmp[1];
+        var rut = tmp[0];
+        if (digv == 'K') digv = 'k';
+
+        if (this.dv(rut) != digv) {
+          alert('Rut Incorrecto');
+          this.rut = '';
+          this.$refs.rut.focus();
+        }
+      }
+    },
+    dv: function dv(T) {
+      var M = 0,
+          S = 1;
+
+      for (; T; T = Math.floor(T / 10)) {
+        S = (S + T % 10 * (9 - M++ % 6)) % 11;
+      }
+
+      return S ? S - 1 : 'k';
+    },
+    save: function save() {
+      var tranport = {
+        rut: this.rut,
+        name: this.name,
+        plate: this.plate
+      };
+      axios.post('/api//carrier/savenotregistered', transport).then(function (resp) {
+        EventBus.$emit('saveTransport', 'someValue');
+      })["catch"](function (resp) {
+        console.log(resp);
+      });
+      this.dialog = false;
     }
   }
 });
@@ -15157,7 +15204,12 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs12: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Rut Empresa o Persona Natural" },
+                            ref: "rut",
+                            attrs: {
+                              rules: _vm.rutRule,
+                              label: "Rut Empresa o Persona Natural"
+                            },
+                            on: { change: _vm.validateRut },
                             model: {
                               value: _vm.rut,
                               callback: function($$v) {
@@ -15182,6 +15234,7 @@ var render = function() {
                         [
                           _c("v-text-field", {
                             attrs: {
+                              rules: "notnullRule",
                               label: "Nombre Empresa o Persona Natural"
                             },
                             model: {
@@ -15207,7 +15260,7 @@ var render = function() {
                         { staticClass: "px-1", attrs: { xs12: "" } },
                         [
                           _c("v-text-field", {
-                            attrs: { label: "Patente" },
+                            attrs: { rules: "notnullRule", label: "Patente" },
                             model: {
                               value: _vm.plate,
                               callback: function($$v) {
